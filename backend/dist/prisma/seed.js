@@ -1,0 +1,316 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+const client_1 = require("@prisma/client");
+const bcrypt = __importStar(require("bcrypt"));
+const prisma = new client_1.PrismaClient();
+async function main() {
+    console.log('Seeding database with sample test data...');
+    const branch1 = await prisma.branch.upsert({
+        where: { name: 'Phnom Penh Head Office' },
+        update: {},
+        create: {
+            name: 'Phnom Penh Head Office',
+            code: 'PP001',
+            address: 'Preah Norodom Blvd, Phnom Penh',
+        },
+    });
+    const branch2 = await prisma.branch.upsert({
+        where: { name: 'Siem Reap Branch' },
+        update: {},
+        create: {
+            name: 'Siem Reap Branch',
+            code: 'SR002',
+            address: 'Pub Street Area, Siem Reap',
+        },
+    });
+    const permissionsToCreate = [
+        { name: 'VIEW_DASHBOARD', description: 'Access to the admin dashboard overview' },
+        { name: 'MANAGE_CUSTOMERS', description: 'View, create, and edit customer records' },
+        { name: 'MANAGE_KYC', description: 'Verify and review customer KYC documents' },
+        { name: 'CREATE_LOAN', description: 'Initiate new loan applications' },
+        { name: 'APPROVE_KYC', description: 'LOS Step: KYC Verification and Approval' },
+        { name: 'CREDIT_EVALUATE', description: 'LOS Step: Credit scoring and assessment' },
+        { name: 'UNDERWRITE_LOAN', description: 'LOS Step: Final underwriting approval' },
+        { name: 'MANAGE_DISBURSEMENT', description: 'LOS Step: Prepare and confirm fund disbursement' },
+        { name: 'VIEW_AUDIT', description: 'View system-wide audit logs' },
+        { name: 'MANAGE_SYSTEM', description: 'System settings and user management' },
+    ];
+    const permissionMap = {};
+    for (const perm of permissionsToCreate) {
+        permissionMap[perm.name] = await prisma.permission.upsert({
+            where: { name: perm.name },
+            update: { description: perm.description },
+            create: perm,
+        });
+    }
+    const rolesToCreate = [
+        {
+            name: 'SUPER_ADMIN',
+            description: 'Full system access',
+            perms: permissionsToCreate.map(p => p.name)
+        },
+        {
+            name: 'BRANCH_MANAGER',
+            description: 'Branch oversight and high-level approvals',
+            perms: ['VIEW_DASHBOARD', 'MANAGE_CUSTOMERS', 'APPROVE_KYC', 'UNDERWRITE_LOAN', 'MANAGE_DISBURSEMENT']
+        },
+        {
+            name: 'CREDIT_OFFICER',
+            description: 'Front-line loan origination',
+            perms: ['VIEW_DASHBOARD', 'MANAGE_CUSTOMERS', 'MANAGE_KYC', 'CREATE_LOAN', 'CREDIT_EVALUATE']
+        },
+        {
+            name: 'COLLECTION_OFFICER',
+            description: 'Payment monitoring',
+            perms: ['VIEW_DASHBOARD', 'MANAGE_CUSTOMERS']
+        },
+        {
+            name: 'TELLER',
+            description: 'Cash operations',
+            perms: ['VIEW_DASHBOARD', 'MANAGE_DISBURSEMENT']
+        },
+        {
+            name: 'AUDITOR',
+            description: 'Internal audit and compliance',
+            perms: ['VIEW_DASHBOARD', 'VIEW_AUDIT']
+        },
+        {
+            name: 'CUSTOMER_SERVICE',
+            description: 'Inquiry and registration',
+            perms: ['VIEW_DASHBOARD', 'MANAGE_CUSTOMERS']
+        },
+    ];
+    for (const roleData of rolesToCreate) {
+        const role = await prisma.role.upsert({
+            where: { name: roleData.name },
+            update: { description: roleData.description },
+            create: { name: roleData.name, description: roleData.description },
+        });
+        for (const permName of roleData.perms) {
+            const perm = permissionMap[permName];
+            await prisma.rolePermission.upsert({
+                where: {
+                    roleId_permissionId: {
+                        roleId: role.id,
+                        permissionId: perm.id,
+                    },
+                },
+                update: {},
+                create: {
+                    roleId: role.id,
+                    permissionId: perm.id,
+                },
+            });
+        }
+    }
+    const loanOfficerRole = await prisma.role.findUnique({ where: { name: 'CREDIT_OFFICER' } });
+    const superAdminRole = await prisma.role.findUnique({ where: { name: 'SUPER_ADMIN' } });
+    if (!loanOfficerRole || !superAdminRole) {
+        throw new Error('Required roles not found after creation');
+    }
+    const passwordHash = await bcrypt.hash('password123', 10);
+    const admin = await prisma.user.upsert({
+        where: { email: 'admin@weloan365.com' },
+        update: {},
+        create: {
+            email: 'admin@weloan365.com',
+            passwordHash,
+            firstName: 'Super',
+            lastName: 'Admin',
+            branchId: branch1.id,
+        },
+    });
+    await prisma.userRole.upsert({
+        where: {
+            userId_roleId: {
+                userId: admin.id,
+                roleId: superAdminRole.id,
+            },
+        },
+        update: {},
+        create: {
+            userId: admin.id,
+            roleId: superAdminRole.id,
+        },
+    });
+    const officer = await prisma.user.upsert({
+        where: { email: 'chamnab@weloan365.com' },
+        update: {},
+        create: {
+            email: 'chamnab@weloan365.com',
+            passwordHash,
+            firstName: 'Chamnab',
+            lastName: 'Kol',
+            branchId: branch1.id,
+        },
+    });
+    await prisma.userRole.upsert({
+        where: {
+            userId_roleId: {
+                userId: officer.id,
+                roleId: loanOfficerRole.id,
+            },
+        },
+        update: {},
+        create: {
+            userId: officer.id,
+            roleId: loanOfficerRole.id,
+        },
+    });
+    const product1 = await prisma.loanProduct.upsert({
+        where: { name: 'Personal Loan' },
+        update: {},
+        create: {
+            name: 'Personal Loan',
+            description: 'Standard personal loan for individuals',
+            minAmount: 500,
+            maxAmount: 10000,
+            baseInterestRate: 12.0,
+            interestType: 'FLAT',
+        },
+    });
+    const product2 = await prisma.loanProduct.upsert({
+        where: { name: 'SME Business Loan' },
+        update: {},
+        create: {
+            name: 'SME Business Loan',
+            description: 'Loan for small and medium enterprises',
+            minAmount: 5000,
+            maxAmount: 50000,
+            baseInterestRate: 10.0,
+            interestType: 'REDUCING',
+        },
+    });
+    const customer1 = await prisma.customer.upsert({
+        where: { phone: '+85512345678' },
+        update: {},
+        create: {
+            firstName: 'Sokha',
+            lastName: 'Chan',
+            phone: '+85512345678',
+            email: 'sokha.chan@example.com',
+            nationalId: '123456789',
+            branchId: branch1.id,
+            kycStatus: 'APPROVED',
+            employmentStatus: 'EMPLOYED',
+            employerName: 'Tech Co Ltd',
+            monthlyIncome: 1200,
+            monthlyExpenses: 400,
+            gender: 'MALE',
+        },
+    });
+    const customer2 = await prisma.customer.upsert({
+        where: { phone: '+85511223344' },
+        update: {},
+        create: {
+            firstName: 'Sophea',
+            lastName: 'Kim',
+            phone: '+85511223344',
+            email: 'sophea.kim@example.com',
+            nationalId: 'KH88776655',
+            branchId: branch1.id,
+            kycStatus: 'PENDING',
+            employmentStatus: 'EMPLOYED',
+            monthlyIncome: 1500,
+            monthlyExpenses: 600,
+            gender: 'FEMALE',
+        },
+    });
+    const activeLoan = await prisma.loan.create({
+        data: {
+            customerId: customer1.id,
+            productId: product1.id,
+            principalAmount: 5000,
+            interestRate: 12,
+            durationMonths: 12,
+            status: 'ACTIVE',
+            loanOfficerId: officer.id,
+            disbursementMethod: 'BAKONG',
+            disbursedAt: new Date(new Date().setMonth(new Date().getMonth() - 2)),
+        },
+    });
+    let startDate = new Date(activeLoan.disbursedAt);
+    for (let i = 1; i <= 12; i++) {
+        startDate.setMonth(startDate.getMonth() + 1);
+        await prisma.repaymentSchedule.create({
+            data: {
+                loanId: activeLoan.id,
+                installmentNumber: i,
+                amountDue: 466.67,
+                principalComponent: 416.67,
+                interestComponent: 50.00,
+                dueDate: new Date(startDate),
+                status: i <= 2 ? 'PAID' : 'PENDING',
+            },
+        });
+    }
+    await prisma.loan.create({
+        data: {
+            customerId: customer2.id,
+            productId: product1.id,
+            principalAmount: 2500,
+            interestRate: 12,
+            durationMonths: 12,
+            status: 'SUBMITTED',
+            loanOfficerId: officer.id,
+            applicationChannel: 'MOBILE',
+        },
+    });
+    await prisma.company.upsert({
+        where: { id: 'default-company' },
+        update: {},
+        create: {
+            id: 'default-company',
+            name: 'KOSIGN',
+            industry: 'Financial Technology',
+            size: '50-100 Employees',
+            website: 'www.kosign.com.kh',
+            address: 'Phnom Penh, Cambodia',
+            phone: '+855 23 999 888',
+            email: 'info@kosign.com.kh',
+        },
+    });
+    console.log('Seeding completed.');
+}
+main()
+    .catch((e) => {
+    console.error(e);
+    process.exit(1);
+})
+    .finally(async () => {
+    await prisma.$disconnect();
+});
+//# sourceMappingURL=seed.js.map

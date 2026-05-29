@@ -1,0 +1,53 @@
+import { PrismaService } from '../../infrastructure/prisma/prisma.service';
+import { LedgerService } from '../ledger/ledger.service';
+export declare class DisbursementService {
+    private prisma;
+    private ledger;
+    private bakong;
+    constructor(prisma: PrismaService, ledger: LedgerService);
+    disburse(loanId: string, method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER'): Promise<{
+        success: boolean;
+        loan: {
+            id: string;
+            branchId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
+            status: string;
+            lid: string | null;
+            previousStatus: string | null;
+            principalAmount: number;
+            interestRate: number;
+            durationMonths: number;
+            currency: string;
+            applicationChannel: string | null;
+            disbursementDate: Date | null;
+            repaymentType: string | null;
+            firstInstallmentDate: Date | null;
+            numberOfInstallments: number | null;
+            penaltyRate: number | null;
+            adminFeeRate: number | null;
+            collectionFeeType: string | null;
+            collectionFeeValue: number | null;
+            gracePeriod: number | null;
+            refinanceFeeAmt: number | null;
+            dtiRatio: number | null;
+            cbcScore: number | null;
+            disbursementMethod: string | null;
+            disbursementRef: string | null;
+            rejectionReason: string | null;
+            disbursedAt: Date | null;
+            loanCycle: string | null;
+            recommenderType: string | null;
+            reasonOfCredit: string | null;
+            loanNote: string | null;
+            memoReasonOfCredit: string | null;
+            customerId: string;
+            productId: string;
+            loanOfficerId: string | null;
+        };
+        disbursementRef: string;
+        transactionReference: string;
+        method: "BAKONG" | "CASH" | "BANK_TRANSFER";
+    }>;
+    generateRepaymentKhqr(loanId: string, installmentNumber: number): Promise<import("./bakong.client").KhqrData>;
+}

@@ -1,0 +1,216 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LoansService = exports.CreateLoanDto = void 0;
+const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../../infrastructure/prisma/prisma.service");
+const ledger_service_1 = require("../ledger/ledger.service");
+const crypto_1 = require("crypto");
+class CreateLoanDto {
+    customerId;
+    productId;
+    principalAmount;
+    durationMonths;
+}
+exports.CreateLoanDto = CreateLoanDto;
+let LoansService = class LoansService {
+    prisma;
+    ledger;
+    constructor(prisma, ledger) {
+        this.prisma = prisma;
+        this.ledger = ledger;
+    }
+    async applyForLoan(createLoanDto) {
+        const { customerId, productId, principalAmount, durationMonths } = createLoanDto;
+        const product = await this.prisma.loanProduct.findUnique({
+            where: { id: productId },
+        });
+        if (!product)
+            throw new common_1.NotFoundException('Loan Product not found');
+        if (principalAmount < Number(product.minAmount) ||
+            principalAmount > Number(product.maxAmount)) {
+            throw new common_1.BadRequestException('Amount out of product bounds');
+        }
+        const loan = await this.prisma.loan.create({
+            data: {
+                customerId,
+                productId,
+                principalAmount,
+                interestRate: product.baseInterestRate,
+                durationMonths,
+                status: 'PENDING',
+            },
+        });
+        const schedules = this.generateRepaymentSchedule(loan.id, principalAmount, Number(product.baseInterestRate), durationMonths, product.interestType);
+        await this.prisma.repaymentSchedule.createMany({ data: schedules });
+        return { loan, schedules };
+    }
+    async disburseLoan(loanId) {
+        return this.prisma.$transaction(async (tx) => {
+            const loan = await tx.loan.findUnique({ where: { id: loanId } });
+            if (!loan)
+                throw new common_1.NotFoundException('Loan not found');
+            if (loan.status !== 'APPROVED')
+                throw new common_1.BadRequestException('Loan must be APPROVED before disbursement');
+            const updatedLoan = await tx.loan.update({
+                where: { id: loanId },
+                data: {
+                    status: 'DISBURSED',
+                    disbursedAt: new Date(),
+                },
+            });
+            const txReference = `DISB-${(0, crypto_1.randomUUID)()}`;
+            await this.ledger.recordTransaction([
+                {
+                    accountId: 'CASH-VAULT',
+                    accountType: 'CASH',
+                    credit: Number(loan.principalAmount),
+                    transactionReference: txReference,
+                    description: `Loan disbursement for ${loanId}`,
+                },
+                {
+                    accountId: loanId,
+                    accountType: 'LOAN',
+                    debit: Number(loan.principalAmount),
+                    transactionReference: txReference,
+                    description: `Principal disbursed`,
+                },
+            ]);
+            return {
+                success: true,
+                loan: updatedLoan,
+                transactionReference: txReference,
+            };
+        });
+    }
+    async approveLoan(loanId) {
+        return this.prisma.loan.update({
+            where: { id: loanId },
+            data: { status: 'APPROVED' },
+        });
+    }
+    generateRepaymentSchedule(loanId, principal, annualRate, months, type) {
+        const schedules = [];
+        const monthlyRate = annualRate / 100 / 12;
+        let balance = principal;
+        const startDate = new Date();
+        if (type === 'FLAT') {
+            const totalInterest = principal * (annualRate / 100) * (months / 12);
+            const monthlyInterest = totalInterest / months;
+            const monthlyPrincipal = principal / months;
+            const amountDue = monthlyPrincipal + monthlyInterest;
+            for (let i = 1; i <= months; i++) {
+                startDate.setMonth(startDate.getMonth() + 1);
+                schedules.push({
+                    loanId,
+                    installmentNumber: i,
+                    amountDue,
+                    principalComponent: monthlyPrincipal,
+                    interestComponent: monthlyInterest,
+                    dueDate: new Date(startDate),
+                    status: 'PENDING',
+                });
+            }
+        }
+        else if (type === 'REDUCING') {
+            const emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+                (Math.pow(1 + monthlyRate, months) - 1);
+            for (let i = 1; i <= months; i++) {
+                startDate.setMonth(startDate.getMonth() + 1);
+                const interestForMonth = balance * monthlyRate;
+                const principalForMonth = emi - interestForMonth;
+                balance -= principalForMonth;
+                schedules.push({
+                    loanId,
+                    installmentNumber: i,
+                    amountDue: emi,
+                    principalComponent: principalForMonth,
+                    interestComponent: interestForMonth,
+                    dueDate: new Date(startDate),
+                    status: 'PENDING',
+                });
+            }
+        }
+        else {
+            throw new common_1.BadRequestException('Invalid interest type');
+        }
+        return schedules;
+    }
+    async findCustomerByEmail(email) {
+        return this.prisma.customer.findFirst({
+            where: { email },
+        });
+    }
+    async getMyActiveLoan(customerId) {
+        const loan = await this.prisma.loan.findFirst({
+            where: {
+                customerId,
+                status: 'ACTIVE',
+            },
+            include: {
+                repaymentSchedules: {
+                    orderBy: { dueDate: 'asc' },
+                    where: { status: 'PENDING' },
+                    take: 1,
+                },
+            },
+        });
+        if (!loan) {
+            throw new common_1.NotFoundException('No active loan found');
+        }
+        return loan;
+    }
+    async getAllProducts() {
+        return this.prisma.loanProduct.findMany({
+            orderBy: { name: 'asc' },
+        });
+    }
+    async createProduct(data) {
+        return this.prisma.loanProduct.create({
+            data: {
+                name: data.name,
+                description: data.description,
+                minAmount: Number(data.minAmount),
+                maxAmount: Number(data.maxAmount),
+                baseInterestRate: Number(data.baseInterestRate),
+                interestType: data.interestType,
+            },
+        });
+    }
+    async updateProduct(id, data) {
+        return this.prisma.loanProduct.update({
+            where: { id },
+            data: {
+                name: data.name,
+                description: data.description,
+                minAmount: data.minAmount ? Number(data.minAmount) : undefined,
+                maxAmount: data.maxAmount ? Number(data.maxAmount) : undefined,
+                baseInterestRate: data.baseInterestRate
+                    ? Number(data.baseInterestRate)
+                    : undefined,
+                interestType: data.interestType,
+            },
+        });
+    }
+    async getProduct(id) {
+        return this.prisma.loanProduct.findUnique({ where: { id } });
+    }
+    async deleteProduct(id) {
+        return this.prisma.loanProduct.delete({ where: { id } });
+    }
+};
+exports.LoansService = LoansService;
+exports.LoansService = LoansService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        ledger_service_1.LedgerService])
+], LoansService);
+//# sourceMappingURL=loans.service.js.map

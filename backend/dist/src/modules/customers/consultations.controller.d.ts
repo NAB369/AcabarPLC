@@ -1,0 +1,136 @@
+import { ConsultationsService } from './consultations.service';
+export declare class ConsultationsController {
+    private readonly consultationsService;
+    constructor(consultationsService: ConsultationsService);
+    findAll(): Promise<({
+        customer: {
+            firstName: string;
+            lastName: string;
+            phone: string;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: string;
+        customerId: string;
+        type: string;
+        scheduledAt: Date;
+        notes: string | null;
+    })[]>;
+    create(body: {
+        customerId: string;
+        type: string;
+        scheduledAt: string;
+        notes?: string;
+    }): Promise<{
+        customer: {
+            id: string;
+            email: string | null;
+            firstName: string;
+            lastName: string;
+            branchId: string;
+            createdAt: Date;
+            updatedAt: Date;
+            address: string | null;
+            currency: string;
+            cid: string | null;
+            phone: string;
+            nationalId: string | null;
+            passport: string | null;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
+            familyBook: string | null;
+            dob: Date | null;
+            kycStatus: string;
+            employmentStatus: string | null;
+            occupation: string | null;
+            employerName: string | null;
+            businessInfo: string | null;
+            monthlyIncome: number | null;
+            monthlyIncomeKhr: number | null;
+            monthlyExpenses: number | null;
+            businessType: string | null;
+            incomeBracket: string | null;
+            dependentCount: string | null;
+            incomeMaker: string | null;
+            gender: string | null;
+            maritalStatus: string | null;
+            coBorrowerName: string | null;
+            coBorrowerKhmerName: string | null;
+            coBorrowerPhone: string | null;
+            coBorrowerNationalId: string | null;
+            guarantorName: string | null;
+            guarantorKhmerName: string | null;
+            guarantorPhone: string | null;
+            guarantorNationalId: string | null;
+            guarantorRelationship: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: string;
+        customerId: string;
+        type: string;
+        scheduledAt: Date;
+        notes: string | null;
+    }>;
+    updateStatus(id: string, body: {
+        status: 'COMPLETED' | 'CANCELLED';
+    }): Promise<{
+        customer: {
+            id: string;
+            email: string | null;
+            firstName: string;
+            lastName: string;
+            branchId: string;
+            createdAt: Date;
+            updatedAt: Date;
+            address: string | null;
+            currency: string;
+            cid: string | null;
+            phone: string;
+            nationalId: string | null;
+            passport: string | null;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
+            familyBook: string | null;
+            dob: Date | null;
+            kycStatus: string;
+            employmentStatus: string | null;
+            occupation: string | null;
+            employerName: string | null;
+            businessInfo: string | null;
+            monthlyIncome: number | null;
+            monthlyIncomeKhr: number | null;
+            monthlyExpenses: number | null;
+            businessType: string | null;
+            incomeBracket: string | null;
+            dependentCount: string | null;
+            incomeMaker: string | null;
+            gender: string | null;
+            maritalStatus: string | null;
+            coBorrowerName: string | null;
+            coBorrowerKhmerName: string | null;
+            coBorrowerPhone: string | null;
+            coBorrowerNationalId: string | null;
+            guarantorName: string | null;
+            guarantorKhmerName: string | null;
+            guarantorPhone: string | null;
+            guarantorNationalId: string | null;
+            guarantorRelationship: string | null;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        status: string;
+        customerId: string;
+        type: string;
+        scheduledAt: Date;
+        notes: string | null;
+    }>;
+}

@@ -1,0 +1,80 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UpdateCustomerDto = exports.UpdateKycStatusDto = exports.CreateCustomerDto = void 0;
+class CreateCustomerDto {
+    firstName;
+    lastName;
+    cid;
+    khmerFirstName;
+    khmerLastName;
+    phone;
+    email;
+    nationalId;
+    passport;
+    familyBook;
+    dob;
+    address;
+    gender;
+    maritalStatus;
+    branchId;
+    occupation;
+    employerName;
+    monthlyIncome;
+    monthlyIncomeKhr;
+    businessInfo;
+    businessType;
+    incomeBracket;
+    dependentCount;
+    incomeMaker;
+    coBorrowerName;
+    coBorrowerKhmerName;
+    coBorrowerPhone;
+    coBorrowerNationalId;
+    guarantorName;
+    guarantorKhmerName;
+    guarantorPhone;
+    guarantorNationalId;
+    guarantorRelationship;
+}
+exports.CreateCustomerDto = CreateCustomerDto;
+class UpdateKycStatusDto {
+    status;
+}
+exports.UpdateKycStatusDto = UpdateKycStatusDto;
+class UpdateCustomerDto {
+    firstName;
+    lastName;
+    cid;
+    khmerFirstName;
+    khmerLastName;
+    phone;
+    email;
+    nationalId;
+    passport;
+    familyBook;
+    dob;
+    address;
+    gender;
+    maritalStatus;
+    branchId;
+    occupation;
+    employerName;
+    monthlyIncome;
+    monthlyIncomeKhr;
+    businessInfo;
+    businessType;
+    incomeBracket;
+    dependentCount;
+    incomeMaker;
+    coBorrowerName;
+    coBorrowerKhmerName;
+    coBorrowerPhone;
+    coBorrowerNationalId;
+    guarantorName;
+    guarantorKhmerName;
+    guarantorPhone;
+    guarantorNationalId;
+    guarantorRelationship;
+}
+exports.UpdateCustomerDto = UpdateCustomerDto;
+//# sourceMappingURL=create-customer.dto.js.map

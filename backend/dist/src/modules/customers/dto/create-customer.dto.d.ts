@@ -1,0 +1,73 @@
+export declare class CreateCustomerDto {
+    firstName: string;
+    lastName: string;
+    cid?: string;
+    khmerFirstName?: string;
+    khmerLastName?: string;
+    phone: string;
+    email?: string;
+    nationalId?: string;
+    passport?: string;
+    familyBook?: string;
+    dob?: Date;
+    address?: string;
+    gender?: string;
+    maritalStatus?: string;
+    branchId: string;
+    occupation?: string;
+    employerName?: string;
+    monthlyIncome?: number;
+    monthlyIncomeKhr?: number;
+    businessInfo?: string;
+    businessType?: string;
+    incomeBracket?: string;
+    dependentCount?: string;
+    incomeMaker?: string;
+    coBorrowerName?: string;
+    coBorrowerKhmerName?: string;
+    coBorrowerPhone?: string;
+    coBorrowerNationalId?: string;
+    guarantorName?: string;
+    guarantorKhmerName?: string;
+    guarantorPhone?: string;
+    guarantorNationalId?: string;
+    guarantorRelationship?: string;
+}
+export declare class UpdateKycStatusDto {
+    status: 'PENDING' | 'APPROVED' | 'REJECTED';
+}
+export declare class UpdateCustomerDto {
+    firstName?: string;
+    lastName?: string;
+    cid?: string;
+    khmerFirstName?: string;
+    khmerLastName?: string;
+    phone?: string;
+    email?: string;
+    nationalId?: string;
+    passport?: string;
+    familyBook?: string;
+    dob?: Date;
+    address?: string;
+    gender?: string;
+    maritalStatus?: string;
+    branchId?: string;
+    occupation?: string;
+    employerName?: string;
+    monthlyIncome?: number;
+    monthlyIncomeKhr?: number;
+    businessInfo?: string;
+    businessType?: string;
+    incomeBracket?: string;
+    dependentCount?: string;
+    incomeMaker?: string;
+    coBorrowerName?: string;
+    coBorrowerKhmerName?: string;
+    coBorrowerPhone?: string;
+    coBorrowerNationalId?: string;
+    guarantorName?: string;
+    guarantorKhmerName?: string;
+    guarantorPhone?: string;
+    guarantorNationalId?: string;
+    guarantorRelationship?: string;
+}
