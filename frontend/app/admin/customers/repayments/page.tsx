@@ -80,7 +80,7 @@ export default function CustomerRepaymentsPage() {
       return <span style={{ backgroundColor: '#fef2f2', color: '#dc2626', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #fecdd3' }}>Overdue</span>;
     }
 
-    return <span style={{ backgroundColor: '#eff6ff', color: '#2563eb', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #bfdbfe' }}>Upcoming</span>;
+    return <span style={{ backgroundColor: 'var(--primary-light)', color: 'var(--primary)', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #bfdbfe' }}>Upcoming</span>;
   };
 
   const filteredLoans = loans.filter((loan) => {

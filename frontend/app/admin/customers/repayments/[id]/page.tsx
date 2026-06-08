@@ -345,7 +345,7 @@ export default function LoanRepaymentDetailPage() {
                           <CheckCircle2 size={14} /> Paid
                         </span>
                       ) : s.status === 'OVERPAID' ? (
-                        <span style={{ color: '#2563eb', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: '700' }}>
+                        <span style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', fontWeight: '700' }}>
                           <CheckCircle2 size={14} /> Overpaid
                         </span>
                       ) : s.status === 'OVERDUE' ? (
@@ -479,21 +479,21 @@ export default function LoanRepaymentDetailPage() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
                 <button 
                   onClick={() => setPaymentMethod('CASH')}
-                  style={{ padding: '0.75rem 0.5rem', borderRadius: '12px', border: paymentMethod === 'CASH' ? '2px solid var(--primary)' : '1px solid var(--border-color)', backgroundColor: paymentMethod === 'CASH' ? '#eff6ff' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
+                  style={{ padding: '0.75rem 0.5rem', borderRadius: '12px', border: paymentMethod === 'CASH' ? '2px solid var(--primary)' : '1px solid var(--border-color)', backgroundColor: paymentMethod === 'CASH' ? 'var(--primary-light)' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
                 >
                   <DollarSign size={18} color={paymentMethod === 'CASH' ? 'var(--primary)' : 'var(--text-muted)'} /> 
                   <span style={{ fontWeight: paymentMethod === 'CASH' ? '700' : '600', fontSize: '0.875rem', color: paymentMethod === 'CASH' ? 'var(--primary)' : 'var(--text-muted)' }}>Cash</span>
                 </button>
                 <button 
                   onClick={() => setPaymentMethod('KHQR')}
-                  style={{ padding: '0.75rem 0.5rem', borderRadius: '12px', border: paymentMethod === 'KHQR' ? '2px solid var(--primary)' : '1px solid var(--border-color)', backgroundColor: paymentMethod === 'KHQR' ? '#eff6ff' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
+                  style={{ padding: '0.75rem 0.5rem', borderRadius: '12px', border: paymentMethod === 'KHQR' ? '2px solid var(--primary)' : '1px solid var(--border-color)', backgroundColor: paymentMethod === 'KHQR' ? 'var(--primary-light)' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
                 >
                   <CreditCard size={18} color={paymentMethod === 'KHQR' ? 'var(--primary)' : 'var(--text-muted)'} /> 
                   <span style={{ fontWeight: paymentMethod === 'KHQR' ? '700' : '600', fontSize: '0.875rem', color: paymentMethod === 'KHQR' ? 'var(--primary)' : 'var(--text-muted)' }}>KHQR</span>
                 </button>
                 <button 
                   onClick={() => setPaymentMethod('TRANSFER')}
-                  style={{ padding: '0.75rem 0.5rem', borderRadius: '12px', border: paymentMethod === 'TRANSFER' ? '2px solid var(--primary)' : '1px solid var(--border-color)', backgroundColor: paymentMethod === 'TRANSFER' ? '#eff6ff' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
+                  style={{ padding: '0.75rem 0.5rem', borderRadius: '12px', border: paymentMethod === 'TRANSFER' ? '2px solid var(--primary)' : '1px solid var(--border-color)', backgroundColor: paymentMethod === 'TRANSFER' ? 'var(--primary-light)' : 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
                 >
                   <FileText size={18} color={paymentMethod === 'TRANSFER' ? 'var(--primary)' : 'var(--text-muted)'} /> 
                   <span style={{ fontWeight: paymentMethod === 'TRANSFER' ? '700' : '600', fontSize: '0.875rem', color: paymentMethod === 'TRANSFER' ? 'var(--primary)' : 'var(--text-muted)' }}>Transfer</span>
@@ -541,7 +541,7 @@ export default function LoanRepaymentDetailPage() {
                     </div>
                   )}
                   {paymentProof && !paymentProof.type.startsWith('image/') && (
-                    <div style={{ marginTop: '0.75rem', padding: '0.5rem', borderRadius: '8px', backgroundColor: '#eff6ff', border: '1px solid var(--primary)', fontSize: '0.875rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ marginTop: '0.75rem', padding: '0.5rem', borderRadius: '8px', backgroundColor: 'var(--primary-light)', border: '1px solid var(--primary)', fontSize: '0.875rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <FileText size={16} />
                       {paymentProof.name}
                     </div>

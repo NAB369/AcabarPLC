@@ -101,7 +101,7 @@ export default function BankStatementPage() {
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', animation: 'fadeIn 0.5s ease' }}>
+    <div style={{ animation: 'fadeIn 0.5s ease', maxWidth: '1200px' }}>
       
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>

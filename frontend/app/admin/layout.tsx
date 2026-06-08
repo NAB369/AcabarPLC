@@ -16,6 +16,7 @@ import { api } from '@/services/api';
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
@@ -78,8 +79,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     gap: '0.75rem',
     padding: '0.625rem 0.875rem',
     borderRadius: 'var(--radius-md)',
-    backgroundColor: isActive ? 'var(--secondary)' : 'transparent',
-    color: isActive ? 'var(--foreground)' : 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: isActive ? 'var(--primary-light)' : 'transparent',
+    color: isActive ? 'var(--primary)' : '#475569',
     textDecoration: 'none',
     fontSize: '0.875rem',
     fontWeight: isActive ? '600' : '500',
@@ -91,38 +92,46 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
       {/* Sidebar */}
       <aside style={{ width: '280px', backgroundColor: 'var(--sidebar-bg)', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', zIndex: 10 }}>
-        <div style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+        {/* Logo block with Blue Gradient */}
+        <div style={{ 
+          height: '72px',
+          padding: '0 1.5rem', 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '0.75rem', 
+          background: 'linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%)',
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+          boxSizing: 'border-box'
+        }}>
           <div style={{
-            width: '48px',
-            height: '48px',
+            width: '38px',
+            height: '38px',
             borderRadius: '50%',
-            backgroundColor: '#f5c200',
+            backgroundColor: '#ffffff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
             overflow: 'hidden',
-            boxShadow: '0 0 0 2px #1a3a6b, 0 0 12px rgba(245, 194, 0, 0.4)',
+            boxShadow: '0 0 8px rgba(255, 255, 255, 0.2)',
           }}>
             <img
               src="/acabar-logo.png"
               alt="Acabar Plc Logo"
-              style={{ width: '48px', height: '48px', objectFit: 'cover' }}
+              style={{ width: '38px', height: '38px', objectFit: 'cover' }}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontWeight: '700', fontSize: '1.25rem', letterSpacing: '-0.03em', color: 'var(--secondary)', lineHeight: '1.2' }}>Acabar Plc</span>
-            <span style={{ fontWeight: '500', fontSize: '0.7rem', color: 'var(--secondary)', marginTop: '2px' }}>ប្រព័ន្ធគ្រប់គ្រងប្រាក់កម្ចី</span>
+            <span style={{ fontWeight: '700', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#ffffff', lineHeight: '1.2' }}>Acabar Plc</span>
+            <span style={{ fontWeight: '500', fontSize: '0.65rem', color: 'rgba(255,255,255,0.7)', marginTop: '1px' }}>ប្រព័ន្ធគ្រប់គ្រងប្រាក់កម្ចី</span>
           </div>
         </div>
 
-
-
-        <nav style={{ flex: 1, overflowY: 'auto', padding: '0 1rem' }}>
+        <nav style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
           {sidebarConfig['Dashboard'] !== false && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'rgba(255, 255, 255, 0.4)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Overview</div>
-              <Link href="/admin" style={navItemStyle(pathname === '/admin')}>
+              <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#94a3b8', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Overview</div>
+              <Link href="/admin" className="sidebar-link" style={navItemStyle(pathname === '/admin')}>
                 <FileText size={18} />
                 Dashboard
               </Link>
@@ -134,9 +143,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <>
                 <div 
                   onClick={() => setIsCustomerMenuOpen(!isCustomerMenuOpen)}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/customers') ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.6)', fontSize: '0.875rem', fontWeight: '500', cursor: 'pointer', transition: 'color var(--transition-fast)' }}
-                  onMouseOver={(e) => e.currentTarget.style.color = 'var(--secondary)'}
-                  onMouseOut={(e) => e.currentTarget.style.color = pathname?.startsWith('/admin/customers') ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.6)'}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/customers') ? 'var(--primary)' : '#475569', fontSize: '0.875rem', fontWeight: '500', cursor: 'pointer', transition: 'color var(--transition-fast)' }}
+                  onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'}
+                  onMouseOut={(e) => e.currentTarget.style.color = pathname?.startsWith('/admin/customers') ? 'var(--primary)' : '#475569'}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <Users size={18} />
@@ -147,60 +156,57 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                 {isCustomerMenuOpen && (
                   <div style={{ paddingLeft: '2.625rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem', animation: 'fadeIn 0.2s ease-out' }}>
-                    <Link href="/admin/customers/accounts" style={{ padding: '0.375rem 0', color: pathname === '/admin/customers/accounts' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--secondary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/accounts' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)'}>All Customers</Link>
-                    <Link href="/admin/customers/consultations" style={{ padding: '0.375rem 0', color: pathname === '/admin/customers/consultations' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--secondary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/consultations' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)'}>Consultations</Link>
-                    <Link href="/admin/customers/repayments" style={{ padding: '0.375rem 0', color: pathname === '/admin/customers/repayments' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--secondary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/repayments' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)'}>Repayment</Link>
-                    <Link href="/admin/customers/feedback" style={{ padding: '0.375rem 0', color: pathname === '/admin/customers/feedback' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--secondary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/feedback' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)'}>Feedback & Rate</Link>
-                    <Link href="/admin/customers/payment-notifications" style={{ padding: '0.375rem 0', color: pathname === '/admin/customers/payment-notifications' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--secondary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/payment-notifications' ? 'var(--secondary)' : 'rgba(255, 255, 255, 0.4)'}>Payment Webhooks</Link>
+                    <Link href="/admin/customers/accounts" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/accounts' ? 'var(--primary)' : '#64748b', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/accounts' ? 'var(--primary)' : '#64748b'}>All Customers</Link>
+                    <Link href="/admin/customers/repayments" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/repayments' ? 'var(--primary)' : '#64748b', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/repayments' ? 'var(--primary)' : '#64748b'}>Repayment</Link>
                   </div>
                 )}
               </>
             )}
 
             {sidebarConfig['LOS Pipeline'] !== false && (
-              <Link href="/admin/los" style={{ ...navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/')), marginTop: sidebarConfig['Customer'] !== false ? '0.5rem' : '0' }}>
+              <Link href="/admin/los" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/')), marginTop: sidebarConfig['Customer'] !== false ? '0.5rem' : '0' }}>
                 <GitPullRequest size={18} />
                 LOS Pipeline
               </Link>
             )}
             
             {sidebarConfig['Underwriting'] !== false && (
-              <Link href="/admin/underwriting" style={navItemStyle(pathname === '/admin/underwriting')}>
+              <Link href="/admin/underwriting" className="sidebar-link" style={navItemStyle(pathname === '/admin/underwriting')}>
                 <Shield size={18} />
                 Underwriting
               </Link>
             )}
             
             {sidebarConfig['New Application'] !== false && (
-              <Link href="/admin/loans/new" style={navItemStyle(pathname === '/admin/loans/new')}>
+              <Link href="/admin/loans/new" className="sidebar-link" style={navItemStyle(pathname === '/admin/loans/new')}>
                 <CreditCard size={18} />
                 New Application
               </Link>
             )}
             
             {sidebarConfig['Loan Product'] !== false && (
-              <Link href="/admin/products" style={navItemStyle(pathname === '/admin/products')}>
+              <Link href="/admin/products" className="sidebar-link" style={navItemStyle(pathname === '/admin/products')}>
                 <Box size={18} />
                 Loan Product
               </Link>
             )}
             
             {sidebarConfig['CBC'] !== false && (
-              <Link href="/admin/cbc" style={navItemStyle(pathname === '/admin/cbc')}>
+              <Link href="/admin/cbc" className="sidebar-link" style={navItemStyle(pathname === '/admin/cbc')}>
                 <Search size={18} />
                 CBC Check
               </Link>
             )}
 
             {sidebarConfig['Bank Statement'] !== false && (
-              <Link href="/admin/bank-statement" style={navItemStyle(pathname === '/admin/bank-statement')}>
+              <Link href="/admin/bank-statement" className="sidebar-link" style={navItemStyle(pathname === '/admin/bank-statement')}>
                 <FileSpreadsheet size={18} />
                 Bank Statement
               </Link>
             )}
 
             {sidebarConfig['Report'] !== false && (
-              <Link href="/admin/report" style={navItemStyle(pathname === '/admin/report')}>
+              <Link href="/admin/report" className="sidebar-link" style={navItemStyle(pathname === '/admin/report')}>
                 <BarChart2 size={18} />
                 Report
               </Link>
@@ -210,28 +216,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         </nav>
 
-        <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)', fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.4)', fontWeight: '500' }}>
-          Acabar Plc Admin <span style={{ float: 'right', color: 'rgba(255, 255, 255, 0.6)' }}>v1.0.0</span>
+        <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid var(--border-color)', fontSize: '0.75rem', color: '#94a3b8', fontWeight: '500' }}>
+          Acabar Plc Admin <span style={{ float: 'right', color: '#64748b' }}>v1.0.0</span>
         </div>
       </aside>
 
       {/* Main Content */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         {/* Header - Glassmorphism */}
-        <header className="glass" style={{ position: 'sticky', top: 0, height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 2.5rem', zIndex: 5 }}>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: '600', margin: 0, letterSpacing: '-0.02em' }}>Dashboard</h1>
+        <header className="glass" style={{ position: 'sticky', top: 0, height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 2.5rem', zIndex: 5 }}>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            {/* Global Search */}
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <Search size={18} color="var(--text-muted)" style={{ position: 'absolute', left: '0.75rem' }} />
-              <input 
-                type="text" 
-                placeholder="Search anything..." 
-                className="input-field" 
-                style={{ paddingLeft: '2.5rem', width: '250px', marginBottom: 0, borderRadius: 'var(--radius-full)', backgroundColor: '#f1f5f9', border: 'none' }} 
-              />
-            </div>
 
             <button style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', transition: 'background-color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
               <Bell size={20} color="var(--text-muted-dark)" />

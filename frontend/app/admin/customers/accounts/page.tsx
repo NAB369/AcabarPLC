@@ -157,7 +157,7 @@ export default function CustomerAccountsPage() {
             <button
               onClick={() => setShowFilters(prev => !prev)}
               className="btn btn-secondary"
-              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: showFilters ? '#eff6ff' : undefined, borderColor: showFilters ? 'var(--primary)' : undefined, color: showFilters ? 'var(--primary)' : undefined }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: showFilters ? 'var(--primary-light)' : undefined, borderColor: showFilters ? 'var(--primary)' : undefined, color: showFilters ? 'var(--primary)' : undefined }}
             >
               <Filter size={16} /> Filters
               {activeFilterCount > 0 && (
@@ -184,7 +184,7 @@ export default function CustomerAccountsPage() {
                     style={{
                       padding: '0.375rem 0.875rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '600', cursor: 'pointer',
                       border: kycFilter === opt.value ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                      backgroundColor: kycFilter === opt.value ? '#eff6ff' : 'white',
+                      backgroundColor: kycFilter === opt.value ? 'var(--primary-light)' : 'white',
                       color: kycFilter === opt.value ? 'var(--primary)' : 'var(--text-muted-dark)',
                       transition: 'all 0.15s ease'
                     }}
@@ -310,7 +310,7 @@ export default function CustomerAccountsPage() {
                         <button
                           title="View Profile"
                           style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = '#eff6ff'; }}
+                          onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'var(--primary-light)'; }}
                           onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
                         >
                           <Eye size={15} color="var(--primary)" />
@@ -345,7 +345,7 @@ export default function CustomerAccountsPage() {
                         <button
                           title="View Loan Applications"
                           style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = '#eff6ff'; }}
+                          onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'var(--primary-light)'; }}
                           onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
                         >
                           <ArrowUpRight size={15} color="var(--text-muted-dark)" />

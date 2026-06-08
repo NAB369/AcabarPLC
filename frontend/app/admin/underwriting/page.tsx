@@ -88,7 +88,7 @@ export default function UnderwritingDashboardPage() {
     { key: 'pending',       label: 'Pending Reviews',      value: String(pendingCount),                              icon: <Clock size={18} />,       color: '#d97706', bg: '#fffbeb' },
     { key: 'approved',      label: 'Approved (This Week)', value: String(approvedCount),                             icon: <CheckCircle2 size={18} />, color: '#059669', bg: '#ecfdf5' },
     { key: 'auto_rejected', label: 'Auto-Rejected',        value: String(autoRejectedCount),                         icon: <XCircle size={18} />,      color: '#dc2626', bg: '#fef2f2' },
-    { key: 'cbc',           label: 'Avg. CBC Score',       value: avgCbcScore !== null ? String(avgCbcScore) : '—',  icon: <Shield size={18} />,       color: '#2563eb', bg: '#eff6ff' },
+    { key: 'cbc',           label: 'Avg. CBC Score',       value: avgCbcScore !== null ? String(avgCbcScore) : '—',  icon: <Shield size={18} />,       color: 'var(--primary)', bg: 'var(--primary-light)' },
   ];
 
   // --- Filtered data based on active card ---
@@ -124,7 +124,7 @@ export default function UnderwritingDashboardPage() {
         <p style={{ margin: '0.25rem 0 0', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
           Credit analysis and automated decisioning overview
           {activeFilter && (
-            <span style={{ marginLeft: '0.75rem', padding: '0.125rem 0.625rem', backgroundColor: '#eff6ff', color: 'var(--primary)', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '600' }}>
+            <span style={{ marginLeft: '0.75rem', padding: '0.125rem 0.625rem', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '600' }}>
               Filtered by: {cards.find(c => c.key === activeFilter)?.label}
               <button
                 onClick={() => setActiveFilter(null)}
@@ -255,8 +255,8 @@ export default function UnderwritingDashboardPage() {
                     <td>
                       <span style={{
                         fontSize: '0.6875rem', fontWeight: '600', padding: '0.25rem 0.625rem', borderRadius: 'var(--radius-full)',
-                        backgroundColor: review.tier === 'TIER3_REVIEW' ? '#fdf2f8' : review.tier === 'TIER2_REVIEW' ? '#f5f3ff' : '#eff6ff',
-                        color: review.tier === 'TIER3_REVIEW' ? '#be185d' : review.tier === 'TIER2_REVIEW' ? '#7c3aed' : '#2563eb',
+                        backgroundColor: review.tier === 'TIER3_REVIEW' ? '#fdf2f8' : review.tier === 'TIER2_REVIEW' ? '#f5f3ff' : 'var(--primary-light)',
+                        color: review.tier === 'TIER3_REVIEW' ? '#be185d' : review.tier === 'TIER2_REVIEW' ? '#7c3aed' : 'var(--primary)',
                       }}>
                         {review.tier.replace('_', ' ')}
                       </span>

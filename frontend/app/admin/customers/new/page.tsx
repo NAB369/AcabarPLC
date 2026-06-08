@@ -208,12 +208,12 @@ export default function NewCustomerPage() {
 
 
   return (
-    <div style={{ maxWidth: '1100px', margin: '0 auto', animation: 'slideUp 0.6s ease-out' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '3rem' }}>
+    <div style={{ animation: 'slideUp 0.6s ease-out', maxWidth: '1100px', width: '100%' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '2rem' }}>
         <Link href="/admin/customers/accounts" style={{ 
-          width: '48px', 
-          height: '48px', 
-          borderRadius: '12px', 
+          width: '40px', 
+          height: '40px', 
+          borderRadius: '10px', 
           backgroundColor: 'white', 
           display: 'flex', 
           alignItems: 'center', 
@@ -223,34 +223,33 @@ export default function NewCustomerPage() {
           textDecoration: 'none',
           transition: 'all 0.2s'
         }} onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}>
-          <ArrowLeft size={20} />
+          <ArrowLeft size={18} />
         </Link>
         <div>
-          <h1 style={{ fontSize: '2.25rem', fontWeight: '800', letterSpacing: '-0.03em', margin: 0 }}>Register New <span className="text-gradient">Customer</span></h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>Onboard a new institutional or private customer account</p>
+          <h1 style={{ fontSize: '1.75rem', fontWeight: '800', letterSpacing: '-0.02em', margin: 0 }}>Register New <span className="text-gradient">Customer</span></h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', margin: 0, marginTop: '0.25rem' }}>Onboard a new institutional or private customer account</p>
         </div>
       </div>
 
       {error && (
-        <div style={{ padding: '1rem', backgroundColor: 'var(--error-bg)', color: 'var(--error-text)', borderRadius: 'var(--radius-md)', marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', border: '1px solid var(--error-border)' }}>
-          <AlertCircle size={18} />
+        <div style={{ padding: '0.75rem 1rem', backgroundColor: 'var(--error-bg)', color: 'var(--error-text)', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', border: '1px solid var(--error-border)', fontSize: '0.875rem' }}>
+          <AlertCircle size={16} />
           {error}
         </div>
       )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         
         {/* SECTION 1: Identity & Institutional */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem', alignItems: 'start' }}>
-          
-          <div className="card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-              <User size={20} color="var(--primary)" />
-              <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Identity Information</h3>
-            </div>
+        <div className="card" style={{ padding: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
+            <User size={20} color="var(--primary)" />
+            <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Identity & Branch Alignment</h3>
+          </div>
 
-            <div className="input-group">
-              <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.375rem' }}>
                 <span>CID No</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <div 
@@ -271,125 +270,117 @@ export default function NewCustomerPage() {
                 </div>
               </label>
               <div style={{ position: 'relative' }}>
-                <input name="cid" type="text" className="input-field" placeholder="CID Number" value={formData.cid} onChange={handleChange} disabled={autoGenerateCid} />
+                <input name="cid" type="text" className="input-field" placeholder="CID Number" value={formData.cid} onChange={handleChange} disabled={autoGenerateCid} style={{ height: '42px' }} />
                 {generatingCid && <div className="animate-spin" style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', border: '2px solid var(--border-color)', borderTopColor: 'var(--primary)', borderRadius: '50%' }}></div>}
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              <div className="input-group">
-                <label className="input-label">គោត្តនាម</label>
-                <input name="khmerLastName" type="text" className="input-field" placeholder="គោត្តនាម" value={formData.khmerLastName} onChange={handleChange} />
-              </div>
-              <div className="input-group">
-                <label className="input-label">នាម</label>
-                <input name="khmerFirstName" type="text" className="input-field" placeholder="នាម" value={formData.khmerFirstName} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              <div className="input-group">
-                <label className="input-label">First Name <span style={{ color: '#ef4444' }}>*</span></label>
-                <input required name="firstName" type="text" className="input-field" placeholder="e.g. Chamnab" value={formData.firstName} onChange={handleChange} />
-              </div>
-              <div className="input-group">
-                <label className="input-label">Last Name <span style={{ color: '#ef4444' }}>*</span></label>
-                <input required name="lastName" type="text" className="input-field" placeholder="e.g. KOL" value={formData.lastName} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              <div className="input-group">
-                <label className="input-label">National ID</label>
-                <input name="nationalId" type="text" className="input-field" placeholder="ID Number" value={formData.nationalId} onChange={handleChange} />
-              </div>
-              <div className="input-group">
-                <label className="input-label">Passport</label>
-                <input name="passport" type="text" className="input-field" placeholder="Passport Number" value={formData.passport} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-              <div className="input-group">
-                <label className="input-label">Family Book Reference</label>
-                <input name="familyBook" type="text" className="input-field" placeholder="Ref #" value={formData.familyBook} onChange={handleChange} />
-              </div>
-              <div className="input-group">
-                <label className="input-label">Marital Status</label>
-                <select name="maritalStatus" className="input-field" value={formData.maritalStatus} onChange={handleChange}>
-                  <option value="">Select Status...</option>
-                  <option value="Single">Single</option>
-                  <option value="Married">Married</option>
-                  <option value="Divorced">Divorced</option>
-                  <option value="Widowed">Widowed</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: 0 }}>
-              <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label">Gender</label>
-                <select name="gender" className="input-field" value={formData.gender} onChange={handleChange}>
-                  <option value="">Select Gender...</option>
-                  <option value="MALE">Male</option>
-                  <option value="FEMALE">Female</option>
-                  <option value="OTHER">Other</option>
-                </select>
-              </div>
-              <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label">Date of Birth <span style={{ color: '#ef4444' }}>*</span></label>
-                <input required name="dob" type="date" className="input-field" value={formData.dob} onChange={handleChange} />
-              </div>
-            </div>
-          </div>
-
-          <div className="card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-              <Building size={20} color="var(--primary)" />
-              <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Institutional Alignment</h3>
-            </div>
-
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Assigned Branch <span style={{ color: '#ef4444' }}>*</span></label>
-              <select required name="branchId" className="input-field" value={formData.branchId} onChange={handleChange}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Assigned Branch <span style={{ color: '#ef4444' }}>*</span></label>
+              <select required name="branchId" className="input-field" value={formData.branchId} onChange={handleChange} style={{ height: '42px' }}>
                 {branches.map(branch => (
                   <option key={branch.id} value={branch.id}>{branch.name} ({branch.code})</option>
                 ))}
               </select>
             </div>
           </div>
-          
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>គោត្តនាម</label>
+              <input name="khmerLastName" type="text" className="input-field" placeholder="គោត្តនាម" value={formData.khmerLastName} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>នាម</label>
+              <input name="khmerFirstName" type="text" className="input-field" placeholder="នាម" value={formData.khmerFirstName} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>First Name <span style={{ color: '#ef4444' }}>*</span></label>
+              <input required name="firstName" type="text" className="input-field" placeholder="e.g. Chamnab" value={formData.firstName} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Last Name <span style={{ color: '#ef4444' }}>*</span></label>
+              <input required name="lastName" type="text" className="input-field" placeholder="e.g. KOL" value={formData.lastName} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>National ID</label>
+              <input name="nationalId" type="text" className="input-field" placeholder="ID Number" value={formData.nationalId} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Passport</label>
+              <input name="passport" type="text" className="input-field" placeholder="Passport Number" value={formData.passport} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Family Book Reference</label>
+              <input name="familyBook" type="text" className="input-field" placeholder="Ref #" value={formData.familyBook} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Marital Status</label>
+              <select name="maritalStatus" className="input-field" value={formData.maritalStatus} onChange={handleChange} style={{ height: '42px' }}>
+                <option value="">Select Status...</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: 0 }}>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Gender</label>
+              <select name="gender" className="input-field" value={formData.gender} onChange={handleChange} style={{ height: '42px' }}>
+                <option value="">Select Gender...</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Date of Birth <span style={{ color: '#ef4444' }}>*</span></label>
+              <input required name="dob" type="date" className="input-field" value={formData.dob} onChange={handleChange} style={{ height: '42px' }} />
+            </div>
+          </div>
         </div>
 
         {/* SECTION 2: Contact & Residence */}
-        <div className="card" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        <div className="card" style={{ padding: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
             <Phone size={20} color="var(--primary)" />
             <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Contact & Residence</h3>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Primary Phone <span style={{ color: '#ef4444' }}>*</span></label>
-              <input required name="phone" type="tel" className="input-field" placeholder="+855 ..." value={formData.phone} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Primary Phone <span style={{ color: '#ef4444' }}>*</span></label>
+              <input required name="phone" type="tel" className="input-field" placeholder="+855 ..." value={formData.phone} onChange={handleChange} style={{ height: '42px' }} />
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Email Address</label>
-              <input name="email" type="email" className="input-field" placeholder="example@mail.com" value={formData.email} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Email Address</label>
+              <input name="email" type="email" className="input-field" placeholder="example@mail.com" value={formData.email} onChange={handleChange} style={{ height: '42px' }} />
             </div>
           </div>
 
-          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '2rem' }}>
-            <label className="input-label" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.25rem' }}>
+            <label className="input-label" style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <MapPin size={18} color="var(--primary)" />
               Residential Address Details
             </label>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Province / City <span style={{ color: '#ef4444' }}>*</span></label>
-                <select name="province" className="input-field" value={formData.province} onChange={handleChange} required>
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Province / City <span style={{ color: '#ef4444' }}>*</span></label>
+                <select name="province" className="input-field" value={formData.province} onChange={handleChange} required style={{ height: '42px' }}>
                   <option value="">Select Province / City</option>
                   <optgroup label="Capital City">
                     <option value="Phnom Penh">Phnom Penh</option>
@@ -422,8 +413,8 @@ export default function NewCustomerPage() {
                 </select>
               </div>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>District <span style={{ color: '#ef4444' }}>*</span></label>
-                <select name="district" className="input-field" value={formData.district} onChange={handleChange} required disabled={!formData.province}>
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>District <span style={{ color: '#ef4444' }}>*</span></label>
+                <select name="district" className="input-field" value={formData.district} onChange={handleChange} required disabled={!formData.province} style={{ height: '42px' }}>
                   <option value="">Select District</option>
                   {(CAMBODIA_DISTRICTS[formData.province] || []).map(d => (
                     <option key={d.code} value={d.name}>
@@ -434,10 +425,10 @@ export default function NewCustomerPage() {
               </div>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Commune</label>
-                <select name="commune" className="input-field" value={formData.commune} onChange={handleChange} disabled={!formData.district}>
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Commune</label>
+                <select name="commune" className="input-field" value={formData.commune} onChange={handleChange} disabled={!formData.district} style={{ height: '42px' }}>
                   <option value="">Select Commune</option>
                   {(CAMBODIA_COMMUNES[formData.district] || []).map(c => (
                     <option key={c.code} value={c.name}>
@@ -447,8 +438,8 @@ export default function NewCustomerPage() {
                 </select>
               </div>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Village</label>
-                <select name="village" className="input-field" value={formData.village} onChange={handleChange} disabled={!formData.commune}>
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Village</label>
+                <select name="village" className="input-field" value={formData.village} onChange={handleChange} disabled={!formData.commune} style={{ height: '42px' }}>
                   <option value="">Select Village</option>
                   {(CAMBODIA_VILLAGES[`${formData.district}_${formData.commune}`] || []).map(v => (
                     <option key={v.code} value={v.name}>
@@ -459,49 +450,49 @@ export default function NewCustomerPage() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1.25rem' }}>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>House #</label>
-                <input name="houseNo" type="text" className="input-field" placeholder="House #" value={formData.houseNo} onChange={handleChange} />
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>House #</label>
+                <input name="houseNo" type="text" className="input-field" placeholder="House #" value={formData.houseNo} onChange={handleChange} style={{ height: '42px' }} />
               </div>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Street #</label>
-                <input name="street" type="text" className="input-field" placeholder="Street #" value={formData.street} onChange={handleChange} />
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Street #</label>
+                <input name="street" type="text" className="input-field" placeholder="Street #" value={formData.street} onChange={handleChange} style={{ height: '42px' }} />
               </div>
             </div>
           </div>
         </div>
 
-                {/* SECTION 3: Employment & Business */}
-        <div className="card" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        {/* SECTION 3: Employment & Business */}
+        <div className="card" style={{ padding: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
             <Briefcase size={20} color="var(--primary)" />
             <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Employment & Business</h3>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Occupation</label>
-              <input name="occupation" type="text" className="input-field" placeholder="e.g. Sales Manager" value={formData.occupation} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Occupation</label>
+              <input name="occupation" type="text" className="input-field" placeholder="e.g. Sales Manager" value={formData.occupation} onChange={handleChange} style={{ height: '42px' }} />
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Employer Name</label>
-              <input name="employerName" type="text" className="input-field" placeholder="e.g. ACME Corp" value={formData.employerName} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Employer Name</label>
+              <input name="employerName" type="text" className="input-field" placeholder="e.g. ACME Corp" value={formData.employerName} onChange={handleChange} style={{ height: '42px' }} />
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Monthly Income (USD)</label>
-              <input name="monthlyIncome" type="number" step="any" className="input-field" placeholder="e.g. 1500" value={formData.monthlyIncome} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Monthly Income (USD)</label>
+              <input name="monthlyIncome" type="number" step="any" className="input-field" placeholder="e.g. 1500" value={formData.monthlyIncome} onChange={handleChange} style={{ height: '42px' }} />
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Monthly Income (KHR)</label>
-              <input name="monthlyIncomeKhr" type="number" step="any" className="input-field" placeholder="e.g. 6000000" value={formData.monthlyIncomeKhr} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Monthly Income (KHR)</label>
+              <input name="monthlyIncomeKhr" type="number" step="any" className="input-field" placeholder="e.g. 6000000" value={formData.monthlyIncomeKhr} onChange={handleChange} style={{ height: '42px' }} />
             </div>
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Business Type</label>
-              <select name="businessType" className="input-field" value={formData.businessType} onChange={handleChange}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Business Type</label>
+              <select name="businessType" className="input-field" value={formData.businessType} onChange={handleChange} style={{ height: '42px' }}>
                 <option value="">Select Type...</option>
                 <option value="NGO">NGO</option>
                 <option value="Agriculture">Agriculture</option>
@@ -536,8 +527,8 @@ export default function NewCustomerPage() {
               </select>
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Income Bracket</label>
-              <select name="incomeBracket" className="input-field" value={formData.incomeBracket} onChange={handleChange}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Income Bracket</label>
+              <select name="incomeBracket" className="input-field" value={formData.incomeBracket} onChange={handleChange} style={{ height: '42px' }}>
                 <option value="">Select Bracket...</option>
                 <option value="Unknown">Unknown</option>
                 <option value="<= 50 USD">&lt;= 50 USD</option>
@@ -548,8 +539,8 @@ export default function NewCustomerPage() {
               </select>
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Dependent</label>
-              <select name="dependentCount" className="input-field" value={formData.dependentCount} onChange={handleChange}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Dependent</label>
+              <select name="dependentCount" className="input-field" value={formData.dependentCount} onChange={handleChange} style={{ height: '42px' }}>
                 <option value="">Select Amount...</option>
                 <option value="0">0</option>
                 <option value="1~2">1~2</option>
@@ -560,8 +551,8 @@ export default function NewCustomerPage() {
               </select>
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Income Maker</label>
-              <select name="incomeMaker" className="input-field" value={formData.incomeMaker} onChange={handleChange}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Income Maker</label>
+              <select name="incomeMaker" className="input-field" value={formData.incomeMaker} onChange={handleChange} style={{ height: '42px' }}>
                 <option value="">Select Amount...</option>
                 <option value="0">0</option>
                 <option value="1~2">1~2</option>
@@ -572,97 +563,96 @@ export default function NewCustomerPage() {
               </select>
             </div>
           </div>
-
           <div className="input-group" style={{ marginBottom: 0 }}>
-            <label className="input-label">Business Information</label>
+            <label className="input-label" style={{ marginBottom: '0.375rem' }}>Business Information</label>
             <textarea name="businessInfo" rows={2} className="input-field" placeholder="Details about owned business or trade" value={formData.businessInfo} onChange={handleChange}></textarea>
           </div>
         </div>
 
         {/* SECTION 4: Co-Borrower & Guarantor */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
           {/* Co-borrower Card */}
-          <div className="card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <UserCheck size={20} color="var(--primary)" />
               <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Co-borrower Details</h3>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div className="input-group">
-                <label className="input-label">Co-Borrower(Khmer)</label>
-                <input name="coBorrowerKhmerName" type="text" className="input-field" placeholder="e.g. សុខ គែន" value={formData.coBorrowerKhmerName} onChange={handleChange} />
+                <label className="input-label" style={{ marginBottom: '0.375rem' }}>Co-Borrower(Khmer)</label>
+                <input name="coBorrowerKhmerName" type="text" className="input-field" placeholder="e.g. សុខ គែន" value={formData.coBorrowerKhmerName} onChange={handleChange} style={{ height: '42px' }} />
               </div>
               <div className="input-group">
-                <label className="input-label">Co-Borrower(English)</label>
-                <input name="coBorrowerName" type="text" className="input-field" placeholder="e.g. Sok Ken" value={formData.coBorrowerName} onChange={handleChange} />
+                <label className="input-label" style={{ marginBottom: '0.375rem' }}>Co-Borrower(English)</label>
+                <input name="coBorrowerName" type="text" className="input-field" placeholder="e.g. Sok Ken" value={formData.coBorrowerName} onChange={handleChange} style={{ height: '42px' }} />
               </div>
             </div>
 
             <div className="input-group">
-              <label className="input-label">Co-borrower Phone Number</label>
-              <input name="coBorrowerPhone" type="tel" className="input-field" placeholder="+855 ..." value={formData.coBorrowerPhone} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Co-borrower Phone Number</label>
+              <input name="coBorrowerPhone" type="tel" className="input-field" placeholder="+855 ..." value={formData.coBorrowerPhone} onChange={handleChange} style={{ height: '42px' }} />
             </div>
 
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Co-borrower National ID</label>
-              <input name="coBorrowerNationalId" type="text" className="input-field" placeholder="ID Number" value={formData.coBorrowerNationalId} onChange={handleChange} />
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Co-borrower National ID</label>
+              <input name="coBorrowerNationalId" type="text" className="input-field" placeholder="ID Number" value={formData.coBorrowerNationalId} onChange={handleChange} style={{ height: '42px' }} />
             </div>
           </div>
 
           {/* Guarantor Card */}
-          <div className="card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <Users size={20} color="var(--primary)" />
               <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Guarantor Details</h3>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div className="input-group">
-                <label className="input-label">Guarantor(Khmer)</label>
-                <input name="guarantorKhmerName" type="text" className="input-field" placeholder="e.g. សោភ័ណ កុល" value={formData.guarantorKhmerName} onChange={handleChange} />
+                <label className="input-label" style={{ marginBottom: '0.375rem' }}>Guarantor(Khmer)</label>
+                <input name="guarantorKhmerName" type="text" className="input-field" placeholder="e.g. សោភ័ណ កុល" value={formData.guarantorKhmerName} onChange={handleChange} style={{ height: '42px' }} />
               </div>
               <div className="input-group">
-                <label className="input-label">Guarantor(English)</label>
-                <input name="guarantorName" type="text" className="input-field" placeholder="e.g. Sophorn Kol" value={formData.guarantorName} onChange={handleChange} />
+                <label className="input-label" style={{ marginBottom: '0.375rem' }}>Guarantor(English)</label>
+                <input name="guarantorName" type="text" className="input-field" placeholder="e.g. Sophorn Kol" value={formData.guarantorName} onChange={handleChange} style={{ height: '42px' }} />
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label">Guarantor Phone</label>
-                <input name="guarantorPhone" type="tel" className="input-field" placeholder="+855 ..." value={formData.guarantorPhone} onChange={handleChange} />
+                <label className="input-label" style={{ marginBottom: '0.375rem' }}>Guarantor Phone</label>
+                <input name="guarantorPhone" type="tel" className="input-field" placeholder="+855 ..." value={formData.guarantorPhone} onChange={handleChange} style={{ height: '42px' }} />
               </div>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label">Relationship</label>
-                <input name="guarantorRelationship" type="text" className="input-field" placeholder="e.g. Sibling, Parent" value={formData.guarantorRelationship} onChange={handleChange} />
+                <label className="input-label" style={{ marginBottom: '0.375rem' }}>Relationship</label>
+                <input name="guarantorRelationship" type="text" className="input-field" placeholder="e.g. Sibling, Parent" value={formData.guarantorRelationship} onChange={handleChange} style={{ height: '42px' }} />
               </div>
             </div>
 
-            <div className="input-group" style={{ marginBottom: 0, marginTop: '1.5rem' }}>
-              <label className="input-label">Guarantor National ID</label>
-              <input name="guarantorNationalId" type="text" className="input-field" placeholder="ID Number" value={formData.guarantorNationalId} onChange={handleChange} />
+            <div className="input-group" style={{ marginBottom: 0, marginTop: '1.25rem' }}>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Guarantor National ID</label>
+              <input name="guarantorNationalId" type="text" className="input-field" placeholder="ID Number" value={formData.guarantorNationalId} onChange={handleChange} style={{ height: '42px' }} />
             </div>
           </div>
         </div>
 
         {/* SECTION 5: Supporting Documents */}
-        <div className="card" style={{ padding: '2rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+        <div className="card" style={{ padding: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
             <ShieldCheck size={20} color="var(--primary)" />
             <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>Supporting Documents</h3>
           </div>
           
           {/* Upload panel */}
-          <div style={{ padding: '1.5rem', marginBottom: '1.5rem', border: '2px dashed var(--border-color)', borderRadius: '12px', backgroundColor: '#fafbfc' }}>
+          <div style={{ padding: '1.25rem', marginBottom: '1.25rem', border: '2px dashed var(--border-color)', borderRadius: '12px', backgroundColor: '#fafbfc' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <Upload size={18} color="var(--primary)" />
               <span style={{ fontWeight: '700', fontSize: '0.9375rem' }}>Upload / Select a Document</span>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr auto', gap: '1.5rem', alignItems: 'end' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr auto', gap: '1.25rem', alignItems: 'end' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Document Type</label>
-                <select value={uploadType} onChange={e => setUploadType(e.target.value)} className="input-field" style={{ marginBottom: 0 }}>
+                <select value={uploadType} onChange={e => setUploadType(e.target.value)} className="input-field" style={{ marginBottom: 0, height: '42px' }}>
                   {DOC_TYPES.map(d => <option key={d.type} value={d.type}>{d.label}</option>)}
                 </select>
               </div>
@@ -673,14 +663,35 @@ export default function NewCustomerPage() {
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={e => setUploadFile(e.target.files?.[0] || null)}
-                  style={{ display: 'block', width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', cursor: 'pointer', backgroundColor: 'white' }}
+                  style={{ display: 'block', width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', cursor: 'pointer', backgroundColor: 'white', height: '42px' }}
                 />
               </div>
               <button
                 type="button"
                 onClick={handleAddFile}
                 disabled={!uploadFile}
-                style={{ height: '46px', padding: '0 2rem', borderRadius: '10px', border: 'none', backgroundColor: uploadFile ? 'var(--primary)' : '#e2e8f0', color: uploadFile ? 'white' : '#94a3b8', fontWeight: '700', fontSize: '0.875rem', cursor: uploadFile ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
+                className="btn btn-primary"
+                style={{ 
+                  height: '42px', 
+                  padding: '0 1.5rem', 
+                  backgroundColor: uploadFile ? 'var(--foreground)' : 'var(--border-color)', 
+                  color: uploadFile ? 'white' : 'var(--text-muted)', 
+                  border: 'none',
+                  cursor: uploadFile ? 'pointer' : 'not-allowed', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.5rem', 
+                  transition: 'all 0.2s',
+                  boxShadow: uploadFile ? 'var(--shadow-sm)' : 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '500'
+                }}
+                onMouseOver={(e) => {
+                  if (uploadFile) e.currentTarget.style.backgroundColor = 'var(--primary)';
+                }}
+                onMouseOut={(e) => {
+                  if (uploadFile) e.currentTarget.style.backgroundColor = 'var(--foreground)';
+                }}
               >
                 <Upload size={15} /> Add File
               </button>
@@ -741,9 +752,9 @@ export default function NewCustomerPage() {
         </div>
 
         {/* Submit Actions */}
-        <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'flex-end', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '1rem' }}>
           <Link href="/admin/customers/accounts" style={{ textDecoration: 'none' }}>
-            <button type="button" className="btn btn-secondary" style={{ padding: '1rem 2rem', height: '56px' }}>
+            <button type="button" className="btn btn-secondary" style={{ padding: '0 1.5rem', height: '42px' }}>
               Discard
             </button>
           </Link>
@@ -751,9 +762,8 @@ export default function NewCustomerPage() {
             type="submit" 
             className="btn btn-primary" 
             style={{ 
-              padding: '1rem 3rem', 
-              fontSize: '1.125rem', 
-              height: '56px',
+              padding: '0 2rem', 
+              height: '42px',
               backgroundColor: 'var(--foreground)',
               color: 'white',
               border: 'none',
@@ -761,7 +771,7 @@ export default function NewCustomerPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '0.75rem'
+              gap: '0.5rem'
             }}
             disabled={loading}
             onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
@@ -769,7 +779,7 @@ export default function NewCustomerPage() {
           >
             {loading ? 'Processing...' : (
               <>
-                <Save size={20} />
+                <Save size={18} />
                 Complete Registration
               </>
             )}

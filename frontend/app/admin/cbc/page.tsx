@@ -158,16 +158,16 @@ export default function CbcPage() {
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', animation: 'fadeIn 0.5s ease' }}>
+    <div style={{ animation: 'fadeIn 0.5s ease', maxWidth: '1200px' }}>
       
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>
-        <div style={{ padding: '1rem', backgroundColor: '#eab308', color: '#0f172a', borderRadius: '16px', boxShadow: '0 10px 15px -3px rgba(234, 179, 8, 0.3)' }}>
+        <div style={{ padding: '1rem', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '16px', boxShadow: '0 10px 15px -3px rgba(37, 99, 235, 0.2)' }}>
           <ShieldCheck size={28} />
         </div>
         <div>
           <h1 style={{ fontSize: '2.25rem', fontWeight: '800', letterSpacing: '-0.03em', margin: 0, color: 'var(--foreground)' }}>
-            CBC <span style={{ color: '#eab308' }}>Inquiry Simulator</span>
+            CBC <span className="text-gradient">Inquiry Simulator</span>
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '0.25rem' }}>
             Check real-time credit status and K-Scores registered in Credit Bureau Cambodia (CBC)
@@ -188,7 +188,7 @@ export default function CbcPage() {
               style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '1rem', color: '#1e293b' }}
             />
           </div>
-          <button className="btn btn-primary" type="submit" style={{ padding: '0 2.5rem', fontWeight: '600', backgroundColor: '#eab308', borderColor: '#eab308', color: '#0f172a' }}>
+          <button className="btn btn-primary" type="submit" style={{ padding: '0 2.5rem', fontWeight: '600' }}>
             Query Bureau
           </button>
         </form>
@@ -202,12 +202,12 @@ export default function CbcPage() {
       {/* Loading State */}
       {loading && (
         <div className="card" style={{ padding: '4rem 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
-          <RefreshCw size={48} className="animate-spin" color="#eab308" />
+          <RefreshCw size={48} className="animate-spin" color="var(--primary)" />
           <div style={{ fontWeight: '700', fontSize: '1.25rem', color: '#1e293b' }}>
             {steps[loadingStep]}
           </div>
           <div style={{ width: '300px', height: '6px', backgroundColor: '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
-            <div style={{ width: `${(loadingStep + 1) * 25}%`, height: '100%', backgroundColor: '#eab308', transition: 'width 0.4s ease' }}></div>
+            <div style={{ width: `${(loadingStep + 1) * 25}%`, height: '100%', backgroundColor: 'var(--primary)', transition: 'width 0.4s ease' }}></div>
           </div>
         </div>
       )}
@@ -349,9 +349,7 @@ export default function CbcPage() {
 
       <style dangerouslySetInnerHTML={{ __html: `
         .text-gradient {
-          background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: var(--foreground);
         }
         .animate-spin {
           animation: spin 1s linear infinite;

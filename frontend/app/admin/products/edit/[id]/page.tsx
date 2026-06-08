@@ -91,7 +91,7 @@ export default function EditProductPage() {
   }
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', animation: 'slideUp 0.6s ease-out' }}>
+    <div style={{ animation: 'slideUp 0.6s ease-out', maxWidth: '1000px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '3rem' }}>
         <Link href="/admin/products" style={{ 
           width: '48px', 

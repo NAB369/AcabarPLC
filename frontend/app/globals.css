@@ -1,46 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* Premium Yellow, Blue, White, Black Palette */
-  --background: #ffffff;
-  --foreground: #000000;
-  --sidebar-bg: #000000;
-  --card-bg: #ffffff;
+  /* Clean Light Fintech Theme - matching the blue-and-white reference design */
+  --background: #f8fafc; /* Very light slate-blue background */
+  --foreground: #0f172a; /* Slate-900 body text */
+  --sidebar-bg: #ffffff; /* Clean white sidebar */
+  --card-bg: #ffffff; /* White cards */
   
-  /* Trust Blue */
-  --primary: #2563eb;
+  /* Trust Blue (Primary) */
+  --primary: #2563eb; /* Vibrant trust blue */
   --primary-hover: #1d4ed8;
-  --primary-light: #eff6ff;
+  --primary-light: #eff6ff; /* Soft blue background for hovers/active items */
   
-  /* Accent Yellow */
-  --secondary: #facc15;
-  --secondary-hover: #eab308;
+  /* Accent Blue (Secondary) */
+  --secondary: #eff6ff; /* Light blue accent */
+  --secondary-hover: #dbeafe;
   
-  /* Subtle borders and muted text - Darkened for better contrast */
-  --border-color: #e2e8f0;
-  --text-muted: #4b5563; /* Darkened from 6b7280 */
-  --text-muted-dark: #1f2937; /* Darkened from 374151 */
+  /* Borders and muted text */
+  --border-color: #e2e8f0; /* Soft border color */
+  --text-muted: #64748b; /* Slate-500 muted text */
+  --text-muted-dark: #334155; /* Slate-700 body text */
   
-  /* Status Colors - Refined */
-  --success-bg: #ecfdf5;
-  --success-text: #059669;
-  --success-border: #a7f3d0;
+  /* Status Colors - Tailored for light theme */
+  --success-bg: #dcfce7; /* Green-100 */
+  --success-text: #15803d; /* Green-700 */
+  --success-border: #bbf7d0; /* Green-200 */
   
-  --warning-bg: #fffbeb;
-  --warning-text: #d97706;
-  --warning-border: #fde68a;
+  --warning-bg: #fef9c3; /* Yellow-100 */
+  --warning-text: #854d0e; /* Yellow-800 */
+  --warning-border: #fef08a; /* Yellow-200 */
   
-  --error-bg: #fef2f2;
-  --error-text: #e11d48;
-  --error-border: #fecdd3;
+  --error-bg: #fee2e2; /* Red-100 */
+  --error-text: #b91c1c; /* Red-700 */
+  --error-border: #fecdd3; /* Red-200 */
   
-  --info-bg: #f0fdfa;
-  --info-text: #0d9488;
-  --info-border: #99f6e4;
+  --info-bg: #e0f2fe; /* Sky-100 */
+  --info-text: #0369a1; /* Sky-700 */
+  --info-border: #bae6fd; /* Sky-200 */
   
-  --purple-bg: #faf5ff;
-  --purple-text: #7e22ce;
-  --purple-border: #e9d5ff;
+  --purple-bg: #f3e8ff; /* Purple-100 */
+  --purple-text: #6b21a8; /* Purple-800 */
+  --purple-border: #e9d5ff; /* Purple-200 */
 
   --font-sans: 'Inter', system-ui, sans-serif;
   
@@ -61,15 +61,24 @@
   --radius-full: 9999px;
 
   /* Premium Multi-layered Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.04);
-  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.04), 0 2px 4px -2px rgb(15 23 42 / 0.04);
-  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.04), 0 4px 6px -4px rgb(15 23 42 / 0.04);
-  --shadow-xl: 0 20px 25px -5px rgb(15 23 42 / 0.04), 0 8px 10px -6px rgb(15 23 42 / 0.04);
-  --shadow-glow: 0 0 15px rgba(250, 204, 21, 0.4);
+  --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.03);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.03), 0 2px 4px -2px rgb(15 23 42 / 0.03);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.03), 0 4px 6px -4px rgb(15 23 42 / 0.03);
+  --shadow-xl: 0 20px 25px -5px rgb(15 23 42 / 0.03), 0 8px 10px -6px rgb(15 23 42 / 0.03);
+  --shadow-glow: 0 0 15px rgba(37, 99, 235, 0.2);
   
   /* Transitions */
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sidebar Link hover utility */
+.sidebar-link {
+  transition: all var(--transition-fast) ease;
+}
+.sidebar-link:hover {
+  color: var(--primary) !important;
+  background-color: var(--primary-light) !important;
 }
 
 * {
@@ -252,7 +261,7 @@ p {
 }
 
 .data-table tbody tr:hover td {
-  background-color: #f1f5f9;
+  background-color: var(--primary-light);
 }
 
 /* Utilities for Toolbar and Filters */
@@ -261,7 +270,7 @@ p {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background-color: #f8fafc;
+  background-color: var(--background);
   border-bottom: 1px solid var(--border-color);
   gap: 1rem;
 }
@@ -312,10 +321,7 @@ p {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--secondary) 0%, #fbbf24 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--foreground);
 }
 
 @keyframes slideUp {

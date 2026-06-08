@@ -19,7 +19,7 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
   KYC_REJECTED: { label: 'KYC Rejected', color: '#dc2626', bg: '#fef2f2', icon: <XCircle size={12} /> },
   CREDIT_CHECK: { label: 'Credit Check', color: '#d97706', bg: '#fffbeb', icon: <Shield size={12} /> },
   UNDERWRITING: { label: 'Underwriting', color: '#ea580c', bg: '#fff7ed', icon: <Shield size={12} /> },
-  TIER1_REVIEW: { label: 'Tier 1 Review', color: '#2563eb', bg: '#eff6ff', icon: <Eye size={12} /> },
+  TIER1_REVIEW: { label: 'Tier 1 Review', color: 'var(--primary)', bg: 'var(--primary-light)', icon: <Eye size={12} /> },
   TIER2_REVIEW: { label: 'Tier 2 Review', color: '#7c3aed', bg: '#f5f3ff', icon: <Eye size={12} /> },
   TIER3_REVIEW: { label: 'Tier 3 Review', color: '#be185d', bg: '#fdf2f8', icon: <Eye size={12} /> },
   APPROVED: { label: 'Approved', color: '#059669', bg: '#ecfdf5', icon: <CheckCircle2 size={12} /> },
@@ -301,39 +301,17 @@ export default function LosQueuePage() {
                       </span>
                     </td>
                     <td style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{app.createdAt}</td>
-                    <td style={{ display: 'flex', gap: '0.5rem' }}>
-                      <Link href={`/admin/los/${app.id}`} style={{ textDecoration: 'none' }}>
-                        <button
-                          style={{
-                            background: 'none',
-                            border: '1px solid var(--border-color)',
-                            borderRadius: 'var(--radius-md)',
-                            padding: '0.375rem 0.75rem',
-                            fontSize: '0.75rem',
-                            color: 'var(--primary)',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            transition: 'all var(--transition-fast)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.375rem',
-                          }}
-                          onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-light)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
-                          onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
-                        >
-                          <Eye size={13} /> View
-                        </button>
-                      </Link>
-                      {app.status === 'ACTIVE' && (
-                        <Link href={`/admin/customers/repayments/${app.id}`} style={{ textDecoration: 'none' }}>
+                    <td>
+                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                        <Link href={`/admin/los/${app.id}`} style={{ textDecoration: 'none' }}>
                           <button
                             style={{
-                              background: 'var(--primary)',
-                              border: '1px solid var(--primary)',
+                              background: 'none',
+                              border: '1px solid var(--border-color)',
                               borderRadius: 'var(--radius-md)',
                               padding: '0.375rem 0.75rem',
                               fontSize: '0.75rem',
-                              color: 'white',
+                              color: 'var(--primary)',
                               fontWeight: '600',
                               cursor: 'pointer',
                               transition: 'all var(--transition-fast)',
@@ -341,13 +319,37 @@ export default function LosQueuePage() {
                               alignItems: 'center',
                               gap: '0.375rem',
                             }}
-                            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-hover)'; }}
-                            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; }}
+                            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-light)'; e.currentTarget.style.borderColor = 'var(--primary)'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
                           >
-                            <Banknote size={13} /> Repayments
+                            <Eye size={13} /> View
                           </button>
                         </Link>
-                      )}
+                        {app.status === 'ACTIVE' && (
+                          <Link href={`/admin/customers/repayments/${app.id}`} style={{ textDecoration: 'none' }}>
+                            <button
+                              style={{
+                                background: 'var(--primary)',
+                                border: '1px solid var(--primary)',
+                                borderRadius: 'var(--radius-md)',
+                                padding: '0.375rem 0.75rem',
+                                fontSize: '0.75rem',
+                                color: 'white',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all var(--transition-fast)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.375rem',
+                              }}
+                              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-hover)'; }}
+                              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; }}
+                            >
+                              <Banknote size={13} /> Repayments
+                            </button>
+                          </Link>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );

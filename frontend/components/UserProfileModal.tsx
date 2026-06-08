@@ -88,7 +88,7 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
 
         {loading ? (
           <div style={{ height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Loader2 className="animate-spin" size={32} color="#2563eb" />
+            <Loader2 className="animate-spin" size={32} color="var(--primary)" />
           </div>
         ) : error ? (
           <div style={{ height: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
@@ -103,9 +103,9 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
               <div style={{ position: 'relative', marginBottom: '16px' }}>
                 <div style={{ 
                   width: '96px', height: '96px', borderRadius: '50%', 
-                  backgroundColor: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  backgroundColor: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '32px', fontWeight: '700', color: 'white',
-                  boxShadow: '0 10px 15px -3px rgba(79, 70, 229, 0.3)'
+                  boxShadow: '0 10px 15px -3px rgba(37, 99, 235, 0.3)'
                 }}>
                   {profile.firstName?.[0] || 'U'}
                 </div>
@@ -156,7 +156,7 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
                     {item.isBadge ? (
                       <span style={{ 
                         fontSize: '12px', fontWeight: '600', padding: '4px 12px',
-                        backgroundColor: '#eff6ff', color: '#2563eb', borderRadius: '99px'
+                        backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '99px'
                       }}>
                         {item.value}
                       </span>

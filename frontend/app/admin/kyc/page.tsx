@@ -50,7 +50,7 @@ export default function KYCManagementPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
+    <div style={{ width: '100%', maxWidth: '1100px' }}>
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '1.75rem', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-color)' }}>KYC Management</h1>
         <p style={{ color: 'var(--text-muted)' }}>Review and approve pending customer identities.</p>

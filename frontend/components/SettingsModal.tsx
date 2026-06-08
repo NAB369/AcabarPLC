@@ -297,7 +297,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
               onClick={() => { setActiveTab(tab.id); setSuccess(null); setError(null); }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '0.875rem', padding: '0.875rem 1.25rem', borderRadius: '12px', border: 'none', 
-                backgroundColor: activeTab === tab.id ? '#2563eb' : 'transparent',
+                backgroundColor: activeTab === tab.id ? 'var(--primary)' : 'transparent',
                 color: activeTab === tab.id ? 'white' : '#475569',
                 fontSize: '0.9375rem', fontWeight: activeTab === tab.id ? '600' : '500',
                 cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left'
@@ -350,7 +350,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     <div style={{ width: '100px', height: '100px', borderRadius: '32px', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: '700', color: '#1e293b', border: '4px solid white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                       {profile.firstName?.[0] || 'U'}
                     </div>
-                    <button type="button" style={{ position: 'absolute', bottom: '-4px', right: '-4px', width: '36px', height: '36px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                    <button type="button" style={{ position: 'absolute', bottom: '-4px', right: '-4px', width: '36px', height: '36px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
                       <Camera size={18} />
                     </button>
                   </div>
@@ -368,7 +368,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       value={profile.firstName}
                       onChange={(e) => setProfile({...profile, firstName: e.target.value})}
                       style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
-                      onFocus={(e) => { e.target.style.borderColor = '#2563eb'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
                       onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
@@ -379,7 +379,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       value={profile.lastName}
                       onChange={(e) => setProfile({...profile, lastName: e.target.value})}
                       style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
-                      onFocus={(e) => { e.target.style.borderColor = '#2563eb'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
                       onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
@@ -392,7 +392,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     value={profile.email}
                     onChange={(e) => setProfile({...profile, email: e.target.value})}
                     style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
-                    onFocus={(e) => { e.target.style.borderColor = '#2563eb'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
+                    onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
                     onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
                   />
                 </div>
@@ -409,7 +409,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
             {activeTab === 'Security' && (
               <form onSubmit={handleUpdatePassword} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: '#2563eb' }}>
+                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
                       <Shield size={24} />
                    </div>
                    <div>
@@ -470,7 +470,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                         <Edit size={16} /> Edit
                       </button>
                       <h4 style={{ margin: '0 0 1.5rem', fontSize: '1.125rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <Building size={20} color="#2563eb" /> Company Information
+                        <Building size={20} color="var(--primary)" /> Company Information
                       </h4>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                         <div>
@@ -487,7 +487,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                         </div>
                         <div>
                           <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Website</div>
-                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#2563eb' }}>{company.website || 'N/A'}</div>
+                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--primary)' }}>{company.website || 'N/A'}</div>
                         </div>
                       </div>
                     </div>
@@ -495,7 +495,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     {/* Contact Card */}
                     <div style={{ padding: '1.5rem', border: '1px solid #e2e8f0', borderRadius: '16px' }}>
                       <h4 style={{ margin: '0 0 1.5rem', fontSize: '1.125rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <User size={20} color="#2563eb" /> Contact Information
+                        <User size={20} color="var(--primary)" /> Contact Information
                       </h4>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div>
@@ -600,7 +600,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
             {activeTab === 'Navigation' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: '#2563eb' }}>
+                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
                       <List size={24} />
                    </div>
                    <div>
@@ -643,7 +643,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                           }}
                           style={{
                             width: '44px', height: '24px', borderRadius: '12px',
-                            backgroundColor: isVisible ? '#2563eb' : '#cbd5e1',
+                            backgroundColor: isVisible ? 'var(--primary)' : '#cbd5e1',
                             border: 'none', position: 'relative', cursor: 'pointer',
                             transition: 'background-color 0.2s'
                           }}
@@ -664,7 +664,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
             {activeTab === 'Language' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: '#2563eb' }}>
+                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
                       <Globe size={24} />
                    </div>
                    <div>
@@ -683,7 +683,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       key={lang.id} 
                       style={{ 
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                        padding: '1.25rem 1.5rem', border: selectedLanguage === lang.id ? '2px solid #2563eb' : '1px solid #e2e8f0', 
+                        padding: '1.25rem 1.5rem', border: selectedLanguage === lang.id ? '2px solid var(--primary)' : '1px solid #e2e8f0', 
                         borderRadius: '12px', cursor: 'pointer', backgroundColor: selectedLanguage === lang.id ? '#f0f9ff' : '#ffffff',
                         transition: 'all 0.2s'
                       }}
@@ -703,7 +703,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                           setSuccess('Language preference updated successfully');
                           setTimeout(() => setSuccess(null), 3000);
                         }}
-                        style={{ width: '1.25rem', height: '1.25rem', accentColor: '#2563eb', cursor: 'pointer' }}
+                        style={{ width: '1.25rem', height: '1.25rem', accentColor: 'var(--primary)', cursor: 'pointer' }}
                       />
                     </label>
                   ))}
@@ -716,7 +716,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {loading ? (
                     <div style={{ textAlign: 'center', padding: '4rem' }}>
-                      <div className="animate-spin" style={{ width: '24px', height: '24px', border: '3px solid #cbd5e1', borderTopColor: '#2563eb', borderRadius: '50%', margin: '0 auto' }}></div>
+                      <div className="animate-spin" style={{ width: '24px', height: '24px', border: '3px solid #cbd5e1', borderTopColor: 'var(--primary)', borderRadius: '50%', margin: '0 auto' }}></div>
                     </div>
                   ) : users.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b' }}>No accounts registered in the database.</div>
@@ -777,11 +777,11 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     {loading ? (
                       <div style={{ textAlign: 'center', padding: '4rem' }}>
-                        <div className="animate-spin" style={{ width: '24px', height: '24px', border: '3px solid #cbd5e1', borderTopColor: '#2563eb', borderRadius: '50%', margin: '0 auto' }}></div>
+                        <div className="animate-spin" style={{ width: '24px', height: '24px', border: '3px solid #cbd5e1', borderTopColor: 'var(--primary)', borderRadius: '50%', margin: '0 auto' }}></div>
                       </div>
                     ) : (
                       roles.map((role) => (
-                        <div key={role.id} style={{ padding: '1.5rem', border: editingRole?.id === role.id ? '2px solid #2563eb' : '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: 'white' }}>
+                        <div key={role.id} style={{ padding: '1.5rem', border: editingRole?.id === role.id ? '2px solid var(--primary)' : '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: 'white' }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
                             <div>
                               <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '700' }}>{role.name}</h4>
@@ -789,7 +789,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                             </div>
                             {role.name !== 'SUPER_ADMIN' && (
                               <button 
-                                style={{ background: 'none', border: 'none', color: '#2563eb', cursor: 'pointer' }}
+                                style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer' }}
                                 onClick={() => {
                                   setEditingRole(role);
                                   setSelectedPermissions(role.permissions.map((p: any) => p.permissionId));
@@ -865,8 +865,8 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                    key={role.id} 
                    onClick={() => setSelectedRole(role.id)}
                    style={{ 
-                     textAlign: 'left', padding: '1rem', borderRadius: '12px', border: selectedRole === role.id ? '2px solid #2563eb' : '1px solid #e2e8f0',
-                     backgroundColor: selectedRole === role.id ? '#eff6ff' : 'white', cursor: 'pointer'
+                     textAlign: 'left', padding: '1rem', borderRadius: '12px', border: selectedRole === role.id ? '2px solid var(--primary)' : '1px solid #e2e8f0',
+                     backgroundColor: selectedRole === role.id ? 'var(--primary-light)' : 'white', cursor: 'pointer'
                    }}
                  >
                    <div style={{ fontWeight: '700', fontSize: '0.9375rem' }}>{role.name}</div>
