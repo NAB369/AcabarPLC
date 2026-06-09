@@ -103,7 +103,7 @@ export default function CustomerAccountsPage() {
           <h1 style={{ fontSize: '2.25rem', fontWeight: '800', letterSpacing: '-0.03em', margin: 0 }}>All <span className="text-gradient">Customers</span></h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginTop: '0.25rem' }}>Manage and verify your institutional customer base</p>
           {syncResult !== null && (
-            <p style={{ margin: '0.5rem 0 0', fontSize: '0.8125rem', color: syncResult.updated > 0 ? '#059669' : 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+            <p style={{ margin: '0.5rem 0 0', fontSize: '0.8125rem', color: syncResult.updated > 0 ? 'var(--success-text)' : 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
               <ShieldCheck size={14} />
               {syncResult.updated > 0
                 ? `✓ ${syncResult.updated} customer${syncResult.updated > 1 ? 's' : ''} KYC status updated to Verified`
@@ -115,16 +115,16 @@ export default function CustomerAccountsPage() {
           <button
             onClick={handleSyncKyc}
             disabled={syncLoading}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1rem', borderRadius: '10px', border: '1px solid #d1fae5', backgroundColor: '#ecfdf5', color: '#059669', fontWeight: '600', fontSize: '0.875rem', cursor: syncLoading ? 'not-allowed' : 'pointer', opacity: syncLoading ? 0.7 : 1, transition: 'all 0.2s' }}
-            onMouseOver={e => { if (!syncLoading) { e.currentTarget.style.backgroundColor = '#d1fae5'; } }}
-            onMouseOut={e => { e.currentTarget.style.backgroundColor = '#ecfdf5'; }}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.625rem 1rem', borderRadius: '10px', border: '1px solid #d1fae5', backgroundColor: 'var(--success-bg)', color: 'var(--success-text)', fontWeight: '600', fontSize: '0.875rem', cursor: syncLoading ? 'not-allowed' : 'pointer', opacity: syncLoading ? 0.7 : 1, transition: 'all 0.2s' }}
+            onMouseOver={e => { if (!syncLoading) { e.currentTarget.style.backgroundColor = 'var(--success-border)'; } }}
+            onMouseOut={e => { e.currentTarget.style.backgroundColor = 'var(--success-bg)'; }}
             title="Auto-approve KYC for customers whose loans have been disbursed"
           >
             <RefreshCw size={15} style={{ animation: syncLoading ? 'spin 1s linear infinite' : 'none' }} />
             {syncLoading ? 'Syncing...' : 'Sync KYC from Loans'}
           </button>
           <Link href="/admin/customers/new" style={{ textDecoration: 'none' }}>
-            <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', backgroundColor: 'var(--foreground)', color: 'white' }}>
+            <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', backgroundColor: 'var(--foreground)', color: 'var(--background)' }}>
               <UserPlus size={18} /> Add New Customer
             </button>
           </Link>
@@ -133,14 +133,14 @@ export default function CustomerAccountsPage() {
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {/* Toolbar */}
-        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
+        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
           <div style={{ position: 'relative', width: '320px' }}>
             <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
             <input 
               type="text" 
               placeholder="Search by name, email or phone..." 
               className="input-field" 
-              style={{ paddingLeft: '2.75rem', marginBottom: 0, backgroundColor: '#f8fafc' }}
+              style={{ paddingLeft: '2.75rem', marginBottom: 0, backgroundColor: 'var(--background)' }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -149,7 +149,7 @@ export default function CustomerAccountsPage() {
             {activeFilterCount > 0 && (
               <button
                 onClick={clearFilters}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.375rem 0.75rem', fontSize: '0.75rem', color: '#ef4444', border: '1px solid #fecaca', borderRadius: '8px', backgroundColor: '#fef2f2', cursor: 'pointer', fontWeight: '600' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.375rem 0.75rem', fontSize: '0.75rem', color: 'var(--error-text)', border: '1px solid #fecaca', borderRadius: '8px', backgroundColor: 'var(--error-bg)', cursor: 'pointer', fontWeight: '600' }}
               >
                 <X size={12} /> Clear filters ({activeFilterCount})
               </button>
@@ -172,7 +172,7 @@ export default function CustomerAccountsPage() {
 
         {/* Filter Panel */}
         {showFilters && (
-          <div style={{ padding: '1.25rem 2rem', backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border-color)', display: 'flex', gap: '1.5rem', alignItems: 'flex-end', animation: 'fadeIn 0.2s ease' }}>
+          <div style={{ padding: '1.25rem 2rem', backgroundColor: 'var(--background)', borderBottom: '1px solid var(--border-color)', display: 'flex', gap: '1.5rem', alignItems: 'flex-end', animation: 'fadeIn 0.2s ease' }}>
             {/* KYC Status */}
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>KYC Status</label>
@@ -309,9 +309,9 @@ export default function CustomerAccountsPage() {
                       <Link href={`/admin/customers/accounts/${customer.id}`} style={{ textDecoration: 'none' }}>
                         <button
                           title="View Profile"
-                          style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'var(--primary-light)'; }}
-                          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
+                          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'var(--card-bg)'; }}
                         >
                           <Eye size={15} color="var(--primary)" />
                         </button>
@@ -321,9 +321,9 @@ export default function CustomerAccountsPage() {
                       <Link href={`/admin/customers/edit/${customer.id}`} style={{ textDecoration: 'none' }}>
                         <button
                           title="Edit Customer"
-                          style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          onMouseOver={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.backgroundColor = '#fffbeb'; }}
-                          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
+                          style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          onMouseOver={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.backgroundColor = 'var(--warning-bg)'; }}
+                          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'var(--card-bg)'; }}
                         >
                           <Edit size={15} color="#f59e0b" />
                         </button>
@@ -333,20 +333,20 @@ export default function CustomerAccountsPage() {
                       <button 
                         title="Delete Customer"
                         onClick={() => handleDelete(customer.id, `${customer.firstName} ${customer.lastName}`)}
-                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
-                        onMouseOver={e => { e.currentTarget.style.borderColor = '#ef4444'; e.currentTarget.style.backgroundColor = '#fef2f2'; }} 
-                        onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
+                        style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                        onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--error-text)'; e.currentTarget.style.backgroundColor = 'var(--error-bg)'; }} 
+                        onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'var(--card-bg)'; }}
                       >
-                        <Trash2 size={15} color="#ef4444" />
+                        <Trash2 size={15} color="var(--error-text)" />
                       </button>
 
                       {/* View LOS applications */}
                       <Link href={`/admin/los?customerId=${customer.id}`} style={{ textDecoration: 'none' }}>
                         <button
                           title="View Loan Applications"
-                          style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'var(--primary-light)'; }}
-                          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
+                          onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'var(--card-bg)'; }}
                         >
                           <ArrowUpRight size={15} color="var(--text-muted-dark)" />
                         </button>

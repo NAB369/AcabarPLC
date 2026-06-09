@@ -50,7 +50,7 @@ export default function CreateProductPage() {
   if (success) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', animation: 'fadeIn 0.5s ease-out' }}>
-        <div style={{ width: '80px', height: '80px', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#059669', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
+        <div style={{ width: '80px', height: '80px', backgroundColor: 'var(--success-bg)', color: 'var(--success-text)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
           <CheckCircle size={40} />
         </div>
         <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '1rem' }}>Product Created!</h2>
@@ -66,7 +66,7 @@ export default function CreateProductPage() {
           width: '48px', 
           height: '48px', 
           borderRadius: '12px', 
-          backgroundColor: 'white', 
+          backgroundColor: 'var(--card-bg)', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
@@ -234,13 +234,13 @@ export default function CreateProductPage() {
                 fontSize: '1.125rem', 
                 height: '56px',
                 backgroundColor: 'var(--foreground)',
-                color: 'white',
+                color: 'var(--background)',
                 border: 'none',
                 boxShadow: 'var(--shadow-lg)'
               }}
               disabled={loading}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--foreground)'}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; e.currentTarget.style.color = 'white'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--foreground)'; e.currentTarget.style.color = 'var(--background)'; }}
             >
               {loading ? 'Creating...' : (
                 <>

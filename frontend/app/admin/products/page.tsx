@@ -86,7 +86,7 @@ export default function LoanProductsPage() {
             flexDirection: 'column',
             border: '1px solid var(--border-color)',
             boxShadow: 'var(--shadow-md)',
-            backgroundColor: 'white',
+            backgroundColor: 'var(--card-bg)',
             borderRadius: 'var(--radius-lg)',
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
             position: 'relative'
@@ -152,7 +152,7 @@ export default function LoanProductsPage() {
 
                 {/* Form Grid */}
                 <div style={{ 
-                  backgroundColor: '#f9fafb', 
+                  backgroundColor: 'var(--background)', 
                   borderRadius: 'var(--radius-md)', 
                   padding: '1rem', 
                   display: 'flex', 
@@ -245,7 +245,7 @@ export default function LoanProductsPage() {
                     border: '1px solid var(--border-color)'
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = '#f8fafc';
+                    e.currentTarget.style.backgroundColor = 'var(--background)';
                     e.currentTarget.style.borderColor = 'var(--primary)';
                   }}
                   onMouseOut={(e) => {

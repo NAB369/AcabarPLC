@@ -72,7 +72,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#ffffff' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
 
       {/* Right Side: Login Form */}
       <div style={{ 
@@ -181,7 +181,7 @@ export default function LoginPage() {
           ) : (
             <form onSubmit={handleMfaVerify} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-                <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#eff6ff', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                    <ShieldCheck size={32} />
                 </div>
                 <h2 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>Two-Step Verification</h2>

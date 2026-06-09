@@ -196,7 +196,7 @@ export default function NewCustomerPage() {
   if (success) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh', animation: 'fadeIn 0.5s ease-out' }}>
-        <div style={{ width: '80px', height: '80px', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#059669', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
+        <div style={{ width: '80px', height: '80px', backgroundColor: 'var(--success-bg)', color: 'var(--success-text)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem' }}>
           <CheckCircle size={40} />
         </div>
         <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '1rem' }}>Registration Successful!</h2>
@@ -214,7 +214,7 @@ export default function NewCustomerPage() {
           width: '40px', 
           height: '40px', 
           borderRadius: '10px', 
-          backgroundColor: 'white', 
+          backgroundColor: 'var(--card-bg)', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
@@ -256,12 +256,12 @@ export default function NewCustomerPage() {
                     onClick={handleToggleAutoGenerate}
                     style={{
                       width: '32px', height: '18px', borderRadius: '18px',
-                      backgroundColor: autoGenerateCid ? 'var(--primary)' : '#cbd5e1',
+                      backgroundColor: autoGenerateCid ? 'var(--primary)' : 'var(--border-hover)',
                       position: 'relative', cursor: 'pointer', transition: 'background-color 0.2s'
                     }}
                   >
                     <div style={{
-                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: 'white',
+                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: 'var(--card-bg)',
                       position: 'absolute', top: '2px', left: autoGenerateCid ? '16px' : '2px',
                       transition: 'left 0.2s', boxShadow: '0 1px 2px rgba(0,0,0,0.1)'
                     }} />
@@ -276,7 +276,7 @@ export default function NewCustomerPage() {
             </div>
 
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Assigned Branch <span style={{ color: '#ef4444' }}>*</span></label>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Assigned Branch <span style={{ color: 'var(--error-text)' }}>*</span></label>
               <select required name="branchId" className="input-field" value={formData.branchId} onChange={handleChange} style={{ height: '42px' }}>
                 {branches.map(branch => (
                   <option key={branch.id} value={branch.id}>{branch.name} ({branch.code})</option>
@@ -298,11 +298,11 @@ export default function NewCustomerPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label" style={{ marginBottom: '0.375rem' }}>First Name <span style={{ color: '#ef4444' }}>*</span></label>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>First Name <span style={{ color: 'var(--error-text)' }}>*</span></label>
               <input required name="firstName" type="text" className="input-field" placeholder="e.g. Chamnab" value={formData.firstName} onChange={handleChange} style={{ height: '42px' }} />
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Last Name <span style={{ color: '#ef4444' }}>*</span></label>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Last Name <span style={{ color: 'var(--error-text)' }}>*</span></label>
               <input required name="lastName" type="text" className="input-field" placeholder="e.g. KOL" value={formData.lastName} onChange={handleChange} style={{ height: '42px' }} />
             </div>
           </div>
@@ -347,7 +347,7 @@ export default function NewCustomerPage() {
               </select>
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Date of Birth <span style={{ color: '#ef4444' }}>*</span></label>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Date of Birth <span style={{ color: 'var(--error-text)' }}>*</span></label>
               <input required name="dob" type="date" className="input-field" value={formData.dob} onChange={handleChange} style={{ height: '42px' }} />
             </div>
           </div>
@@ -362,7 +362,7 @@ export default function NewCustomerPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Primary Phone <span style={{ color: '#ef4444' }}>*</span></label>
+              <label className="input-label" style={{ marginBottom: '0.375rem' }}>Primary Phone <span style={{ color: 'var(--error-text)' }}>*</span></label>
               <input required name="phone" type="tel" className="input-field" placeholder="+855 ..." value={formData.phone} onChange={handleChange} style={{ height: '42px' }} />
             </div>
             <div className="input-group" style={{ marginBottom: 0 }}>
@@ -379,7 +379,7 @@ export default function NewCustomerPage() {
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Province / City <span style={{ color: '#ef4444' }}>*</span></label>
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>Province / City <span style={{ color: 'var(--error-text)' }}>*</span></label>
                 <select name="province" className="input-field" value={formData.province} onChange={handleChange} required style={{ height: '42px' }}>
                   <option value="">Select Province / City</option>
                   <optgroup label="Capital City">
@@ -413,7 +413,7 @@ export default function NewCustomerPage() {
                 </select>
               </div>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>District <span style={{ color: '#ef4444' }}>*</span></label>
+                <label className="input-label" style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginBottom: '0.375rem' }}>District <span style={{ color: 'var(--error-text)' }}>*</span></label>
                 <select name="district" className="input-field" value={formData.district} onChange={handleChange} required disabled={!formData.province} style={{ height: '42px' }}>
                   <option value="">Select District</option>
                   {(CAMBODIA_DISTRICTS[formData.province] || []).map(d => (
@@ -644,7 +644,7 @@ export default function NewCustomerPage() {
           </div>
           
           {/* Upload panel */}
-          <div style={{ padding: '1.25rem', marginBottom: '1.25rem', border: '2px dashed var(--border-color)', borderRadius: '12px', backgroundColor: '#fafbfc' }}>
+          <div style={{ padding: '1.25rem', marginBottom: '1.25rem', border: '2px dashed var(--border-color)', borderRadius: '12px', backgroundColor: 'var(--bg-nested)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem' }}>
               <Upload size={18} color="var(--primary)" />
               <span style={{ fontWeight: '700', fontSize: '0.9375rem' }}>Upload / Select a Document</span>
@@ -663,20 +663,20 @@ export default function NewCustomerPage() {
                   type="file"
                   accept=".pdf,.jpg,.jpeg,.png"
                   onChange={e => setUploadFile(e.target.files?.[0] || null)}
-                  style={{ display: 'block', width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', cursor: 'pointer', backgroundColor: 'white', height: '42px' }}
+                  style={{ display: 'block', width: '100%', padding: '0.5rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', cursor: 'pointer', backgroundColor: 'var(--card-bg)', height: '42px' }}
                 />
               </div>
               <button
                 type="button"
                 onClick={handleAddFile}
                 disabled={!uploadFile}
-                className="btn btn-primary"
+                className={uploadFile ? "btn btn-primary" : "btn"}
                 style={{ 
                   height: '42px', 
                   padding: '0 1.5rem', 
-                  backgroundColor: uploadFile ? 'var(--foreground)' : 'var(--border-color)', 
+                  background: uploadFile ? undefined : 'var(--border-color)', 
                   color: uploadFile ? 'white' : 'var(--text-muted)', 
-                  border: 'none',
+                  border: uploadFile ? 'none' : '1px solid var(--border-color)',
                   cursor: uploadFile ? 'pointer' : 'not-allowed', 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -686,12 +686,6 @@ export default function NewCustomerPage() {
                   fontSize: '0.875rem',
                   fontWeight: '500'
                 }}
-                onMouseOver={(e) => {
-                  if (uploadFile) e.currentTarget.style.backgroundColor = 'var(--primary)';
-                }}
-                onMouseOut={(e) => {
-                  if (uploadFile) e.currentTarget.style.backgroundColor = 'var(--foreground)';
-                }}
               >
                 <Upload size={15} /> Add File
               </button>
@@ -700,7 +694,7 @@ export default function NewCustomerPage() {
 
           {/* Documents table */}
           <div style={{ border: '1px solid var(--border-color)', borderRadius: '12px', overflow: 'hidden' }}>
-            <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.75rem', backgroundColor: '#f8fafc' }}>
+            <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.75rem', backgroundColor: 'var(--background)' }}>
               <FolderOpen size={16} color="var(--text-muted)" />
               <span style={{ fontSize: '0.9375rem', fontWeight: '600' }}>Selected Documents</span>
               <span style={{ marginLeft: 'auto', fontSize: '0.75rem', color: 'var(--text-muted)' }}>{files.length} file{files.length !== 1 ? 's' : ''}</span>
@@ -736,11 +730,11 @@ export default function NewCustomerPage() {
                           type="button"
                           onClick={() => removeFile(doc.type)}
                           title="Remove document"
-                          style={{ padding: '0.4rem', borderRadius: '6px', border: '1px solid var(--border-color)', backgroundColor: 'white', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s' }}
-                          onMouseOver={e => { e.currentTarget.style.borderColor = '#ef4444'; e.currentTarget.style.backgroundColor = '#fef2f2'; }}
-                          onMouseOut={e  => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'white'; }}
+                          style={{ padding: '0.4rem', borderRadius: '6px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s' }}
+                          onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--error-text)'; e.currentTarget.style.backgroundColor = 'var(--error-bg)'; }}
+                          onMouseOut={e  => { e.currentTarget.style.borderColor = 'var(--border-color)'; e.currentTarget.style.backgroundColor = 'var(--card-bg)'; }}
                         >
-                          <Trash2 size={16} color="#ef4444" />
+                          <Trash2 size={16} color="var(--error-text)" />
                         </button>
                       </td>
                     </tr>
@@ -765,7 +759,7 @@ export default function NewCustomerPage() {
               padding: '0 2rem', 
               height: '42px',
               backgroundColor: 'var(--foreground)',
-              color: 'white',
+              color: 'var(--background)',
               border: 'none',
               boxShadow: 'var(--shadow-lg)',
               display: 'flex',
@@ -774,8 +768,8 @@ export default function NewCustomerPage() {
               gap: '0.5rem'
             }}
             disabled={loading}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--foreground)'}
+            onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; e.currentTarget.style.color = 'white'; }}
+            onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--foreground)'; e.currentTarget.style.color = 'var(--background)'; }}
           >
             {loading ? 'Processing...' : (
               <>

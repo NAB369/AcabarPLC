@@ -7,6 +7,7 @@ import {
   Users, ShieldCheck, Trash2
 } from 'lucide-react';
 import { api } from '@/services/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -58,13 +59,9 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
   const [editingUser, setEditingUser] = useState<any>(null);
   const [selectedRole, setSelectedRole] = useState<string>('');
   
-  // Language State
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('preferred_language') || 'en';
-    }
-    return 'en';
-  });
+  // Language Context
+  const { language, setLanguage, t } = useLanguage();
+  const selectedLanguage = language;
   const fetchUsersAndRoles = async () => {
     setLoading(true);
     try {
@@ -264,31 +261,31 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
 
   const isSuperAdmin = profile.roles?.some((r: any) => r === 'SUPER_ADMIN' || r.role?.name === 'SUPER_ADMIN');
   const tabs = [
-    { id: 'Profile', icon: User, label: 'Profile' },
+    { id: 'Profile', icon: User, label: t('tabProfile') },
     ...(isSuperAdmin ? [
-      { id: 'Company', icon: Building, label: 'Company' },
-      { id: 'Navigation', icon: List, label: 'Navigation' },
-      { id: 'Users', icon: Users, label: 'User Management' },
-      { id: 'Roles', icon: ShieldCheck, label: 'Roles & Permissions' }
+      { id: 'Company', icon: Building, label: t('tabCompany') },
+      { id: 'Navigation', icon: List, label: t('tabNavigation') },
+      { id: 'Users', icon: Users, label: t('tabUsers') },
+      { id: 'Roles', icon: ShieldCheck, label: t('tabRoles') }
     ] : []),
-    { id: 'Security', icon: Shield, label: 'Security' },
-    { id: 'Language', icon: Globe, label: 'Language' },
+    { id: 'Security', icon: Shield, label: t('tabSecurity') },
+    { id: 'Language', icon: Globe, label: t('tabLanguage') },
   ];
 
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.6)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.2s ease-out' }}>
-      <div style={{ width: '900px', height: '640px', backgroundColor: 'white', borderRadius: '24px', display: 'flex', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255, 255, 255, 0.1)', animation: 'slideUp 0.3s ease-out' }}>
+      <div style={{ width: '900px', height: '640px', backgroundColor: 'var(--card-bg)', borderRadius: '24px', display: 'flex', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255, 255, 255, 0.1)', animation: 'slideUp 0.3s ease-out' }}>
         
         {/* Sidebar */}
-        <div style={{ width: '260px', backgroundColor: '#f8fafc', borderRight: '1px solid #e2e8f0', padding: '2rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ width: '260px', backgroundColor: 'var(--background)', borderRight: '1px solid var(--border-color)', padding: '2rem 1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <div style={{ padding: '0 1rem', marginBottom: '2rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#0f172a', margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ width: '32px', height: '32px', backgroundColor: '#0f172a', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Shield size={18} color="white" />
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '800', color: 'var(--foreground)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: '32px', height: '32px', backgroundColor: 'var(--foreground)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Shield size={18} color="var(--background)" />
               </div>
-              Settings
+              {t('settingsTitle')}
             </h2>
-            <p style={{ fontSize: '0.8125rem', color: '#64748b', marginTop: '0.5rem' }}>Manage your account settings and preferences.</p>
+            <p style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Manage your account settings and preferences.</p>
           </div>
 
           {tabs.map((tab) => (
@@ -298,7 +295,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
               style={{
                 display: 'flex', alignItems: 'center', gap: '0.875rem', padding: '0.875rem 1.25rem', borderRadius: '12px', border: 'none', 
                 backgroundColor: activeTab === tab.id ? 'var(--primary)' : 'transparent',
-                color: activeTab === tab.id ? 'white' : '#475569',
+                color: activeTab === tab.id ? 'white' : 'var(--text-muted-dark)',
                 fontSize: '0.9375rem', fontWeight: activeTab === tab.id ? '600' : '500',
                 cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left'
               }}
@@ -311,16 +308,16 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
 
         {/* Content */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
-          <button onClick={onClose} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '0.5rem', borderRadius: '50%', transition: 'all 0.2s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+          <button onClick={onClose} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.5rem', borderRadius: '50%', transition: 'all 0.2s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
             <X size={24} />
           </button>
 
           <div style={{ padding: '3rem', flex: 1, overflowY: 'auto' }}>
             <div style={{ marginBottom: '2.5rem' }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#0f172a', margin: 0 }}>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--foreground)', margin: 0 }}>
                 {activeTab === 'Users' ? 'User Management' : activeTab === 'Roles' ? 'Roles & Permissions' : activeTab}
               </h3>
-              <p style={{ fontSize: '0.9375rem', color: '#64748b', marginTop: '0.25rem' }}>
+              <p style={{ fontSize: '0.9375rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
                 {activeTab === 'Profile' && 'Update your personal information and profile picture.'}
                 {activeTab === 'Security' && 'Manage your account security settings.'}
                 {activeTab === 'Company' && 'View and manage company-wide information.'}
@@ -332,13 +329,13 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
             </div>
 
             {success && (
-              <div style={{ padding: '1rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '12px', color: '#166534', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', animation: 'fadeIn 0.2s ease-out' }}>
+              <div style={{ padding: '1rem', backgroundColor: 'var(--success-bg)', border: '1px solid #bbf7d0', borderRadius: '12px', color: '#166534', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', animation: 'fadeIn 0.2s ease-out' }}>
                 <CheckCircle size={18} /> {success}
               </div>
             )}
 
             {error && (
-              <div style={{ padding: '1rem', backgroundColor: '#fef2f2', border: '1px solid #fecaca', borderRadius: '12px', color: '#991b1b', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', animation: 'fadeIn 0.2s ease-out' }}>
+              <div style={{ padding: '1rem', backgroundColor: 'var(--error-bg)', border: '1px solid #fecaca', borderRadius: '12px', color: 'var(--error-text)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', animation: 'fadeIn 0.2s ease-out' }}>
                 <AlertCircle size={18} /> {error}
               </div>
             )}
@@ -347,53 +344,53 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
               <form onSubmit={handleUpdateProfile} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
                   <div style={{ position: 'relative' }}>
-                    <div style={{ width: '100px', height: '100px', borderRadius: '32px', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: '700', color: '#1e293b', border: '4px solid white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
+                    <div style={{ width: '100px', height: '100px', borderRadius: '32px', backgroundColor: 'var(--bg-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: '700', color: 'var(--foreground)', border: '4px solid var(--card-bg)', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}>
                       {profile.firstName?.[0] || 'U'}
                     </div>
-                    <button type="button" style={{ position: 'absolute', bottom: '-4px', right: '-4px', width: '36px', height: '36px', backgroundColor: 'white', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+                    <button type="button" style={{ position: 'absolute', bottom: '-4px', right: '-4px', width: '36px', height: '36px', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
                       <Camera size={18} />
                     </button>
                   </div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '700' }}>Your Photo</h4>
-                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8125rem', color: '#64748b' }}>Allowed format JPG, GIF or PNG. Max size 2MB.</p>
+                    <p style={{ margin: '0.25rem 0 0', fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Allowed format JPG, GIF or PNG. Max size 2MB.</p>
                   </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                   <div className="input-group">
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>First Name</label>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>First Name</label>
                     <input 
                       type="text" 
                       value={profile.firstName}
                       onChange={(e) => setProfile({...profile, firstName: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                       onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
-                      onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
+                      onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
                   <div className="input-group">
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Last Name</label>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Last Name</label>
                     <input 
                       type="text" 
                       value={profile.lastName}
                       onChange={(e) => setProfile({...profile, lastName: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                       onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
-                      onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
+                      onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
                 </div>
 
                 <div className="input-group">
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Email Address</label>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Email Address</label>
                   <input 
                     type="email" 
                     value={profile.email}
                     onChange={(e) => setProfile({...profile, email: e.target.value})}
-                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                     onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
-                    onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; e.target.style.boxShadow = 'none'; }}
+                    onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                   />
                 </div>
 
@@ -408,43 +405,43 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
 
             {activeTab === 'Security' && (
               <form onSubmit={handleUpdatePassword} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
+                <div style={{ padding: '1.5rem', backgroundColor: 'var(--background)', borderRadius: '16px', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                   <div style={{ backgroundColor: 'var(--card-bg)', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
                       <Shield size={24} />
                    </div>
                    <div>
-                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#1e293b' }}>Password Settings</h4>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: '#64748b' }}>Change your password regularly to keep your account secure.</p>
+                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: 'var(--foreground)' }}>Password Settings</h4>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: 'var(--text-muted)' }}>Change your password regularly to keep your account secure.</p>
                    </div>
                 </div>
 
                 <div className="input-group">
-                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Current Password</label>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Current Password</label>
                   <input 
                     type="password" 
                     value={passwordData.currentPassword}
                     onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
-                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                   />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                   <div className="input-group">
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>New Password</label>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>New Password</label>
                     <input 
                       type="password" 
                       value={passwordData.newPassword}
                       onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                     />
                   </div>
                   <div className="input-group">
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Confirm New Password</label>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Confirm New Password</label>
                     <input 
                       type="password" 
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                     />
                   </div>
                 </div>
@@ -462,10 +459,10 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                 {!isEditingCompany ? (
                   <>
                     {/* Info Card */}
-                    <div style={{ padding: '1.5rem', border: '1px solid #e2e8f0', borderRadius: '16px', position: 'relative' }}>
+                    <div style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '16px', position: 'relative' }}>
                       <button 
                         onClick={() => setIsEditingCompany(true)}
-                        style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid #e2e8f0', backgroundColor: 'white', color: '#475569', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer' }}
+                        style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer' }}
                       >
                         <Edit size={16} /> Edit
                       </button>
@@ -474,42 +471,42 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       </h4>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                         <div>
-                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Company Name</div>
-                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{company.name || 'N/A'}</div>
+                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Company Name</div>
+                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{company.name || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Industry</div>
-                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{company.industry || 'N/A'}</div>
+                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Industry</div>
+                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{company.industry || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Company Size</div>
-                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{company.size || 'N/A'}</div>
+                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Company Size</div>
+                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{company.size || 'N/A'}</div>
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Website</div>
+                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Website</div>
                           <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--primary)' }}>{company.website || 'N/A'}</div>
                         </div>
                       </div>
                     </div>
 
                     {/* Contact Card */}
-                    <div style={{ padding: '1.5rem', border: '1px solid #e2e8f0', borderRadius: '16px' }}>
+                    <div style={{ padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '16px' }}>
                       <h4 style={{ margin: '0 0 1.5rem', fontSize: '1.125rem', fontWeight: '800', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <User size={20} color="var(--primary)" /> Contact Information
                       </h4>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         <div>
-                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Address</div>
-                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{company.address || 'N/A'}</div>
+                          <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Address</div>
+                          <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{company.address || 'N/A'}</div>
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                           <div>
-                            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Phone</div>
-                            <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{company.phone || 'N/A'}</div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Phone</div>
+                            <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{company.phone || 'N/A'}</div>
                           </div>
                           <div>
-                            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Email</div>
-                            <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{company.email || 'N/A'}</div>
+                            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Email</div>
+                            <div style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{company.email || 'N/A'}</div>
                           </div>
                         </div>
                       </div>
@@ -519,68 +516,68 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                   <form onSubmit={handleUpdateCompany} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                       <div className="input-group">
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Company Name</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Company Name</label>
                         <input 
                           type="text" 
                           value={companyForm.name}
                           onChange={(e) => setCompanyForm({...companyForm, name: e.target.value})}
-                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                         />
                       </div>
                       <div className="input-group">
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Industry</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Industry</label>
                         <input 
                           type="text" 
                           value={companyForm.industry}
                           onChange={(e) => setCompanyForm({...companyForm, industry: e.target.value})}
-                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                         />
                       </div>
                       <div className="input-group">
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Company Size</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Company Size</label>
                         <input 
                           type="text" 
                           value={companyForm.size}
                           onChange={(e) => setCompanyForm({...companyForm, size: e.target.value})}
-                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                         />
                       </div>
                       <div className="input-group">
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Website</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Website</label>
                         <input 
                           type="text" 
                           value={companyForm.website}
                           onChange={(e) => setCompanyForm({...companyForm, website: e.target.value})}
-                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                         />
                       </div>
                     </div>
                     <div className="input-group">
-                      <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Address</label>
+                      <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Address</label>
                       <input 
                         type="text" 
                         value={companyForm.address}
                         onChange={(e) => setCompanyForm({...companyForm, address: e.target.value})}
-                        style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                        style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                       />
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                       <div className="input-group">
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Phone</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Phone</label>
                         <input 
                           type="text" 
                           value={companyForm.phone}
                           onChange={(e) => setCompanyForm({...companyForm, phone: e.target.value})}
-                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                         />
                       </div>
                       <div className="input-group">
-                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: '#475569', marginBottom: '0.5rem' }}>Email</label>
+                        <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '600', color: 'var(--text-muted-dark)', marginBottom: '0.5rem' }}>Email</label>
                         <input 
                           type="text" 
                           value={companyForm.email}
                           onChange={(e) => setCompanyForm({...companyForm, email: e.target.value})}
-                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none' }} 
+                          style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none' }} 
                         />
                       </div>
                     </div>
@@ -599,13 +596,13 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
 
             {activeTab === 'Navigation' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
+                <div style={{ padding: '1.5rem', backgroundColor: 'var(--background)', borderRadius: '16px', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                   <div style={{ backgroundColor: 'var(--card-bg)', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
                       <List size={24} />
                    </div>
                    <div>
-                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#1e293b' }}>Sidebar Menus</h4>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: '#64748b' }}>Toggle the visibility of main navigation modules for all admin users.</p>
+                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: 'var(--foreground)' }}>Sidebar Menus</h4>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: 'var(--text-muted)' }}>Toggle the visibility of main navigation modules for all admin users.</p>
                    </div>
                 </div>
 
@@ -613,8 +610,8 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                   {['Dashboard', 'Customer', 'LOS Pipeline', 'Underwriting', 'New Application', 'Loan Product', 'CBC', 'Bank Statement', 'Report'].map(item => {
                     const isVisible = companyForm.sidebarConfig?.[item] !== false; // Default true
                     return (
-                      <div key={item} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', border: '1px solid #e2e8f0', borderRadius: '12px' }}>
-                        <span style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#1e293b' }}>{item}</span>
+                      <div key={item} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', border: '1px solid var(--border-color)', borderRadius: '12px' }}>
+                        <span style={{ fontSize: '0.9375rem', fontWeight: '600', color: 'var(--foreground)' }}>{item}</span>
                         <button 
                           onClick={async () => {
                             const newVisible = !isVisible;
@@ -643,13 +640,13 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                           }}
                           style={{
                             width: '44px', height: '24px', borderRadius: '12px',
-                            backgroundColor: isVisible ? 'var(--primary)' : '#cbd5e1',
+                            backgroundColor: isVisible ? 'var(--primary)' : 'var(--border-hover)',
                             border: 'none', position: 'relative', cursor: 'pointer',
                             transition: 'background-color 0.2s'
                           }}
                         >
                           <div style={{
-                            width: '20px', height: '20px', borderRadius: '50%', backgroundColor: 'white',
+                            width: '20px', height: '20px', borderRadius: '50%', backgroundColor: 'var(--card-bg)',
                             position: 'absolute', top: '2px', left: isVisible ? '22px' : '2px',
                             transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                           }} />
@@ -663,13 +660,13 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
 
             {activeTab === 'Language' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div style={{ padding: '1.5rem', backgroundColor: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: '#fff', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
+                <div style={{ padding: '1.5rem', backgroundColor: 'var(--background)', borderRadius: '16px', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                   <div style={{ backgroundColor: 'var(--card-bg)', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
                       <Globe size={24} />
                    </div>
                    <div>
-                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: '#1e293b' }}>Display Language</h4>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: '#64748b' }}>Select your preferred language for the admin dashboard interface.</p>
+                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: 'var(--foreground)' }}>{t('displayLanguage')}</h4>
+                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: 'var(--text-muted)' }}>{t('displayLanguageDesc')}</p>
                    </div>
                 </div>
 
@@ -683,14 +680,14 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       key={lang.id} 
                       style={{ 
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                        padding: '1.25rem 1.5rem', border: selectedLanguage === lang.id ? '2px solid var(--primary)' : '1px solid #e2e8f0', 
-                        borderRadius: '12px', cursor: 'pointer', backgroundColor: selectedLanguage === lang.id ? '#f0f9ff' : '#ffffff',
+                        padding: '1.25rem 1.5rem', border: selectedLanguage === lang.id ? '2px solid var(--primary)' : '1px solid var(--border-color)', 
+                        borderRadius: '12px', cursor: 'pointer', backgroundColor: selectedLanguage === lang.id ? 'var(--primary-light)' : 'var(--card-bg)',
                         transition: 'all 0.2s'
                       }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <span style={{ fontSize: '1.5rem' }}>{lang.flag}</span>
-                        <span style={{ fontSize: '1rem', fontWeight: '600', color: '#1e293b' }}>{lang.name}</span>
+                        <span style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--foreground)' }}>{lang.name}</span>
                       </div>
                       <input 
                         type="radio" 
@@ -698,9 +695,8 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                         value={lang.id} 
                         checked={selectedLanguage === lang.id}
                         onChange={(e) => {
-                          setSelectedLanguage(e.target.value);
-                          localStorage.setItem('preferred_language', e.target.value);
-                          setSuccess('Language preference updated successfully');
+                          setLanguage(e.target.value as any);
+                          setSuccess(t('languageSuccess'));
                           setTimeout(() => setSuccess(null), 3000);
                         }}
                         style={{ width: '1.25rem', height: '1.25rem', accentColor: 'var(--primary)', cursor: 'pointer' }}
@@ -719,24 +715,24 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       <div className="animate-spin" style={{ width: '24px', height: '24px', border: '3px solid #cbd5e1', borderTopColor: 'var(--primary)', borderRadius: '50%', margin: '0 auto' }}></div>
                     </div>
                   ) : users.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b' }}>No accounts registered in the database.</div>
+                    <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-muted)' }}>No accounts registered in the database.</div>
                   ) : (
                     users.map((user) => {
                       const isAdmin = user.roles.some((ur: any) => ur.role.name === 'SUPER_ADMIN');
                       return (
-                        <div key={user.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', borderRadius: '12px', border: '1px solid #e2e8f0', backgroundColor: 'white' }}>
+                        <div key={user.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)' }}>
                           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-                            <div style={{ width: '52px', height: '52px', borderRadius: '50%', backgroundColor: isAdmin ? '#fefce8' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: '700', color: isAdmin ? '#a16207' : 'inherit' }}>
+                            <div style={{ width: '52px', height: '52px', borderRadius: '50%', backgroundColor: isAdmin ? 'var(--warning-bg)' : 'var(--bg-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: '700', color: isAdmin ? 'var(--warning-text)' : 'inherit' }}>
                               {user.firstName[0]}{user.lastName[0]}
                             </div>
                             <div>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                 <span style={{ fontWeight: '700', fontSize: '1.125rem' }}>{user.firstName} {user.lastName}</span>
-                                <span style={{ padding: '0.125rem 0.625rem', backgroundColor: isAdmin ? '#fefce8' : '#f1f5f9', color: isAdmin ? '#a16207' : '#475569', borderRadius: '9999px', fontSize: '0.6875rem', fontWeight: '800', border: isAdmin ? '1px solid #fef08a' : 'none' }}>
+                                <span style={{ padding: '0.125rem 0.625rem', backgroundColor: isAdmin ? 'var(--warning-bg)' : 'var(--bg-muted)', color: isAdmin ? 'var(--warning-text)' : 'var(--text-muted-dark)', borderRadius: '9999px', fontSize: '0.6875rem', fontWeight: '800', border: isAdmin ? '1px solid #fef08a' : 'none' }}>
                                   {user.roles[0]?.role.name}
                                 </span>
                               </div>
-                              <div style={{ color: '#64748b', fontSize: '0.875rem' }}>{user.email}</div>
+                              <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{user.email}</div>
                             </div>
                           </div>
                           <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -752,14 +748,14 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                                 <button 
                                   className="btn btn-secondary" 
                                   onClick={() => handleDeleteUser(user.id)}
-                                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#dc2626', borderColor: '#fecaca', cursor: 'pointer' }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: 'var(--error-text)', borderColor: 'var(--error-border)', cursor: 'pointer' }}
                                 >
                                   <Trash2 size={16} /> Delete
                                 </button>
                               </>
                             )}
                             {isAdmin && (
-                               <div style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: '700', color: '#64748b', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px dashed #e2e8f0' }}>
+                               <div style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', backgroundColor: 'var(--background)', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
                                   System Account
                                </div>
                             )}
@@ -781,11 +777,11 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       </div>
                     ) : (
                       roles.map((role) => (
-                        <div key={role.id} style={{ padding: '1.5rem', border: editingRole?.id === role.id ? '2px solid var(--primary)' : '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: 'white' }}>
+                        <div key={role.id} style={{ padding: '1.5rem', border: editingRole?.id === role.id ? '2px solid var(--primary)' : '1px solid var(--border-color)', borderRadius: '12px', backgroundColor: 'var(--card-bg)' }}>
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
                             <div>
                               <h4 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '700' }}>{role.name}</h4>
-                              <p style={{ margin: '0.25rem 0 0', fontSize: '0.8125rem', color: '#64748b' }}>{role.description}</p>
+                              <p style={{ margin: '0.25rem 0 0', fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{role.description}</p>
                             </div>
                             {role.name !== 'SUPER_ADMIN' && (
                               <button 
@@ -802,7 +798,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                           
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                             {role.permissions.map((rp: any) => (
-                              <span key={rp.permission.id} style={{ padding: '0.25rem 0.625rem', backgroundColor: '#f1f5f9', borderRadius: '8px', fontSize: '0.6875rem', fontWeight: '600', color: '#475569' }}>
+                              <span key={rp.permission.id} style={{ padding: '0.25rem 0.625rem', backgroundColor: 'var(--bg-muted)', borderRadius: '8px', fontSize: '0.6875rem', fontWeight: '600', color: 'var(--text-muted-dark)' }}>
                                 {rp.permission.name}
                               </span>
                             ))}
@@ -820,15 +816,15 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
       {/* Edit Role Modal */}
       {editingRole && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setEditingRole(null)}>
-          <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', width: '90%', maxWidth: '600px', padding: '2rem' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', width: '90%', maxWidth: '600px', padding: '2rem' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '800' }}>Edit Permissions: {editingRole.name}</h3>
-               <button onClick={() => setEditingRole(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8' }}><X /></button>
+               <button onClick={() => setEditingRole(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}><X /></button>
             </div>
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', maxHeight: '400px', overflowY: 'auto', padding: '0.5rem' }}>
                {allPermissions.map((perm) => (
-                 <label key={perm.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', border: '1px solid #e2e8f0', borderRadius: '12px', cursor: 'pointer' }}>
+                 <label key={perm.id} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: '12px', cursor: 'pointer' }}>
                    <input 
                      type="checkbox" 
                      checked={selectedPermissions.includes(perm.id)}
@@ -839,7 +835,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                    />
                    <div>
                      <div style={{ fontWeight: '600', fontSize: '0.875rem' }}>{perm.name}</div>
-                     <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{perm.description}</div>
+                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{perm.description}</div>
                    </div>
                  </label>
                ))}
@@ -856,7 +852,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
       {/* Edit User Role Modal */}
       {editingUser && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setEditingUser(null)}>
-          <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', width: '90%', maxWidth: '400px', padding: '2rem' }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '16px', border: '1px solid var(--border-color)', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', width: '90%', maxWidth: '400px', padding: '2rem' }} onClick={(e) => e.stopPropagation()}>
             <h3 style={{ marginBottom: '1.5rem', marginTop: 0, fontSize: '1.25rem', fontWeight: '800' }}>Change Role: {editingUser.firstName}</h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -870,7 +866,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                    }}
                  >
                    <div style={{ fontWeight: '700', fontSize: '0.9375rem' }}>{role.name}</div>
-                   <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>{role.description}</div>
+                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>{role.description}</div>
                  </button>
                ))}
             </div>

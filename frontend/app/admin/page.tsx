@@ -5,8 +5,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Search, Filter, Plus, ChevronLeft, ChevronRight, ArrowRight, FileText, TrendingUp, AlertCircle, CheckCircle2, MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
 import { api } from '@/services/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function AdminDashboardPage() {
+  const { t } = useLanguage();
   const [applications, setApplications] = useState<any[]>([]);
   const [metrics, setMetrics] = useState<any>(null);
   const [chartDataState, setChartDataState] = useState<any[]>([]);
@@ -18,19 +20,20 @@ export default function AdminDashboardPage() {
   const itemsPerPage = 5;
 
   const getStatusBadge = (status: string) => {
+    const statusText = t(`status_${status}`) !== `status_${status}` ? t(`status_${status}`) : status;
     switch (status) {
-      case 'PENDING': return <span className="badge badge-pending">Pending</span>;
-      case 'DISBURSED': return <span className="badge badge-disbursed">Disbursed</span>;
-      case 'UNDERWRITING': return <span className="badge badge-review">Underwriting</span>;
-      case 'APPROVED': return <span className="badge badge-approved">Approved</span>;
-      case 'REJECTED': return <span className="badge badge-rejected">Rejected</span>;
-      case 'ACTIVE': return <span className="badge badge-disbursed">Active</span>;
-      case 'COMPLETED': return <span className="badge badge-approved">Completed</span>;
-      case 'OVERDUE': return <span className="badge badge-rejected">Overdue</span>;
-      case 'TIER1_REVIEW': return <span className="badge badge-review">Tier 1 Review</span>;
-      case 'TIER2_REVIEW': return <span className="badge badge-review">Tier 2 Review</span>;
-      case 'TIER3_REVIEW': return <span className="badge badge-review">Tier 3 Review</span>;
-      default: return <span className="badge">{status}</span>;
+      case 'PENDING': return <span className="badge badge-pending">{statusText}</span>;
+      case 'DISBURSED': return <span className="badge badge-disbursed">{statusText}</span>;
+      case 'UNDERWRITING': return <span className="badge badge-review">{statusText}</span>;
+      case 'APPROVED': return <span className="badge badge-approved">{statusText}</span>;
+      case 'REJECTED': return <span className="badge badge-rejected">{statusText}</span>;
+      case 'ACTIVE': return <span className="badge badge-disbursed">{statusText}</span>;
+      case 'COMPLETED': return <span className="badge badge-approved">{statusText}</span>;
+      case 'OVERDUE': return <span className="badge badge-rejected">{statusText}</span>;
+      case 'TIER1_REVIEW': return <span className="badge badge-review">{statusText}</span>;
+      case 'TIER2_REVIEW': return <span className="badge badge-review">{statusText}</span>;
+      case 'TIER3_REVIEW': return <span className="badge badge-review">{statusText}</span>;
+      default: return <span className="badge">{statusText}</span>;
     }
   };
 
@@ -111,7 +114,7 @@ export default function AdminDashboardPage() {
                   transition: 'all 0.2s'
                 }}
               >
-                Total Volume
+                {t('totalVolume')}
               </div>
               <div 
                 onClick={() => setActiveChartTab('GROWTH')}
@@ -125,12 +128,12 @@ export default function AdminDashboardPage() {
                   transition: 'all 0.2s'
                 }}
               >
-                Growth Tracking
+                {t('growthTracking')}
               </div>
             </div>
-            <div style={{ textAlign: 'right', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '0.75rem 1.25rem', backgroundColor: '#f8fafc' }}>
+            <div style={{ textAlign: 'right', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', padding: '0.75rem 1.25rem', backgroundColor: 'var(--background)' }}>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted-dark)', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem' }}>
-                {activeChartTab === 'VOLUME' ? 'Annual Volume' : 'Total Cumulative'}
+                {activeChartTab === 'VOLUME' ? t('annualVolume') : t('totalCumulative')}
               </div>
               <div style={{ fontWeight: '700', fontSize: '1.25rem', color: 'var(--foreground)', letterSpacing: '-0.02em' }}>
                 ${(activeChartTab === 'VOLUME' 
@@ -150,11 +153,11 @@ export default function AdminDashboardPage() {
                     <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.6} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border-color)" strokeOpacity={0.6} />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--text-muted)' }} dy={15} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'var(--text-muted)' }} tickFormatter={(value) => `$${value / 1000}K`} dx={-10} />
                 <Tooltip
-                  contentStyle={{ borderRadius: '12px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-lg)', backgroundColor: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(8px)', padding: '12px 16px' }}
+                  contentStyle={{ borderRadius: '12px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-lg)', backgroundColor: 'var(--card-bg)', backdropFilter: 'blur(8px)', padding: '12px 16px' }}
                   itemStyle={{ color: 'var(--foreground)', fontWeight: '600' }}
                   formatter={(value: any) => [`$${Number(value).toLocaleString()}`, activeChartTab === 'VOLUME' ? 'Monthly Volume' : 'Cumulative Growth']}
                   labelStyle={{ color: 'var(--text-muted)', marginBottom: '4px', fontSize: '0.875rem' }}
@@ -173,13 +176,13 @@ export default function AdminDashboardPage() {
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <TrendingUp size={16} color="var(--success-text)" />
               </div>
-              Total Portfolio
+              {t('totalPortfolio')}
             </div>
             <div style={{ fontSize: '1.75rem', fontWeight: '700', letterSpacing: '-0.03em', color: 'var(--foreground)' }}>
-              ${(metrics?.totalVolume || 0).toLocaleString()} <span style={{ fontSize: '0.8125rem', color: 'var(--success-text)', fontWeight: '600', marginLeft: '0.5rem', backgroundColor: 'var(--success-bg)', padding: '0.125rem 0.5rem', borderRadius: 'var(--radius-full)' }}>Real-time</span>
+              ${(metrics?.totalVolume || 0).toLocaleString()} <span style={{ fontSize: '0.8125rem', color: 'var(--success-text)', fontWeight: '600', marginLeft: '0.5rem', backgroundColor: 'var(--success-bg)', padding: '0.125rem 0.5rem', borderRadius: 'var(--radius-full)' }}>{t('realTime')}</span>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--success-text)', marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: '500' }}>
-              <TrendingUp size={12} /> +12.5% from last month
+              <TrendingUp size={12} /> {t('changeFromLastMonth')}
             </div>
           </div>
 
@@ -189,13 +192,13 @@ export default function AdminDashboardPage() {
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--error-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <AlertCircle size={16} color="var(--error-text)" />
               </div>
-              Overdue Accounts
+              {t('overdueAccounts')}
             </div>
             <div style={{ fontSize: '1.75rem', fontWeight: '700', letterSpacing: '-0.03em', color: 'var(--foreground)' }}>
-              {metrics?.overdueCount || 0} <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '500', marginLeft: '0.5rem' }}>Loans</span>
+              {metrics?.overdueCount || 0} <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '500', marginLeft: '0.5rem' }}>{t('loans')}</span>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: '500' }}>
-              <ArrowRight size={12} /> No change from last week
+              <ArrowRight size={12} /> {t('noChangeFromLastWeek')}
             </div>
           </div>
         </div>
@@ -207,13 +210,13 @@ export default function AdminDashboardPage() {
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <CheckCircle2 size={16} color="var(--primary)" />
               </div>
-              Settled Loans
+              {t('settledLoans')}
             </div>
             <div style={{ fontSize: '1.75rem', fontWeight: '700', letterSpacing: '-0.03em', color: 'var(--foreground)' }}>
-              {metrics?.completedCount || 0} <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '500', marginLeft: '0.5rem' }}>Accounts</span>
+              {metrics?.completedCount || 0} <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '500', marginLeft: '0.5rem' }}>{t('accounts')}</span>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--success-text)', marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: '500' }}>
-              <TrendingUp size={12} /> +4 settled this week
+              <TrendingUp size={12} /> {t('settledThisWeek')}
             </div>
           </div>
 
@@ -223,13 +226,13 @@ export default function AdminDashboardPage() {
               <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--warning-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <FileText size={16} color="var(--warning-text)" />
               </div>
-              Avg. Ticket Size
+              {t('avgTicketSize')}
             </div>
             <div style={{ fontSize: '1.75rem', fontWeight: '700', letterSpacing: '-0.03em', color: 'var(--foreground)' }}>
               ${(metrics?.avgLoanValue || 0).toLocaleString()} <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: '500', marginLeft: '0.5rem' }}>USD</span>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem', fontWeight: '500' }}>
-              <TrendingUp size={12} /> Average steady over 3mo
+              <TrendingUp size={12} /> {t('avgSteady')}
             </div>
           </div>
         </div>
@@ -238,12 +241,12 @@ export default function AdminDashboardPage() {
 
       {/* Table Section */}
       <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
-        <div style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '700', letterSpacing: '-0.02em' }}>Live Loan Pipeline</h2>
+        <div style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '700', letterSpacing: '-0.02em' }}>{t('liveLoanPipeline')}</h2>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <Link href="/admin/loans/new" style={{ textDecoration: 'none' }}>
-              <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--foreground)', color: 'white' }}>
-                <Plus size={16} /> New Application
+              <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', border: 'none' }}>
+                <Plus size={16} /> {t('newApplicationBtn')}
               </button>
             </Link>
           </div>
@@ -255,7 +258,7 @@ export default function AdminDashboardPage() {
             <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }} />
             <input 
               type="text" 
-              placeholder="Search by ID or Name..." 
+              placeholder={t('searchPlaceholderAdmin')}
               className="input-field" 
               style={{ paddingLeft: '2.5rem', marginBottom: 0 }}
               value={searchTerm}
@@ -268,13 +271,13 @@ export default function AdminDashboardPage() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="ALL">All Statuses</option>
-              <option value="ACTIVE">Active</option>
-              <option value="PENDING">Pending</option>
-              <option value="UNDERWRITING">Underwriting</option>
-              <option value="APPROVED">Approved</option>
-              <option value="DISBURSED">Disbursed</option>
-              <option value="REJECTED">Rejected</option>
+              <option value="ALL">{t('filter_ALL')}</option>
+              <option value="ACTIVE">{t('filter_ACTIVE')}</option>
+              <option value="PENDING">{t('filter_PENDING')}</option>
+              <option value="UNDERWRITING">{t('filter_UNDERWRITING')}</option>
+              <option value="APPROVED">{t('filter_APPROVED')}</option>
+              <option value="DISBURSED">{t('filter_DISBURSED')}</option>
+              <option value="REJECTED">{t('filter_REJECTED')}</option>
             </select>
           </div>
         </div>
@@ -283,13 +286,13 @@ export default function AdminDashboardPage() {
           <table className="data-table">
             <thead>
               <tr>
-                <th style={{ cursor: 'pointer' }}>ID <ArrowUpDown size={12} style={{ display: 'inline', marginLeft: '4px' }}/></th>
-                <th style={{ cursor: 'pointer' }}>Name <ArrowUpDown size={12} style={{ display: 'inline', marginLeft: '4px' }}/></th>
-                <th>Product</th>
-                <th style={{ cursor: 'pointer' }}>Amount <ArrowUpDown size={12} style={{ display: 'inline', marginLeft: '4px' }}/></th>
-                <th>Sent Date</th>
-                <th>Status</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
+                <th style={{ cursor: 'pointer' }}>{t('tableHeaderID')} <ArrowUpDown size={12} style={{ display: 'inline', marginLeft: '4px' }}/></th>
+                <th style={{ cursor: 'pointer' }}>{t('tableHeaderName')} <ArrowUpDown size={12} style={{ display: 'inline', marginLeft: '4px' }}/></th>
+                <th>{t('tableHeaderProduct')}</th>
+                <th style={{ cursor: 'pointer' }}>{t('tableHeaderAmount')} <ArrowUpDown size={12} style={{ display: 'inline', marginLeft: '4px' }}/></th>
+                <th>{t('tableHeaderSentDate')}</th>
+                <th>{t('tableHeaderStatus')}</th>
+                <th style={{ textAlign: 'right' }}>{t('tableHeaderActions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -304,7 +307,7 @@ export default function AdminDashboardPage() {
                   key={app.id} 
                   onClick={() => window.location.href = `/admin/los/${app.id}`}
                   style={{ cursor: 'pointer', transition: 'background-color 0.2s' }}
-                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f8fafc'}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
                   onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
                   <td style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontWeight: '600' }}>#{app.id.substring(0, 6).toUpperCase()}</td>
@@ -324,7 +327,7 @@ export default function AdminDashboardPage() {
           </table>
         </div>
 
-        <div style={{ padding: '1.25rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', backgroundColor: '#f9fafb' }}>
+        <div style={{ padding: '1.25rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', backgroundColor: 'var(--background)' }}>
           <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '500' }}>
             Displaying <span style={{ color: 'var(--foreground)', fontWeight: '700' }}>{paginatedApplications.length}</span> of <span style={{ color: 'var(--foreground)', fontWeight: '700' }}>{filteredApplications.length}</span> active records
           </div>

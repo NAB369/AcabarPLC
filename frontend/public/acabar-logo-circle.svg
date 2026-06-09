@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Definitions for text paths -->
+  <defs>
+    <!-- Path for top text (clockwise) -->
+    <path id="topTextPath" d="M 22.5,100 A 77.5,77.5 0 0,1 177.5,100" fill="none" />
+    <!-- Path for bottom text (counter-clockwise) -->
+    <path id="bottomTextPath" d="M 22.5,100 A 77.5,77.5 0 0,0 177.5,100" fill="none" />
+  </defs>
+
+  <!-- Outer Yellow Ring -->
+  <circle cx="100" cy="100" r="92" fill="#FCC419" stroke="#E5A900" stroke-width="1.5" />
+  
+  <!-- Outer Ring Inner Border -->
+  <circle cx="100" cy="100" r="67" fill="none" stroke="#E5A900" stroke-width="1" />
+  
+  <!-- Inner Blue Circle -->
+  <circle cx="100" cy="100" r="65" fill="#2B4BCB" />
+
+  <!-- 3D Beveled Star -->
+  <g stroke="#B47B00" stroke-width="0.5" stroke-linejoin="round">
+    <polygon points="100.00,55.00 89.42,85.44 100,100" fill="#fde047" />
+    <polygon points="100.00,55.00 110.58,85.44 100,100" fill="#ca8a04" />
+    <polygon points="142.80,86.09 110.58,85.44 100,100" fill="#fde047" />
+    <polygon points="142.80,86.09 117.12,105.56 100,100" fill="#ca8a04" />
+    <polygon points="126.45,136.41 117.12,105.56 100,100" fill="#fde047" />
+    <polygon points="126.45,136.41 100.00,118.00 100,100" fill="#ca8a04" />
+    <polygon points="73.55,136.41 100.00,118.00 100,100" fill="#fde047" />
+    <polygon points="73.55,136.41 82.88,105.56 100,100" fill="#ca8a04" />
+    <polygon points="57.20,86.09 82.88,105.56 100,100" fill="#fde047" />
+    <polygon points="57.20,86.09 89.42,85.44 100,100" fill="#ca8a04" />
+  </g>
+
+  <!-- Side Stars -->
+  <polygon points="38.00,95.00 39.18,98.38 42.76,98.45 39.90,100.62 40.94,104.05 38.00,102.00 35.06,104.05 36.10,100.62 33.24,98.45 36.82,98.38" fill="#2B4BCB" />
+  <polygon points="162.00,95.00 163.18,98.38 166.76,98.45 163.90,100.62 164.94,104.05 162.00,102.00 159.06,104.05 160.10,100.62 157.24,98.45 160.82,98.38" fill="#2B4BCB" />
+
+  <!-- Khmer text on top path -->
+  <text font-family="'Kantumruy Pro', 'Inter', sans-serif" font-size="12" font-weight="bold" fill="#000000">
+    <textPath href="#topTextPath" startOffset="50%" text-anchor="middle">អាកាបារ ម.ក</textPath>
+  </text>
+  
+  <!-- English text on bottom path -->
+  <text font-family="'Inter', sans-serif" font-size="10" font-weight="bold" fill="#000000">
+    <textPath href="#bottomTextPath" startOffset="50%" text-anchor="middle">Acabar Plc</textPath>
+  </text>
+</svg>

@@ -12,25 +12,25 @@ import {
 
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: React.ReactNode }> = {
-  DRAFT: { label: 'Draft', color: 'var(--text-muted-dark)', bg: '#f1f5f9', icon: <Clock size={12} /> },
-  SUBMITTED: { label: 'Submitted', color: '#6366f1', bg: '#eef2ff', icon: <ArrowUpRight size={12} /> },
-  KYC_REVIEW: { label: 'KYC Review', color: '#8b5cf6', bg: '#f5f3ff', icon: <Eye size={12} /> },
-  KYC_APPROVED: { label: 'KYC Approved', color: '#059669', bg: '#ecfdf5', icon: <CheckCircle2 size={12} /> },
-  KYC_REJECTED: { label: 'KYC Rejected', color: '#dc2626', bg: '#fef2f2', icon: <XCircle size={12} /> },
-  CREDIT_CHECK: { label: 'Credit Check', color: '#d97706', bg: '#fffbeb', icon: <Shield size={12} /> },
-  UNDERWRITING: { label: 'Underwriting', color: '#ea580c', bg: '#fff7ed', icon: <Shield size={12} /> },
+  DRAFT: { label: 'Draft', color: 'var(--text-muted-dark)', bg: 'var(--bg-muted)', icon: <Clock size={12} /> },
+  SUBMITTED: { label: 'Submitted', color: 'var(--indigo-text)', bg: 'var(--indigo-bg)', icon: <ArrowUpRight size={12} /> },
+  KYC_REVIEW: { label: 'KYC Review', color: 'var(--purple-text)', bg: 'var(--purple-bg)', icon: <Eye size={12} /> },
+  KYC_APPROVED: { label: 'KYC Approved', color: 'var(--success-text)', bg: 'var(--success-bg)', icon: <CheckCircle2 size={12} /> },
+  KYC_REJECTED: { label: 'KYC Rejected', color: 'var(--error-text)', bg: 'var(--error-bg)', icon: <XCircle size={12} /> },
+  CREDIT_CHECK: { label: 'Credit Check', color: 'var(--warning-text)', bg: 'var(--warning-bg)', icon: <Shield size={12} /> },
+  UNDERWRITING: { label: 'Underwriting', color: 'var(--orange-text)', bg: 'var(--orange-bg)', icon: <Shield size={12} /> },
   TIER1_REVIEW: { label: 'Tier 1 Review', color: 'var(--primary)', bg: 'var(--primary-light)', icon: <Eye size={12} /> },
-  TIER2_REVIEW: { label: 'Tier 2 Review', color: '#7c3aed', bg: '#f5f3ff', icon: <Eye size={12} /> },
-  TIER3_REVIEW: { label: 'Tier 3 Review', color: '#be185d', bg: '#fdf2f8', icon: <Eye size={12} /> },
-  APPROVED: { label: 'Approved', color: '#059669', bg: '#ecfdf5', icon: <CheckCircle2 size={12} /> },
-  AUTO_REJECTED: { label: 'Auto Rejected', color: '#dc2626', bg: '#fef2f2', icon: <XCircle size={12} /> },
-  REJECTED: { label: 'Rejected', color: '#dc2626', bg: '#fef2f2', icon: <XCircle size={12} /> },
-  PENDING_DISBURSEMENT: { label: 'Ready to Disburse', color: '#0891b2', bg: '#ecfeff', icon: <Banknote size={12} /> },
-  DISBURSED: { label: 'Disbursed', color: '#059669', bg: '#ecfdf5', icon: <Banknote size={12} /> },
-  ACTIVE: { label: 'Active', color: '#16a34a', bg: '#f0fdf4', icon: <CheckCircle2 size={12} /> },
-  COMPLETED: { label: 'Completed', color: '#6b7280', bg: '#f9fafb', icon: <CheckCircle2 size={12} /> },
-  OVERDUE: { label: 'Overdue', color: '#dc2626', bg: '#fef2f2', icon: <AlertTriangle size={12} /> },
-  DEFAULTED: { label: 'Defaulted', color: '#991b1b', bg: '#fef2f2', icon: <XCircle size={12} /> },
+  TIER2_REVIEW: { label: 'Tier 2 Review', color: 'var(--purple-text)', bg: 'var(--purple-bg)', icon: <Eye size={12} /> },
+  TIER3_REVIEW: { label: 'Tier 3 Review', color: 'var(--pink-text)', bg: 'var(--pink-bg)', icon: <Eye size={12} /> },
+  APPROVED: { label: 'Approved', color: 'var(--success-text)', bg: 'var(--success-bg)', icon: <CheckCircle2 size={12} /> },
+  AUTO_REJECTED: { label: 'Auto Rejected', color: 'var(--error-text)', bg: 'var(--error-bg)', icon: <XCircle size={12} /> },
+  REJECTED: { label: 'Rejected', color: 'var(--error-text)', bg: 'var(--error-bg)', icon: <XCircle size={12} /> },
+  PENDING_DISBURSEMENT: { label: 'Ready to Disburse', color: 'var(--cyan-text)', bg: 'var(--cyan-bg)', icon: <Banknote size={12} /> },
+  DISBURSED: { label: 'Disbursed', color: 'var(--success-text)', bg: 'var(--success-bg)', icon: <Banknote size={12} /> },
+  ACTIVE: { label: 'Active', color: 'var(--success-text)', bg: 'var(--success-bg)', icon: <CheckCircle2 size={12} /> },
+  COMPLETED: { label: 'Completed', color: 'var(--text-muted)', bg: 'var(--bg-muted)', icon: <CheckCircle2 size={12} /> },
+  OVERDUE: { label: 'Overdue', color: 'var(--error-text)', bg: 'var(--error-bg)', icon: <AlertTriangle size={12} /> },
+  DEFAULTED: { label: 'Defaulted', color: 'var(--error-text)', bg: 'var(--error-bg)', icon: <XCircle size={12} /> },
 };
 
 const PIPELINE_STAGES = [
@@ -166,7 +166,7 @@ export default function LosQueuePage() {
                 fontSize: '0.6875rem',
                 padding: '0.125rem 0.5rem',
                 borderRadius: 'var(--radius-full)',
-                backgroundColor: isActive ? 'rgba(255,255,255,0.2)' : '#f1f5f9',
+                backgroundColor: isActive ? 'rgba(255,255,255,0.2)' : 'var(--bg-muted)',
                 color: isActive ? 'white' : 'var(--text-muted)',
                 fontWeight: '700',
               }}>
@@ -191,9 +191,9 @@ export default function LosQueuePage() {
                 placeholder="Search by name or ID..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ padding: '0.5rem 0.875rem 0.5rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '0.8125rem', width: '240px', outline: 'none', transition: 'all var(--transition-fast)', backgroundColor: '#f8fafc' }}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; e.target.style.backgroundColor = '#fff'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; e.target.style.backgroundColor = '#f8fafc'; }}
+                style={{ padding: '0.5rem 0.875rem 0.5rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '0.8125rem', width: '240px', outline: 'none', transition: 'all var(--transition-fast)', backgroundColor: 'var(--background)' }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; e.target.style.backgroundColor = 'var(--card-bg)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; e.target.style.backgroundColor = 'var(--background)'; }}
               />
             </div>
           </div>
@@ -267,7 +267,7 @@ export default function LosQueuePage() {
                         <span style={{
                           fontSize: '0.8125rem',
                           fontWeight: '600',
-                          color: app.dtiRatio > 0.7 ? '#dc2626' : app.dtiRatio > 0.5 ? '#d97706' : '#059669',
+                          color: app.dtiRatio > 0.7 ? 'var(--error-text)' : app.dtiRatio > 0.5 ? 'var(--warning-text)' : 'var(--success-text)',
                         }}>
                           {(app.dtiRatio * 100).toFixed(0)}%
                         </span>
@@ -280,7 +280,7 @@ export default function LosQueuePage() {
                         <span style={{
                           fontSize: '0.8125rem',
                           fontWeight: '600',
-                          color: app.cbcScore < 300 ? '#dc2626' : app.cbcScore < 500 ? '#d97706' : '#059669',
+                          color: app.cbcScore < 300 ? 'var(--error-text)' : app.cbcScore < 500 ? 'var(--warning-text)' : 'var(--success-text)',
                         }}>
                           {app.cbcScore}
                         </span>
@@ -293,7 +293,7 @@ export default function LosQueuePage() {
                         fontSize: '0.6875rem',
                         padding: '0.125rem 0.5rem',
                         borderRadius: 'var(--radius-md)',
-                        backgroundColor: '#f1f5f9',
+                        backgroundColor: 'var(--bg-muted)',
                         color: 'var(--text-muted-dark)',
                         fontWeight: '500',
                       }}>
@@ -358,7 +358,7 @@ export default function LosQueuePage() {
           </table>
         </div>
 
-        <div style={{ padding: '0.875rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', backgroundColor: '#f8fafc' }}>
+        <div style={{ padding: '0.875rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', backgroundColor: 'var(--background)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '500' }}>
               Showing <span style={{ color: 'var(--foreground)', fontWeight: '600' }}>{totalItems === 0 ? 0 : startIndex + 1}-{Math.min(startIndex + rowsPerPage, totalItems)}</span> of <span style={{ color: 'var(--foreground)', fontWeight: '600' }}>{totalItems}</span>
@@ -376,7 +376,7 @@ export default function LosQueuePage() {
                   padding: '0.25rem 0.5rem',
                   borderRadius: 'var(--radius-sm)',
                   border: '1px solid var(--border-color)',
-                  backgroundColor: '#fff',
+                  backgroundColor: 'var(--card-bg)',
                   fontSize: '0.8125rem',
                   outline: 'none',
                   cursor: 'pointer'

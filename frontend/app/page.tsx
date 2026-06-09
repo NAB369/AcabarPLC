@@ -1,308 +1,441 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
-import { Zap, FileText, CreditCard, BarChart3, Smartphone, CheckCircle2, Lock, Menu } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Check, ShieldCheck, HeartHandshake, PhoneCall, Sun, Moon } from 'lucide-react';
 
 export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Sync state with DOM on mount
+    const isDark = document.documentElement.classList.contains('dark');
+    setIsDarkMode(isDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextDark = !isDarkMode;
+    setIsDarkMode(nextDark);
+    if (nextDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#0a0e17', color: 'white', fontFamily: 'system-ui, -apple-system, sans-serif', display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
-      <style>{`
-        .section-padding { padding: 3rem 1.5rem; }
-        .grid-responsive-2 { display: grid; grid-template-columns: 1fr; gap: 3rem; align-items: center; }
-        .grid-responsive-4 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-        .nav-links { display: none; gap: 2rem; font-size: 0.875rem; color: #cbd5e1; }
-        .nav-menu-btn { display: block; background: none; border: none; color: white; cursor: pointer; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; line-height: 1.1; margin: 0; letter-spacing: -0.02em; color: white; }
-        .hero-subtitle { font-size: clamp(1rem, 3vw, 1.125rem); color: #94a3b8; line-height: 1.6; max-width: 90%; margin: 0; }
-        .section-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: white; line-height: 1.1; margin: 0 0 1rem 0; }
-        .btn-group { display: flex; flex-direction: column; gap: 1rem; width: 100%; margin-top: 1rem; }
-        .btn-group > * { width: 100%; text-align: center; justify-content: center; }
-        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 2rem; }
-        .stats-mini-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-        .glass-card { background: linear-gradient(145deg, #151a28 0%, #0f131f 100%); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .badge-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
-        
-        @media (min-width: 768px) {
-          .section-padding { padding: 4rem 3rem; }
-          .grid-responsive-4 { grid-template-columns: repeat(2, 1fr); }
-          .btn-group { flex-direction: row; width: auto; }
-          .btn-group > * { width: auto; }
-          .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 3rem; }
-          .stats-mini-grid { grid-template-columns: 1fr 1fr; }
-          .glass-card { padding: 2.5rem; }
-        }
+    <div className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased min-h-screen transition-colors duration-300">
+      {/* Header / មេនុយចម្បង */}
+      <header className="fixed top-0 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-50 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-3.5" aria-label="Acabar Plc home">
+            <img src="/acabar-logo.png" className="h-12 w-12 rounded-full object-cover" alt="Acabar PLC Logo" />
+            <div className="flex flex-col justify-center leading-none">
+              <span className="text-lg font-extrabold text-brand-dark dark:text-white tracking-wide">Acabar Plc</span>
+              <span className="text-xs text-brand-muted dark:text-slate-400 font-medium mt-1">អាខាបារ ម.ក</span>
+            </div>
+          </a>
 
-        @media (min-width: 1024px) {
-          .section-padding { padding: 6rem 4rem; }
-          .nav-padding { padding: 1.5rem 4rem; }
-          .grid-responsive-2 { grid-template-columns: 1fr 1fr; gap: 4rem; }
-          .grid-responsive-4 { grid-template-columns: repeat(4, 1fr); }
-          .nav-links { display: flex; }
-          .nav-menu-btn { display: none; }
-        }
-      `}</style>
-      
-      {/* Navigation Bar */}
-      <nav className="nav-padding" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ width: '36px', height: '36px', backgroundColor: '#fbbf24', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', color: '#000', fontSize: '1.25rem', boxShadow: '0 0 20px rgba(251, 191, 36, 0.4)' }}>
-            A
+          {/* Nav Links - Desktop */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <a href="#" className="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accent transition-colors font-medium">ទំព័រដើម</a>
+            <a href="#services" className="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accent transition-colors font-medium">សេវាកម្ម</a>
+            <a href="#advantages" className="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accent transition-colors font-medium">ហេតុអ្វីជ្រើសរើសយើង</a>
+            <a href="#contact" className="text-slate-600 dark:text-slate-300 hover:text-brand-accent dark:hover:text-brand-accent transition-colors font-medium">ទំនាក់ទំនង</a>
+          </nav>
+
+          <div className="hidden md:flex items-center gap-6">
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-lg text-slate-500 hover:text-brand-accent dark:text-slate-400 dark:hover:text-brand-accent hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <a href="/login" className="text-slate-600 dark:text-slate-300 dark:hover:text-white transition-colors font-semibold text-sm">
+              ចូលប្រើប្រាស់ / Login
+            </a>
+            <a href="/register" className="inline-flex items-center justify-center px-5 py-2.5 bg-brand-accent text-white rounded-lg text-sm font-semibold hover:bg-brand-accentHover transition-all shadow-sm">
+              ចាប់ផ្តើម / Get Started
+            </a>
           </div>
-          <div>
-            <div style={{ fontSize: '1.25rem', fontWeight: '700', lineHeight: 1 }}>Acabar Plc</div>
-            <div style={{ fontSize: '0.65rem', color: '#94a3b8', marginTop: '0.125rem' }}>Digital Lending Platform</div>
+
+          {/* Mobile menu button */}
+          <div className="flex md:hidden items-center gap-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg text-slate-500 hover:text-brand-accent dark:text-slate-400 dark:hover:text-brand-accent hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              type="button"
+              className="text-slate-600 dark:text-slate-300 hover:text-brand-dark dark:hover:text-white focus:outline-none"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
 
-        <div className="nav-links">
-          <a href="#features" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#cbd5e1'}>Features</a>
-          <a href="#solutions" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#cbd5e1'}>Solutions</a>
-          <a href="#security" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#cbd5e1'}>Security</a>
-          <a href="#contact" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#cbd5e1'}>Contact</a>
-        </div>
-
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <div className="nav-links" style={{ display: 'flex', alignItems: 'center' }}>
-            <Link href="/login" style={{ textDecoration: 'none', color: 'white', padding: '0.5rem 1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.875rem', fontWeight: '600', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseOut={e => e.currentTarget.style.background = 'transparent'}>
-              Login
-            </Link>
+        {/* Mobile Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-6 py-4 space-y-4">
+            <a 
+              href="#" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-slate-700 dark:text-slate-300 hover:text-brand-accent font-medium"
+            >
+              ទំព័រដើម
+            </a>
+            <a 
+              href="#services" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-slate-700 dark:text-slate-300 hover:text-brand-accent font-medium"
+            >
+              សេវាកម្ម
+            </a>
+            <a 
+              href="#advantages" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-slate-700 dark:text-slate-300 hover:text-brand-accent font-medium"
+            >
+              ហេតុអ្វីជ្រើសរើសយើង
+            </a>
+            <a 
+              href="#contact" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-slate-700 dark:text-slate-300 hover:text-brand-accent font-medium"
+            >
+              ទំនាក់ទំនង
+            </a>
+            <div className="flex items-center justify-between py-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+              <span className="text-slate-600 dark:text-slate-400 text-sm font-medium">របៀបយប់ / Dark Mode</span>
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg text-slate-500 hover:text-brand-accent dark:text-slate-400 dark:hover:text-brand-accent hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                aria-label="Toggle dark mode"
+              >
+                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+            </div>
+            <a 
+              href="/login" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center w-full py-3 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-900 transition-all"
+            >
+              ចូលប្រើប្រាស់ / Login
+            </a>
+            <a 
+              href="/register" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-center w-full py-3 bg-brand-accent text-white rounded-lg text-sm font-semibold hover:bg-brand-accentHover transition-all"
+            >
+              ចាប់ផ្តើម / Get Started
+            </a>
           </div>
-          <Link href="/register" style={{ textDecoration: 'none', color: '#000', backgroundColor: '#fbbf24', padding: '0.5rem 1.5rem', borderRadius: '8px', fontSize: '0.875rem', fontWeight: '700', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-            Get Started
-          </Link>
-          <button className="nav-menu-btn"><Menu size={24} /></button>
-        </div>
-      </nav>
+        )}
+      </header>
 
-      {/* Main Content (Hero) */}
-      <main className="section-padding" style={{ flex: 1, display: 'flex', justifyContent: 'center', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '20%', left: '50%', width: '100%', maxWidth: '600px', height: '600px', background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(0,0,0,0) 70%)', transform: 'translate(-50%, -50%)', pointerEvents: 'none' }}></div>
-
-        <div className="grid-responsive-2" style={{ width: '100%', maxWidth: '1400px', zIndex: 1 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div>
-              <div style={{ display: 'inline-block', border: '1px solid rgba(251, 191, 36, 0.3)', color: '#fbbf24', padding: '0.5rem 1rem', borderRadius: '20px', fontSize: '0.875rem', fontWeight: '500', marginBottom: '1.5rem' }}>
-                Smart Lending Ecosystem for Cambodia
-              </div>
-              <h1 className="hero-title">
-                Modern <span style={{ background: 'linear-gradient(90deg, #2dd4bf, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Digital</span><br />
-                Lending<br />
-                Experience
+      {/* Hero Section / ផ្នែកណែនាំដំបូង */}
+      <section className="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden bg-gradient-to-b from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-950 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-12 gap-12 items-center">
+            <div className="md:col-span-7 max-w-3xl">
+              <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/30 text-brand-accent dark:text-emerald-400 mb-6 border border-emerald-200/60 dark:border-emerald-800/40">
+                សេវាកម្មឥណទាន និងដំណោះស្រាយហិរញ្ញវត្ថុស្របច្បាប់
+              </span>
+              <h1 className="text-3xl md:text-5xl font-bold text-brand-dark dark:text-white tracking-wide leading-snug mb-6">
+                ពង្រីកអាជីវកម្មរបស់អ្នក <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-dark dark:from-white to-brand-accent dark:to-emerald-400">ជាមួយដំណោះស្រាយឥណទានដ៏ល្អបំផុត</span>
               </h1>
-            </div>
-
-            <p className="hero-subtitle">
-              Acabar Plc empowers banks, MFIs, and fintech companies with a secure, scalable, and intelligent loan management platform built for the future of digital finance.
-            </p>
-
-            <div className="btn-group">
-              <Link href="/register" style={{ textDecoration: 'none', background: 'linear-gradient(90deg, #fbbf24, #f59e0b)', color: '#000', padding: '0.875rem 2rem', borderRadius: '12px', fontSize: '1rem', fontWeight: '700', border: 'none', cursor: 'pointer', transition: 'transform 0.2s', boxShadow: '0 10px 25px -5px rgba(251, 191, 36, 0.4)' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-                Request Demo
-              </Link>
-              <Link href="/login" style={{ textDecoration: 'none', background: 'transparent', color: 'white', padding: '0.875rem 2rem', borderRadius: '12px', fontSize: '1rem', fontWeight: '600', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseOut={e => e.currentTarget.style.background = 'transparent'}>
-                Explore Platform
-              </Link>
-            </div>
-
-            <div className="stats-grid">
-              <div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#fbbf24' }}>24/7</div>
-                <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>Loan Access</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#60a5fa' }}>99.9%</div>
-                <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>System Uptime</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: 'white' }}>AI</div>
-                <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>Smart Decisions</div>
+              <p className="text-brand-muted dark:text-slate-400 text-sm md:text-base leading-relaxed mb-8 max-w-2xl">
+                យើងខ្ញុំជាស្ថាប័នប្រឹក្សាយោបល់ហិរញ្ញវត្ថុ និងឥណទានស្របច្បាប់ ដែលជួយសម្រួលការរៀបចំកញ្ចប់ថវិកា និងយុទ្ធសាស្ត្រគ្រប់គ្រងហានិភ័យប្រកបដោយទំនួលខុសត្រូវខ្ពស់។
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href="#contact" className="inline-flex items-center justify-center px-6 py-3.5 bg-brand-accent hover:bg-brand-accentHover text-white rounded-lg text-sm font-semibold transition-all shadow-md">
+                  ស្នើសុំការប្រឹក្សាឥណទាន
+                </a>
+                <a href="#services" className="inline-flex items-center justify-center px-6 py-3.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-brand-dark dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg text-sm font-semibold transition-all">
+                  ស្វែងយល់ពីសេវាកម្ម
+                </a>
               </div>
             </div>
-          </div>
-
-          {/* Right Column: Dashboard Preview */}
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div className="glass-card" style={{ width: '100%', maxWidth: '560px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
-                <div>
-                  <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.5rem' }}>Total Loan Portfolio</div>
-                  <div style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontWeight: '900', letterSpacing: '-0.02em' }}>$12.5M</div>
-                </div>
-                <div style={{ width: '48px', height: '48px', backgroundColor: '#fbbf24', borderRadius: '12px', display: 'flex', alignItems: 'center', justifySelf: 'flex-end', justifyContent: 'center', color: '#000', fontWeight: '900', fontSize: '1.125rem' }}>
-                  WL
-                </div>
-              </div>
-
-              <div style={{ background: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '16px', padding: '1.5rem', marginBottom: '1.5rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '0.875rem' }}>
-                  <span style={{ color: '#e2e8f0' }}>Loan Approval Rate</span>
-                  <span style={{ color: '#fbbf24', fontWeight: '700' }}>+18%</span>
-                </div>
-                <div style={{ height: '8px', backgroundColor: '#1e293b', borderRadius: '4px', overflow: 'hidden' }}>
-                  <div style={{ width: '75%', height: '100%', background: 'linear-gradient(90deg, #fbbf24, #3b82f6)', borderRadius: '4px' }}></div>
-                </div>
-              </div>
-
-              <div className="stats-mini-grid" style={{ marginBottom: '1.5rem' }}>
-                <div style={{ background: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '16px', padding: '1.5rem' }}>
-                  <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.75rem' }}>Applications</div>
-                  <div style={{ fontSize: '1.75rem', fontWeight: '800' }}>8,540</div>
-                </div>
-                <div style={{ background: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '16px', padding: '1.5rem' }}>
-                  <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.75rem' }}>Disbursed</div>
-                  <div style={{ fontSize: '1.75rem', fontWeight: '800' }}>$3.8M</div>
-                </div>
-              </div>
-
-              <div style={{ background: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '16px', padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <div style={{ color: '#94a3b8', fontSize: '0.75rem', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>AI Credit Scoring</div>
-                  <div style={{ fontSize: '1.125rem', fontWeight: '700' }}>Real-Time Analysis</div>
-                </div>
-                <div style={{ width: '40px', height: '40px', backgroundColor: '#1e293b', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f59e0b', boxShadow: '0 0 15px rgba(245, 158, 11, 0.2)', flexShrink: 0 }}>
-                  <Zap size={20} fill="currentColor" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* Features Section */}
-      <section id="features" className="section-padding" style={{ backgroundColor: '#06090f', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <div style={{ color: '#fbbf24', fontSize: '0.875rem', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-            Platform Features
-          </div>
-          <h2 className="section-title">Built for Modern Lending Operations</h2>
-          <p style={{ color: '#94a3b8', fontSize: 'clamp(1rem, 3vw, 1.125rem)', maxWidth: '800px', margin: '0 auto', lineHeight: '1.6' }}>
-            Powerful modules designed for financial institutions seeking speed, automation, compliance, and customer satisfaction.
-          </p>
-        </div>
-
-        <div className="grid-responsive-4" style={{ width: '100%', maxWidth: '1400px' }}>
-          {[
-            { icon: FileText, color: '#cbd5e1', title: 'Loan Origination', desc: 'Digital onboarding, KYC verification, approval workflow, and automated processing.' },
-            { icon: CreditCard, color: '#60a5fa', title: 'Payment Gateway', desc: 'QR payment, bank transfer integration, and automated repayment collection.' },
-            { icon: BarChart3, color: '#a78bfa', title: 'Risk Analytics', desc: 'AI-powered credit scoring, fraud detection, and intelligent monitoring.' },
-            { icon: Smartphone, color: '#fbbf24', title: 'Mobile Experience', desc: 'Responsive customer portal with mobile-first banking-grade experience.' }
-          ].map((feat, idx) => (
-            <div key={idx} style={{ backgroundColor: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '24px', padding: '2.5rem 2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', transition: 'transform 0.3s, box-shadow 0.3s' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 20px 40px -15px rgba(0,0,0,0.5)'}} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none' }}>
-              <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: feat.color }}>
-                <feat.icon size={28} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: '0 0 0.75rem 0', color: 'white' }}>{feat.title}</h3>
-                <p style={{ color: '#94a3b8', fontSize: '0.9375rem', lineHeight: '1.6', margin: 0 }}>{feat.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Solutions & Security Section */}
-      <section id="solutions" className="section-padding" style={{ backgroundColor: '#0a0e17', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4rem' }}>
-        
-        <div className="grid-responsive-2" style={{ width: '100%', maxWidth: '1400px' }}>
-          <div>
-            <div style={{ color: '#3b82f6', fontSize: '0.875rem', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-              Enterprise Solutions
-            </div>
-            <h2 className="section-title" style={{ marginBottom: '2.5rem' }}>Complete Digital<br />Finance Ecosystem</h2>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {[
-                'Multi-branch and multi-product management',
-                'Automated collection and repayment tracking',
-                'Advanced reporting and business intelligence',
-                'Secure API integration with banking systems',
-                'Cloud-native infrastructure and scalability'
-              ].map((item, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'rgba(251, 191, 36, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fbbf24', flexShrink: 0 }}>
-                    <CheckCircle2 size={16} />
-                  </div>
-                  <span style={{ color: '#e2e8f0', fontSize: 'clamp(0.875rem, 2vw, 1rem)', fontWeight: '500' }}>{item}</span>
+            {/* Visual Card on Right Column */}
+            <div className="md:col-span-5 hidden md:block">
+              <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl relative transition-colors duration-300">
+                <div className="absolute -top-4 -right-4 w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                  <ShieldCheck size={24} />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="glass-card">
-              <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.5rem' }}>Daily Transactions</div>
-              <div style={{ fontSize: 'clamp(2.5rem, 6vw, 3rem)', fontWeight: '900', color: 'white', marginBottom: '1rem' }}>125K+</div>
-              <p style={{ color: '#cbd5e1', fontSize: '0.9375rem', margin: 0 }}>Securely processed through the Acabar Plc ecosystem.</p>
-            </div>
-            <div className="stats-mini-grid">
-              <div style={{ background: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '24px', padding: '2rem' }}>
-                <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.5rem' }}>Active Users</div>
-                <div style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontWeight: '900', color: 'white' }}>48K</div>
+                <h3 className="text-lg font-bold text-brand-dark dark:text-white mb-4">សុវត្ថិភាពខ្ពស់ និងស្របច្បាប់</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-emerald-100 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check size={14} />
+                    </div>
+                    <span className="text-xs text-slate-700 dark:text-slate-300">ទទួលបានការអនុញ្ញាតស្របច្បាប់</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-emerald-100 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check size={14} />
+                    </div>
+                    <span className="text-xs text-slate-700 dark:text-slate-300">អត្រាការប្រាក់ទាប និងសមរម្យ</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-emerald-100 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center flex-shrink-0">
+                      <Check size={14} />
+                    </div>
+                    <span className="text-xs text-slate-700 dark:text-slate-300">រក្សាការសម្ងាត់ព័ត៌មានអតិថិជន</span>
+                  </div>
+                </div>
+                <div className="border-t border-slate-100 dark:border-slate-800 mt-6 pt-6 flex justify-between items-center">
+                  <div>
+                    <div className="text-sm font-bold text-brand-dark dark:text-white">+855 012778875</div>
+                    <div className="text-[10px] text-slate-400 dark:text-slate-500">ទំនាក់ទំនងប្រឹក្សាយោបល់ឥតគិតថ្លៃ</div>
+                  </div>
+                  <div className="w-10 h-10 bg-emerald-50 dark:bg-emerald-950/50 text-brand-accent rounded-lg flex items-center justify-center">
+                    <PhoneCall size={20} />
+                  </div>
+                </div>
               </div>
-              <div style={{ background: '#0a0d14', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '24px', padding: '2rem' }}>
-                <div style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '0.5rem' }}>Branches</div>
-                <div style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontWeight: '900', color: 'white' }}>120+</div>
-              </div>
             </div>
-          </div>
-        </div>
-
-        {/* Security Banner */}
-        <div id="security" className="glass-card" style={{ width: '100%', maxWidth: '1000px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '2rem' }}>
-          <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #3b82f6, #fbbf24)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2rem', boxShadow: '0 0 30px rgba(59, 130, 246, 0.4)' }}>
-            <Lock size={40} color="#000" />
-          </div>
-          <h2 className="section-title" style={{ marginBottom: '1.5rem' }}>Banking-Grade Security &<br />Compliance</h2>
-          <p style={{ color: '#94a3b8', fontSize: 'clamp(0.9375rem, 2vw, 1rem)', lineHeight: '1.6', maxWidth: '700px', margin: '0 0 3rem 0' }}>
-            Acabar Plc is designed with enterprise-grade security architecture, encrypted infrastructure, audit logging, role-based access control, and compliance-ready standards for modern financial institutions.
-          </p>
-          <div className="badge-grid">
-            {['Data Encryption', 'Role Permissions', 'Audit Trails', 'Cloud Security', 'API Protection'].map((badge, idx) => (
-              <div key={idx} style={{ padding: '0.75rem 1.25rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1', fontSize: '0.8125rem', fontWeight: '600', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-                {badge}
-              </div>
-            ))}
           </div>
         </div>
       </section>
-      
-      {/* CTA Section */}
-      <section id="contact" className="section-padding" style={{ backgroundColor: '#06090f', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-        <div style={{ color: '#fbbf24', fontSize: '0.875rem', fontWeight: '800', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-          Start Your Digital Transformation
-        </div>
-        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', fontWeight: '900', margin: '0 0 1.5rem 0', color: 'white', lineHeight: '1.1', maxWidth: '900px' }}>
-          Ready to Transform <span style={{ background: 'linear-gradient(90deg, #2dd4bf, #3b82f6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Lending<br />Operations?</span>
-        </h2>
-        <p style={{ color: '#94a3b8', fontSize: 'clamp(1rem, 3vw, 1.125rem)', maxWidth: '700px', margin: '0 0 3rem 0', lineHeight: '1.6' }}>
-          Empower your organization with a modern loan management ecosystem tailored for banks, MFIs, and fintech institutions.
-        </p>
-        <div className="btn-group" style={{ justifyContent: 'center' }}>
-          <button style={{ background: 'linear-gradient(90deg, #fbbf24, #60a5fa)', color: '#000', padding: '1rem 2.5rem', borderRadius: '12px', fontSize: '1rem', fontWeight: '700', border: 'none', cursor: 'pointer', transition: 'transform 0.2s', boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.4)' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            Book a Demo
-          </button>
-          <button style={{ background: 'transparent', color: 'white', padding: '1rem 2.5rem', borderRadius: '12px', fontSize: '1rem', fontWeight: '600', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'} onMouseOut={e => e.currentTarget.style.background = 'transparent'}>
-            Contact Sales
-          </button>
+
+      {/* Services Section / សេវាកម្មរបស់យើង */}
+      <section id="services" className="py-20 bg-white dark:bg-slate-950 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-semibold uppercase tracking-wider text-brand-accent dark:text-emerald-400">សេវាកម្មរបស់យើង</span>
+            <h2 className="text-2xl md:text-4xl font-bold text-brand-dark dark:text-white mt-3 mb-4">ដំណោះស្រាយឥណទាន និងហិរញ្ញវត្ថុ</h2>
+            <p className="text-brand-muted dark:text-slate-400 text-sm leading-relaxed">
+              យើងផ្តល់ជូននូវសេវាកម្មប្រឹក្សាយោបល់ហិរញ្ញវត្ថុដ៏សម្បូរបែប ដើម្បីឆ្លើយតបទៅនឹងតម្រូវការអាជីវកម្ម និងផ្ទាល់ខ្លួនរបស់លោកអ្នក។
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Card 1 */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950/50 rounded-lg flex items-center justify-center mb-6 text-brand-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 14v2m0-18a2 2 0 100 4 2 2 0 000-4zm0 18a2 2 0 100 4 2 2 0 000-4zm0-12a6 6 0 100 12 6 6 0 000-12z" /></svg>
+              </div>
+              <h3 className="text-xl font-bold text-brand-dark dark:text-white mb-3">ឥណទានអាជីវកម្ម (Business Loan)</h3>
+              <p className="text-brand-muted dark:text-slate-400 text-sm leading-relaxed">
+                ជួយជម្រុញលំហូរទុនបង្វិល និងពង្រីកទំហំអាជីវកម្មរបស់អ្នកខ្នាតតូច និងមធ្យម ជាមួយអត្រាការប្រាក់សមរម្យ និងលក្ខខណ្ឌងាយស្រួល។
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950/50 rounded-lg flex items-center justify-center mb-6 text-brand-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5" /></svg>
+              </div>
+              <h3 className="text-xl font-bold text-brand-dark dark:text-white mb-3">ឥណទានមានទ្រព្យធានា (Secured Loan)</h3>
+              <p className="text-brand-muted dark:text-slate-400 text-sm leading-relaxed">
+                ទទួលបានទំហំកម្ចីធំ និងរយៈពេលវែងសម្រាប់ការវិនិយោគលើអចលនទ្រព្យ ឬគម្រោងអភិវឌ្ឍន៍ធំៗ ដោយប្រើប្រាស់ប្លង់ដី ឬផ្ទះជាទ្រព្យធានា។
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-950/50 rounded-lg flex items-center justify-center mb-6 text-brand-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+              </div>
+              <h3 className="text-xl font-bold text-brand-dark dark:text-white mb-3">រៀបចំរចនាសម្ព័ន្ធបំណុលឡើងវិញ (Debt Restructuring)</h3>
+              <p className="text-brand-muted dark:text-slate-400 text-sm leading-relaxed">
+                ជួយសម្រាលបន្ទុកសងប្រាក់ប្រចាំខែ និងពន្យារពេលសងប្រាក់ ដើម្បីជួយសម្រួលលំហូរសាច់ប្រាក់របស់លោកអ្នកឱ្យមានស្ថិរភាពឡើងវិញ។
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.05)', backgroundColor: '#06090f', padding: '2rem 1.5rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ width: '32px', height: '32px', backgroundColor: '#fbbf24', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', color: '#000', fontSize: '1rem' }}>
-            A
-          </div>
-          <div>
-            <div style={{ fontSize: '1rem', fontWeight: '700', color: 'white', lineHeight: 1 }}>Acabar Plc</div>
-            <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>© 2026 All Rights Reserved</div>
+      {/* Advantages Section / ហេតុអ្វីជ្រើសរើសយើង */}
+      <section id="advantages" className="py-20 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-brand-accent dark:text-emerald-400">ហេតុអ្វីជ្រើសរើសយើង</span>
+              <h2 className="text-2xl md:text-4xl font-bold text-brand-dark dark:text-white mt-3 mb-6">ស្ថាប័នប្រឹក្សាឥណទានដែលគួរឱ្យទុកចិត្តបំផុត</h2>
+              <p className="text-brand-muted dark:text-slate-400 text-sm leading-relaxed mb-6">
+                យើងផ្តល់ជូននូវសេវាកម្មប្រឹក្សាយោបល់ប្រកបដោយវិជ្ជាជីវៈ សុចរិតភាព និងទំនួលខុសត្រូវខ្ពស់ ដើម្បីធានាថាអតិថិជនរបស់យើងទទួលបាននូវដំណោះស្រាយឥណទានដ៏ល្អបំផុត និងសមស្របបំផុត។
+              </p>
+              
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-emerald-100 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-brand-dark dark:text-slate-200 text-sm">សេវាកម្មស្របច្បាប់ និងមានតម្លាភាព</h4>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">រាល់កិច្ចសន្យា និងលក្ខខណ្ឌទាំងអស់ត្រូវបានអនុវត្តស្របតាមច្បាប់ និងមានតម្លាភាពបំផុត។</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-emerald-100 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-brand-dark dark:text-slate-200 text-sm">អត្រាការប្រាក់ទាប និងសមរម្យ</h4>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">ជួយស្វែងរកប្រភពទុនដែលមានអត្រាការប្រាក់ទាប ដើម្បីកាត់បន្ថយការចំណាយរបស់លោកអ្នក។</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-6 h-6 bg-emerald-100 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-brand-dark dark:text-slate-200 text-sm">ការពិភាក្សា និងប្រឹក្សាយោបល់ឥតគិតថ្លៃ</h4>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">លោកអ្នកអាចពិភាក្សាជាមួយអ្នកជំនាញរបស់យើងដោយមិនគិតថ្លៃសេវាបឋមឡើយ។</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 p-8 rounded-xl shadow-sm transition-colors duration-300">
+              <div className="text-center max-w-sm mx-auto">
+                <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-950/50 text-brand-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-8 h-8"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+                </div>
+                <h3 className="text-xl font-bold text-brand-dark dark:text-white mb-3">សុវត្ថិភាពទិន្នន័យ ១០០%</h3>
+                <p className="text-brand-muted dark:text-slate-400 text-xs leading-relaxed mb-6">
+                  រាល់ព័ត៌មានផ្ទាល់ខ្លួន និងហិរញ្ញវត្ថុរបស់លោកអ្នកត្រូវបានការពារដោយបច្ចេកវិទ្យាកូដនីយកម្មកម្រិតខ្ពស់បំផុត និងការសម្ងាត់យ៉ាងម៉ត់ចត់។
+                </p>
+                <div className="border-t border-slate-100 dark:border-slate-800 pt-6 flex justify-around">
+                  <div>
+                    <div className="text-xl font-bold text-brand-dark dark:text-white">១០០%</div>
+                    <div className="text-slate-400 dark:text-slate-500 text-[10px] uppercase mt-1">ស្របច្បាប់</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-brand-dark dark:text-white">២៤/៧</div>
+                    <div className="text-slate-400 dark:text-slate-500 text-[10px] uppercase mt-1">គាំទ្រអតិថិជន</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.875rem', color: '#94a3b8' }}>
-          <a href="#" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#94a3b8'}>Privacy Policy</a>
-          <a href="#" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#94a3b8'}>Terms</a>
-          <a href="#" style={{ textDecoration: 'none', color: 'inherit', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'white'} onMouseOut={e => e.currentTarget.style.color = '#94a3b8'}>Support</a>
+      </section>
+
+      {/* Form Section / ភ្ជាប់ទំនាក់ទំនងជាមួយអ្នកជំនាញ */}
+      <section id="contact" className="py-20 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8 md:p-12 shadow-xl transition-colors duration-300">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-dark dark:text-white tracking-tight mb-3">ភ្ជាប់ទំនាក់ទំនងជាមួយអ្នកជំនាញ</h2>
+              <p className="text-brand-muted dark:text-slate-400 text-sm">
+                សូមបំពេញព័ត៌មានខាងក្រោមដើម្បីទទួលបានការប្រឹក្សាយោបល់បឋមដោយឥតគិតថ្លៃ។ រាល់ព័ត៌មានរបស់លោកអ្នកនឹងត្រូវបានរក្សាការសម្ងាត់យ៉ាងម៉ត់ចត់បំផុតស្របតាមស្តង់ដារស្ថាប័ន។
+              </p>
+            </div>
+
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">នាមត្រកូល និងនាមខ្លួន</label>
+                  <input 
+                    type="text" 
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors" 
+                    placeholder="ឧ. កុល ចំរើន" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">លេខទូរស័ព្ទ</label>
+                  <input 
+                    type="tel" 
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors" 
+                    placeholder="ឧ. ០១២ ៣៤៥ ៦៧៨" 
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">ឈ្មោះក្រុមហ៊ុន ឬអាជីវកម្ម (បើមាន)</label>
+                  <input 
+                    type="text" 
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors" 
+                    placeholder="ឧ. ក្រុមហ៊ុន វីរៈ ត្រេឌីង" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">ប្រភេទសេវាកម្មដែលលោកអ្នកចាប់អារម្មណ៍</label>
+                  <select className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:border-brand-accent transition-colors text-slate-500 dark:text-slate-200">
+                    <option>ឥណទានអាជីវកម្ម (Business Loan)</option>
+                    <option>ឥណទានមានទ្រព្យធានា (Secured Loan)</option>
+                    <option>រៀបចំរចនាសម្ព័ន្ធបំណុលឡើងវិញ</option>
+                    <option>សេវាកម្មប្រឹក្សាយោបល់ផ្សេងៗ</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">ពណ៌នា សង្ខេបអំពីតម្រូវការ ឬទំហំឥណទានដែលចង់ស្នើសុំ</label>
+                <textarea 
+                  rows={4} 
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-brand-accent transition-colors" 
+                  placeholder="សូមបញ្ជាក់ពីគោលបំណង ឬទំហំកម្ចីដែលលោកអ្នកត្រូវការ..."
+                ></textarea>
+              </div>
+
+              <button 
+                type="submit" 
+                className="w-full py-4 bg-brand-dark dark:bg-brand-accent dark:hover:bg-brand-accentHover text-white rounded-lg font-semibold hover:bg-slate-800 transition-all text-sm shadow-md"
+              >
+                ផ្ញើព័ត៌មានស្នើសុំ
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer / ផ្នែកខាងក្រោមបង្អស់ */}
+      <footer className="bg-brand-dark dark:bg-slate-950 text-slate-400 dark:text-slate-500 text-xs py-12 border-t border-slate-800 dark:border-slate-900 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-3.5 mb-4">
+                <img src="/acabar-logo.png" className="h-10 w-10 rounded-full object-cover" alt="Acabar PLC Logo" />
+                <div className="flex flex-col justify-center leading-none">
+                  <span className="text-base font-extrabold text-white tracking-wide">Acabar Plc</span>
+                  <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1.5">អាខាបារ ម.ក</span>
+                </div>
+              </div>
+              <p className="leading-relaxed">
+                ស្ថាប័នប្រឹក្សាយោបល់ហិរញ្ញវត្ថុ និងឥណទានស្របច្បាប់ ជួយសម្រួលការរៀបចំកញ្ចប់ថវិកា និងយុទ្ធសាស្ត្រគ្រប់គ្រងហានិភ័យប្រកបដោយទំនួលខុសត្រូវ។
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white dark:text-slate-300 font-semibold uppercase tracking-wider mb-3">បទប្បញ្ញត្តិ</h4>
+              <ul className="space-y-2">
+                <li><a href="#" className="hover:text-white dark:hover:text-slate-300 transition-colors">ក្របខណ្ឌច្បាប់</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-slate-300 transition-colors">ការអនុលោមភាពហិរញ្ញវត្ថុ</a></li>
+                <li><a href="#" className="hover:text-white dark:hover:text-slate-300 transition-colors">គោលការណ៍ការពារអតិថិជន</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white dark:text-slate-300 font-semibold uppercase tracking-wider mb-3">ទីតាំងការិយាល័យ</h4>
+              <p className="leading-relaxed">
+                អាសយដ្ឋាន៖ ផ្ទះលេខ A31, ផ្លូវជាតិលេខ១, សង្កាត់ Phum Thum, ខណ្ឌ Kien Svay, រាជធានីភ្នំពេញ, កម្ពុជា<br />
+                ទូរស័ព្ទ៖ +855 012778875<br />
+                អ៊ីមែល៖ acabar858@gmail.com
+              </p>
+            </div>
+          </div>
+          <div className="border-t border-slate-800 dark:border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 dark:text-slate-600">
+            <p>&copy; 2026 Acabar PLC. រក្សាសិទ្ធិគ្រប់យ៉ាង។</p>
+            <div className="flex space-x-6">
+              <a href="#" className="hover:text-slate-400 dark:hover:text-slate-300 transition-colors">គោលការណ៍ឯកជនភាព</a>
+              <a href="#" className="hover:text-slate-400 dark:hover:text-slate-300 transition-colors">លក្ខខណ្ឌប្រើប្រាស់</a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

@@ -309,7 +309,7 @@ export default function LoanApplicationForm() {
   if (success) {
     return (
       <div className="card animate-fade-in" style={{ textAlign: 'center', padding: '4rem 2rem', border: 'none', boxShadow: 'var(--shadow-xl)' }}>
-        <div style={{ width: '80px', height: '80px', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#059669', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
+        <div style={{ width: '80px', height: '80px', backgroundColor: 'var(--success-bg)', color: 'var(--success-text)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
           <CheckCircle size={40} />
         </div>
         <h3 style={{ fontSize: '1.75rem', fontWeight: '700', marginBottom: '1rem', color: 'var(--foreground)' }}>Draft Created!</h3>
@@ -353,7 +353,7 @@ export default function LoanApplicationForm() {
         {steps.map((step, idx) => (
           <React.Fragment key={step.id}>
             {idx > 0 && (
-              <div style={{ flex: 1, height: '2px', backgroundColor: currentStep > idx ? 'var(--primary)' : '#e2e8f0', margin: '0 0.75rem' }} />
+              <div style={{ flex: 1, height: '2px', backgroundColor: currentStep > idx ? 'var(--primary)' : 'var(--border-color)', margin: '0 0.75rem' }} />
             )}
             <div 
               onClick={() => {
@@ -389,8 +389,8 @@ export default function LoanApplicationForm() {
                 width: '26px', 
                 height: '26px', 
                 borderRadius: '50%', 
-                backgroundColor: currentStep === step.id ? 'var(--foreground)' : (currentStep > step.id ? 'var(--primary)' : '#f1f5f9'), 
-                color: currentStep === step.id ? 'white' : (currentStep > step.id ? 'white' : 'var(--text-muted)'),
+                backgroundColor: currentStep === step.id ? 'var(--foreground)' : (currentStep > step.id ? 'var(--primary)' : 'var(--bg-muted)'), 
+                color: currentStep === step.id ? 'var(--background)' : (currentStep > step.id ? 'white' : 'var(--text-muted)'),
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
@@ -439,19 +439,19 @@ export default function LoanApplicationForm() {
               {/* Loan ID */}
               <div className="input-group" style={{ marginBottom: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.375rem' }}>
-                  <label className="input-label" style={{ fontSize: '0.8125rem', marginBottom: 0 }}>Loan ID <span style={{ color: '#ef4444' }}>*</span></label>
+                  <label className="input-label" style={{ fontSize: '0.8125rem', marginBottom: 0 }}>Loan ID <span style={{ color: 'var(--error-text)' }}>*</span></label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
                     <div 
                       onClick={handleToggleAutoGenerateLid}
                       style={{ 
                         width: '32px', height: '18px', 
-                        backgroundColor: autoGenerateLid ? 'var(--primary)' : '#cbd5e1',
+                        backgroundColor: autoGenerateLid ? 'var(--primary)' : 'var(--border-hover)',
                         borderRadius: '20px', position: 'relative', cursor: 'pointer',
                         transition: 'background-color 0.2s'
                       }}
                     >
                       <div style={{
-                        width: '14px', height: '14px', backgroundColor: 'white', borderRadius: '50%',
+                        width: '14px', height: '14px', backgroundColor: 'var(--card-bg)', borderRadius: '50%',
                         position: 'absolute', top: '2px', left: autoGenerateLid ? '16px' : '2px',
                         transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                       }} />
@@ -470,7 +470,7 @@ export default function LoanApplicationForm() {
                   style={{ 
                     height: '42px',
                     fontSize: '0.875rem',
-                    backgroundColor: autoGenerateLid ? '#f8fafc' : 'white',
+                    backgroundColor: autoGenerateLid ? 'var(--background)' : 'white',
                     cursor: autoGenerateLid ? 'not-allowed' : 'text',
                     opacity: generatingLid ? 0.7 : 1
                   }}
@@ -489,13 +489,13 @@ export default function LoanApplicationForm() {
                     <div style={{
                       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                       padding: '0 0.75rem',
-                      backgroundColor: '#f0fdf4',
+                      backgroundColor: 'var(--success-bg)',
                       border: '1px solid #bbf7d0',
                       borderRadius: 'var(--radius-md)',
                       height: '42px',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
-                        <div style={{ width: '26px', height: '26px', borderRadius: '50%', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16a34a', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>
+                        <div style={{ width: '26px', height: '26px', borderRadius: '50%', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--success-text)', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>
                           {selectedOfficer.firstName[0]}{selectedOfficer.lastName[0]}
                         </div>
                         <div style={{ minWidth: 0 }}>
@@ -510,7 +510,7 @@ export default function LoanApplicationForm() {
                       <button
                         type="button"
                         onClick={() => { setSelectedOfficer(null); setOfficerSearch(''); }}
-                        style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'white', border: '1px solid #bbf7d0', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+                        style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'var(--card-bg)', border: '1px solid #bbf7d0', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
                       >
                         <X size={12} />
                       </button>
@@ -533,7 +533,7 @@ export default function LoanApplicationForm() {
                       {officerDropdownOpen && (
                         <div style={{
                           position: 'absolute', top: '100%', left: 0, right: 0,
-                          backgroundColor: 'white', borderRadius: 'var(--radius-md)',
+                          backgroundColor: 'var(--card-bg)', borderRadius: 'var(--radius-md)',
                           boxShadow: 'var(--shadow-xl)', border: '1px solid var(--border-color)',
                           zIndex: 25, marginTop: '0.25rem', overflow: 'hidden', maxHeight: '200px', overflowY: 'auto'
                         }}>
@@ -544,8 +544,8 @@ export default function LoanApplicationForm() {
                                 key={o.id}
                                 onClick={() => { setSelectedOfficer(o); setOfficerDropdownOpen(false); setOfficerSearch(''); }}
                                 style={{ padding: '0.625rem 0.75rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'background 0.15s' }}
-                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f8fafc'}
-                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
+                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--card-bg)'}
                               >
                                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', fontWeight: '700', fontSize: '0.75rem', flexShrink: 0 }}>
                                   {o.firstName[0]}{o.lastName[0]}
@@ -573,7 +573,7 @@ export default function LoanApplicationForm() {
             <div className="input-group" style={{ marginBottom: 0 }}>
               <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem' }}>
                 <User size={14} color="var(--primary)" />
-                Customer Information <span style={{ color: '#ef4444' }}>*</span>
+                Customer Information <span style={{ color: 'var(--error-text)' }}>*</span>
               </label>
               
               {!selectedCustomer ? (
@@ -601,7 +601,7 @@ export default function LoanApplicationForm() {
                       top: '100%', 
                       left: 0, 
                       right: 0, 
-                      backgroundColor: 'white', 
+                      backgroundColor: 'var(--card-bg)', 
                       borderRadius: 'var(--radius-md)', 
                       boxShadow: 'var(--shadow-xl)', 
                       border: '1px solid var(--border-color)', 
@@ -618,8 +618,8 @@ export default function LoanApplicationForm() {
                             setCustomerSearch('');
                           }}
                           style={{ padding: '0.75rem 1rem', cursor: 'pointer', borderBottom: '1px solid #f3f4f6', transition: 'background-color 0.15s' }}
-                          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f8fafc'}
-                          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                          onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
+                          onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--card-bg)'}
                         >
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div>
@@ -643,7 +643,7 @@ export default function LoanApplicationForm() {
                         top: '100%', 
                         left: 0, 
                         right: 0, 
-                        backgroundColor: 'white', 
+                        backgroundColor: 'var(--card-bg)', 
                         borderRadius: 'var(--radius-md)', 
                         boxShadow: 'var(--shadow-lg)', 
                         border: '1px solid var(--border-color)', 
@@ -674,7 +674,7 @@ export default function LoanApplicationForm() {
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', fontWeight: '700', fontSize: '0.875rem', boxShadow: 'var(--shadow-sm)', border: '1px solid rgba(37, 99, 235, 0.1)' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', fontWeight: '700', fontSize: '0.875rem', boxShadow: 'var(--shadow-sm)', border: '1px solid rgba(37, 99, 235, 0.1)' }}>
                         {selectedCustomer.firstName[0]}{selectedCustomer.lastName[0]}
                       </div>
                       <div>
@@ -691,15 +691,15 @@ export default function LoanApplicationForm() {
                     <button 
                       type="button" 
                       onClick={() => setSelectedCustomer(null)}
-                      style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'white', border: '1px solid var(--border-color)', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
-                      onMouseOver={(e) => { e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.borderColor = '#fecdd3'; }}
+                      style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--card-bg)', border: '1px solid var(--border-color)', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }}
+                      onMouseOver={(e) => { e.currentTarget.style.color = 'var(--error-text)'; e.currentTarget.style.borderColor = 'var(--error-border)'; }}
                       onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
                     >
                       <X size={12} />
                     </button>
                   </div>
 
-                  <div style={{ backgroundColor: 'rgba(255,255,255,0.75)', borderRadius: 'var(--radius-md)', padding: '0.625rem 0.75rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem 0.75rem' }}>
+                  <div style={{ backgroundColor: 'var(--bg-nested)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.625rem 0.75rem', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem 0.75rem' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.05rem', minWidth: 0 }}>
                       <span style={{ fontSize: '0.6rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>LastName / FirstName</span>
                       <span style={{ fontSize: '0.78rem', fontWeight: '600', color: 'var(--foreground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -762,9 +762,9 @@ export default function LoanApplicationForm() {
             {/* CBC Check Section */}
             <div style={{ 
               padding: '0.75rem 1rem', 
-              backgroundColor: cbcChecked ? '#f0fdf4' : '#f8fafc', 
+              backgroundColor: cbcChecked ? 'var(--success-bg)' : 'var(--background)', 
               borderRadius: 'var(--radius-md)', 
-              border: `1px solid ${cbcChecked ? '#bbf7d0' : 'var(--border-color)'}`,
+              border: `1px solid ${cbcChecked ? 'var(--success-border)' : 'var(--border-color)'}`,
               display: 'flex',
               flexDirection: 'column',
               gap: '0.5rem',
@@ -772,7 +772,7 @@ export default function LoanApplicationForm() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{ padding: '0.375rem', backgroundColor: cbcChecked ? '#dcfce7' : '#e2e8f0', borderRadius: '6px', color: cbcChecked ? '#16a34a' : 'var(--text-muted)', transition: 'all 0.3s ease' }}>
+                  <div style={{ padding: '0.375rem', backgroundColor: cbcChecked ? '#dcfce7' : 'var(--border-color)', borderRadius: '6px', color: cbcChecked ? 'var(--success-text)' : 'var(--text-muted)', transition: 'all 0.3s ease' }}>
                     <ShieldCheck size={16} />
                   </div>
                   <div>
@@ -788,8 +788,8 @@ export default function LoanApplicationForm() {
                     disabled={!selectedCustomer || checkingCbc}
                     className="btn"
                     style={{ 
-                      backgroundColor: (!selectedCustomer || checkingCbc) ? '#e2e8f0' : '#1e293b', 
-                      color: (!selectedCustomer || checkingCbc) ? '#94a3b8' : 'white',
+                      backgroundColor: (!selectedCustomer || checkingCbc) ? 'var(--border-color)' : '#1e293b', 
+                      color: (!selectedCustomer || checkingCbc) ? 'var(--text-muted)' : 'white',
                       padding: '0.375rem 0.75rem',
                       borderRadius: '6px',
                       fontWeight: '600',
@@ -814,16 +814,16 @@ export default function LoanApplicationForm() {
               </div>
               
               {cbcChecked && cbcScore && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '0.5rem 0.75rem', backgroundColor: 'white', borderRadius: '6px', border: '1px solid #bbf7d0', animation: 'fadeIn 0.3s ease-out' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '0.5rem 0.75rem', backgroundColor: 'var(--card-bg)', borderRadius: '6px', border: '1px solid #bbf7d0', animation: 'fadeIn 0.3s ease-out' }}>
                   <div>
                     <div style={{ fontSize: '0.6rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.1rem' }}>CBC Score</div>
-                    <div style={{ fontSize: '1.125rem', fontWeight: '800', color: '#16a34a', lineHeight: 1 }}>{cbcScore.score}</div>
+                    <div style={{ fontSize: '1.125rem', fontWeight: '800', color: 'var(--success-text)', lineHeight: 1 }}>{cbcScore.score}</div>
                   </div>
                   <div>
                     <div style={{ fontSize: '0.6rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.1rem' }}>Risk Level</div>
-                    <div style={{ fontSize: '0.875rem', fontWeight: '700', color: '#16a34a' }}>{cbcScore.status}</div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: '700', color: 'var(--success-text)' }}>{cbcScore.status}</div>
                   </div>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#16a34a', fontSize: '0.75rem', fontWeight: '700', backgroundColor: '#dcfce7', padding: '0.2rem 0.4rem', borderRadius: '20px' }}>
+                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--success-text)', fontSize: '0.75rem', fontWeight: '700', backgroundColor: '#dcfce7', padding: '0.2rem 0.4rem', borderRadius: '20px' }}>
                     <CheckCircle size={12} /> Verified
                   </div>
                 </div>
@@ -836,7 +836,7 @@ export default function LoanApplicationForm() {
         {currentStep === 2 && (
           <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
-              <div style={{ padding: '0.625rem 1rem', backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ padding: '0.625rem 1rem', backgroundColor: 'var(--background)', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <Banknote size={14} color="var(--primary)" />
                 <span style={{ fontWeight: '700', fontSize: '0.8125rem', color: 'var(--foreground)' }}>Loan Terms</span>
               </div>
@@ -846,7 +846,7 @@ export default function LoanApplicationForm() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
-                      <Briefcase size={13} color="var(--primary)" /> Loan Product <span style={{ color: '#ef4444' }}>*</span>
+                      <Briefcase size={13} color="var(--primary)" /> Loan Product <span style={{ color: 'var(--error-text)' }}>*</span>
                     </label>
                     <select required className="input-field"
                       style={{ height: '42px', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2394a3b8%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.875rem center', backgroundSize: '0.9em' }}
@@ -866,8 +866,8 @@ export default function LoanApplicationForm() {
                         <button key={c} type="button" onClick={() => setCurrency(c)} style={{
                           flex: 1, border: 'none', borderLeft: i > 0 ? '1px solid var(--border-color)' : 'none',
                           cursor: 'pointer', fontWeight: '600', fontSize: '0.8125rem',
-                          backgroundColor: currency === c ? '#dbeafe' : '#f8fafc',
-                          color: currency === c ? '#1d4ed8' : '#94a3b8',
+                          backgroundColor: currency === c ? '#dbeafe' : 'var(--background)',
+                          color: currency === c ? '#1d4ed8' : 'var(--text-muted)',
                           transition: 'all 0.18s',
                         }}>
                           {c === 'USD' ? '$ USD' : '៛ KHR'}
@@ -881,10 +881,10 @@ export default function LoanApplicationForm() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
-                      <DollarSign size={13} color="var(--primary)" /> Loan Amount <span style={{ color: '#ef4444' }}>*</span>
+                      <DollarSign size={13} color="var(--primary)" /> Loan Amount <span style={{ color: 'var(--error-text)' }}>*</span>
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontWeight: '700', color: '#64748b', fontSize: '0.8125rem', userSelect: 'none', pointerEvents: 'none' }}>
+                      <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontWeight: '700', color: 'var(--text-muted)', fontSize: '0.8125rem', userSelect: 'none', pointerEvents: 'none' }}>
                         {currency === 'USD' ? '$' : '៛'}
                       </span>
                       <input required type="number" className="input-field"
@@ -893,7 +893,7 @@ export default function LoanApplicationForm() {
                         onChange={(e) => setAmount(Number(e.target.value))} />
                     </div>
                     {selectedProduct && (
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginTop: '0.2rem', display: 'flex', justifyContent: 'space-between' }}>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'flex', justifyContent: 'space-between' }}>
                         <span>Min: {currency === 'USD' ? '$' : '៛'}{selectedProduct.minAmount.toLocaleString()}</span>
                         <span>Max: {currency === 'USD' ? '$' : '៛'}{selectedProduct.maxAmount.toLocaleString()}</span>
                       </div>
@@ -937,7 +937,7 @@ export default function LoanApplicationForm() {
 
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
-                      <FileText size={13} color="var(--primary)" /> Installments <span style={{ color: '#ef4444' }}>*</span>
+                      <FileText size={13} color="var(--primary)" /> Installments <span style={{ color: 'var(--error-text)' }}>*</span>
                     </label>
                     <input required type="number" min={1} className="input-field" style={{ height: '42px' }}
                       placeholder="12" value={numberOfInstallments || ''}
@@ -963,7 +963,7 @@ export default function LoanApplicationForm() {
                           style={{ height: '42px', paddingRight: '1.75rem' }}
                           placeholder="0.00" value={val || ''}
                           onChange={(e) => set(Number(e.target.value))} />
-                        <span style={{ position: 'absolute', right: '0.625rem', top: '50%', transform: 'translateY(-50%)', color: '#cbd5e1', fontWeight: '600', fontSize: '0.75rem', pointerEvents: 'none' }}>%</span>
+                        <span style={{ position: 'absolute', right: '0.625rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--border-hover)', fontWeight: '600', fontSize: '0.75rem', pointerEvents: 'none' }}>%</span>
                       </div>
                     </div>
                   ))}
@@ -978,7 +978,7 @@ export default function LoanApplicationForm() {
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Banknote size={13} color="var(--primary)" /> Collection Fee
                     </label>
-                    <div style={{ display: 'flex', height: '42px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', backgroundColor: 'white' }}>
+                    <div style={{ display: 'flex', height: '42px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', backgroundColor: 'var(--card-bg)' }}>
                       <input type="number" step="0.01" min={0}
                         style={{ flex: 1, border: 'none', outline: 'none', padding: '0 0.5rem', fontSize: '0.875rem', color: 'var(--foreground)', background: 'transparent', minWidth: 0 }}
                         placeholder="0.00" value={collectionFeeValue || ''}
@@ -986,13 +986,13 @@ export default function LoanApplicationForm() {
                       <div style={{ display: 'flex', borderLeft: '1px solid var(--border-color)', flexShrink: 0 }}>
                         <button type="button" onClick={() => setCollectionFeeType('RATE')}
                           style={{ width: '28px', height: '100%', border: 'none', borderRight: '1px solid var(--border-color)', cursor: 'pointer', fontWeight: '700', fontSize: '0.7rem',
-                            backgroundColor: collectionFeeType === 'RATE' ? '#dbeafe' : '#f8fafc',
-                            color: collectionFeeType === 'RATE' ? '#1d4ed8' : '#94a3b8',
+                            backgroundColor: collectionFeeType === 'RATE' ? '#dbeafe' : 'var(--background)',
+                            color: collectionFeeType === 'RATE' ? '#1d4ed8' : 'var(--text-muted)',
                             transition: 'all 0.15s' }}>%</button>
                         <button type="button" onClick={() => setCollectionFeeType('AMOUNT')}
                           style={{ width: '28px', height: '100%', border: 'none', cursor: 'pointer', fontWeight: '700', fontSize: '0.7rem',
-                            backgroundColor: collectionFeeType === 'AMOUNT' ? '#dbeafe' : '#f8fafc',
-                            color: collectionFeeType === 'AMOUNT' ? '#1d4ed8' : '#94a3b8',
+                            backgroundColor: collectionFeeType === 'AMOUNT' ? '#dbeafe' : 'var(--background)',
+                            color: collectionFeeType === 'AMOUNT' ? '#1d4ed8' : 'var(--text-muted)',
                             transition: 'all 0.15s' }}>{currency === 'USD' ? '$' : '៛'}</button>
                       </div>
                     </div>
@@ -1008,7 +1008,7 @@ export default function LoanApplicationForm() {
                         style={{ height: '42px', paddingRight: '2.5rem' }}
                         placeholder="0" value={gracePeriod || ''}
                         onChange={(e) => setGracePeriod(Number(e.target.value))} />
-                      <span style={{ position: 'absolute', right: '0.625rem', top: '50%', transform: 'translateY(-50%)', color: '#cbd5e1', fontWeight: '500', fontSize: '0.68rem', pointerEvents: 'none' }}>days</span>
+                      <span style={{ position: 'absolute', right: '0.625rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--border-hover)', fontWeight: '500', fontSize: '0.68rem', pointerEvents: 'none' }}>days</span>
                     </div>
                   </div>
 
@@ -1018,7 +1018,7 @@ export default function LoanApplicationForm() {
                       <RefreshCw size={13} color="var(--primary)" /> Refinance Fee
                     </label>
                     <div style={{ position: 'relative' }}>
-                      <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontWeight: '700', color: '#64748b', fontSize: '0.8125rem', userSelect: 'none', pointerEvents: 'none' }}>
+                      <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontWeight: '700', color: 'var(--text-muted)', fontSize: '0.8125rem', userSelect: 'none', pointerEvents: 'none' }}>
                         {currency === 'USD' ? '$' : '៛'}
                       </span>
                       <input type="number" step="0.01" min={0} className="input-field"
@@ -1035,7 +1035,7 @@ export default function LoanApplicationForm() {
             {selectedProduct && (
               <div style={{ 
                 padding: '0.875rem 1rem', 
-                backgroundColor: '#f9fafb', 
+                backgroundColor: 'var(--background)', 
                 borderRadius: 'var(--radius-md)', 
                 border: '1px solid #f3f4f6',
                 display: 'flex',
@@ -1083,7 +1083,7 @@ export default function LoanApplicationForm() {
 
             {/* Application Details */}
             <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
-              <div style={{ padding: '0.625rem 1rem', backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <div style={{ padding: '0.625rem 1rem', backgroundColor: 'var(--background)', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <FileText size={14} color="var(--primary)" />
                 <span style={{ fontWeight: '700', fontSize: '0.8125rem', color: 'var(--foreground)' }}>Application Details</span>
               </div>
@@ -1136,7 +1136,7 @@ export default function LoanApplicationForm() {
 
             {/* Collaterals Section */}
             <div style={{ border: '1px solid var(--border-color)', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
-              <div style={{ padding: '0.625rem 1rem', backgroundColor: '#f8fafc', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ padding: '0.625rem 1rem', backgroundColor: 'var(--background)', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <FileText size={14} color="var(--primary)" />
                   <span style={{ fontWeight: '700', fontSize: '0.8125rem', color: 'var(--foreground)' }}>Collaterals</span>
@@ -1166,7 +1166,7 @@ export default function LoanApplicationForm() {
                         <label className="input-label" style={{ fontSize: '0.75rem', marginBottom: '0.25rem' }}>Est. Value ($)</label>
                         <input type="number" min={0} className="input-field" value={c.estimatedValue || ''} onChange={(e) => { const nc = [...collaterals]; nc[i].estimatedValue = Number(e.target.value); setCollaterals(nc); }} style={{ height: '38px', fontSize: '0.8125rem' }} placeholder="0.00" />
                       </div>
-                      <button type="button" onClick={() => { const nc = [...collaterals]; nc.splice(i, 1); setCollaterals(nc); }} style={{ height: '38px', width: '38px', border: '1px solid #ef4444', backgroundColor: '#fef2f2', color: '#ef4444', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                      <button type="button" onClick={() => { const nc = [...collaterals]; nc.splice(i, 1); setCollaterals(nc); }} style={{ height: '38px', width: '38px', border: '1px solid #ef4444', backgroundColor: 'var(--error-bg)', color: 'var(--error-text)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
                         <X size={16} />
                       </button>
                     </div>
@@ -1205,10 +1205,10 @@ export default function LoanApplicationForm() {
               <button 
                 type="button" 
                 className="btn btn-primary" 
-                style={{ padding: '0.625rem 1.75rem', minWidth: '180px', height: '42px', backgroundColor: 'var(--foreground)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: '600' }}
+                style={{ padding: '0.625rem 1.75rem', minWidth: '180px', height: '42px', backgroundColor: 'var(--foreground)', color: 'var(--background)', border: 'none', cursor: 'pointer', fontWeight: '600' }}
                 onClick={handleNextStep1}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--foreground)'}
+                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; e.currentTarget.style.color = 'white'; }}
+                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--foreground)'; e.currentTarget.style.color = 'var(--background)'; }}
               >
                 Next: Loan Terms →
               </button>
@@ -1217,10 +1217,10 @@ export default function LoanApplicationForm() {
               <button 
                 type="button" 
                 className="btn btn-primary" 
-                style={{ padding: '0.625rem 1.75rem', minWidth: '180px', height: '42px', backgroundColor: 'var(--foreground)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: '600' }}
+                style={{ padding: '0.625rem 1.75rem', minWidth: '180px', height: '42px', backgroundColor: 'var(--foreground)', color: 'var(--background)', border: 'none', cursor: 'pointer', fontWeight: '600' }}
                 onClick={handleNextStep2}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--primary)'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--foreground)'}
+                onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary)'; e.currentTarget.style.color = 'white'; }}
+                onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'var(--foreground)'; e.currentTarget.style.color = 'var(--background)'; }}
               >
                 Next: Details & Collaterals →
               </button>
@@ -1229,10 +1229,10 @@ export default function LoanApplicationForm() {
               <button 
                 type="submit" 
                 className="btn btn-primary" 
-                style={{ padding: '0.625rem 1.75rem', minWidth: '180px', height: '42px', backgroundColor: loading ? '#94a3b8' : 'var(--foreground)', color: 'white', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: '600' }}
+                style={{ padding: '0.625rem 1.75rem', minWidth: '180px', height: '42px', backgroundColor: loading ? 'var(--text-muted)' : 'var(--foreground)', color: 'var(--background)', border: 'none', cursor: loading ? 'not-allowed' : 'pointer', fontWeight: '600' }}
                 disabled={loading}
-                onMouseOver={(e) => { if (!loading) e.currentTarget.style.backgroundColor = 'var(--primary)' }}
-                onMouseOut={(e) => { if (!loading) e.currentTarget.style.backgroundColor = 'var(--foreground)' }}
+                onMouseOver={(e) => { if (!loading) { e.currentTarget.style.backgroundColor = 'var(--primary)'; e.currentTarget.style.color = 'white'; } }}
+                onMouseOut={(e) => { if (!loading) { e.currentTarget.style.backgroundColor = 'var(--foreground)'; e.currentTarget.style.color = 'var(--background)'; } }}
               >
                 {loading ? 'Processing...' : (
                   <>

@@ -139,15 +139,15 @@ export default function CbcPage() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 700) return '#10b981'; // Green
-    if (score >= 550) return '#f59e0b'; // Amber
-    return '#ef4444'; // Red
+    if (score >= 700) return 'var(--success-text)'; // Green
+    if (score >= 550) return 'var(--amber-text)'; // Amber
+    return 'var(--error-text)'; // Red
   };
 
   const getStatusStyle = (status: string) => {
-    if (status === 'Normal') return { color: '#0f5132', backgroundColor: '#d1e7dd' };
-    if (status.includes('30 Days')) return { color: '#664d03', backgroundColor: '#fff3cd' };
-    return { color: '#842029', backgroundColor: '#f8d7da' };
+    if (status === 'Normal') return { color: 'var(--success-text)', backgroundColor: 'var(--success-bg)' };
+    if (status.includes('30 Days')) return { color: 'var(--warning-text)', backgroundColor: 'var(--warning-bg)' };
+    return { color: 'var(--error-text)', backgroundColor: 'var(--error-bg)' };
   };
 
   const steps = [
@@ -179,13 +179,13 @@ export default function CbcPage() {
       <div className="card" style={{ padding: '2rem', marginBottom: '2rem' }}>
         <form onSubmit={handleSearch} style={{ display: 'flex', gap: '1rem' }}>
           <div style={{ flex: 1, position: 'relative' }}>
-            <Search size={20} color="#64748b" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+            <Search size={20} color="var(--text-muted)" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
             <input 
               type="text" 
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by Customer Name (e.g. Sophea, Samnang, Bopa)"
-              style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: '12px', border: '1px solid #e2e8f0', outline: 'none', fontSize: '1rem', color: '#1e293b' }}
+              style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', fontSize: '1rem', color: 'var(--foreground)', backgroundColor: 'var(--card-bg)' }}
             />
           </div>
           <button className="btn btn-primary" type="submit" style={{ padding: '0 2.5rem', fontWeight: '600' }}>
@@ -193,7 +193,7 @@ export default function CbcPage() {
           </button>
         </form>
 
-        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', alignItems: 'center', fontSize: '0.875rem', color: '#64748b' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', alignItems: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
           <Info size={16} />
           <span>Type: <b>Sophea</b> (Low Risk), <b>Samnang</b> (Medium Risk Overdue), or <b>Bopa</b> (High Risk Delinquent) for simulated reports.</span>
         </div>
@@ -203,10 +203,10 @@ export default function CbcPage() {
       {loading && (
         <div className="card" style={{ padding: '4rem 2rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
           <RefreshCw size={48} className="animate-spin" color="var(--primary)" />
-          <div style={{ fontWeight: '700', fontSize: '1.25rem', color: '#1e293b' }}>
+          <div style={{ fontWeight: '700', fontSize: '1.25rem', color: 'var(--foreground)' }}>
             {steps[loadingStep]}
           </div>
-          <div style={{ width: '300px', height: '6px', backgroundColor: '#f1f5f9', borderRadius: '3px', overflow: 'hidden' }}>
+          <div style={{ width: '300px', height: '6px', backgroundColor: 'var(--bg-muted)', borderRadius: '3px', overflow: 'hidden' }}>
             <div style={{ width: `${(loadingStep + 1) * 25}%`, height: '100%', backgroundColor: 'var(--primary)', transition: 'width 0.4s ease' }}></div>
           </div>
         </div>
@@ -219,12 +219,12 @@ export default function CbcPage() {
           {/* Left Column: Credit Score Card */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div className="card" style={{ padding: '2.5rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase' }}>K-Score & Risk Profile</h3>
+              <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase' }}>K-Score & Risk Profile</h3>
               
               {/* Dial Chart */}
               <div style={{ position: 'relative', width: '180px', height: '180px' }}>
                 <svg width="180" height="180" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e2e8f0" strokeWidth="8" strokeDasharray="188 251" strokeLinecap="round" transform="rotate(-210 50 50)" />
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="var(--border-color)" strokeWidth="8" strokeDasharray="188 251" strokeLinecap="round" transform="rotate(-210 50 50)" />
                   <circle cx="50" cy="50" r="40" fill="none" stroke={getScoreColor(report.score)} strokeWidth="8" 
                     strokeDasharray={`${(report.score / 800) * 188} 251`} 
                     strokeLinecap="round" transform="rotate(-210 50 50)" 
@@ -232,32 +232,32 @@ export default function CbcPage() {
                   />
                 </svg>
                 <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '2.25rem', fontWeight: '900', color: '#0f172a' }}>{report.score}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '700' }}>of 800</span>
+                  <span style={{ fontSize: '2.25rem', fontWeight: '900', color: 'var(--foreground)' }}>{report.score}</span>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '700' }}>of 800</span>
                 </div>
               </div>
 
               <div>
                 <div style={{ fontSize: '1.5rem', fontWeight: '800', color: getScoreColor(report.score) }}>{report.riskGrade}</div>
-                <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: '0.25rem' }}>Based on CBC Rating algorithms</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>Based on CBC Rating algorithms</div>
               </div>
             </div>
 
             {/* Delinquency Counter */}
             <div className="card" style={{ padding: '2rem' }}>
-              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', fontWeight: '800', color: '#64748b', textTransform: 'uppercase' }}>Delinquency Summary</h3>
+              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Delinquency Summary</h3>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', textAlign: 'center' }}>
-                <div style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: report.delinquencies.pd30 > 0 ? '#fff3cd' : '#f8fafc' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: report.delinquencies.pd30 > 0 ? '#a16207' : '#1e293b' }}>{report.delinquencies.pd30}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>30+ DPD</div>
+                <div style={{ padding: '1rem', border: '1px solid var(--border-color)', borderRadius: '12px', backgroundColor: report.delinquencies.pd30 > 0 ? 'var(--warning-bg)' : 'var(--background)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: report.delinquencies.pd30 > 0 ? 'var(--warning-text)' : 'var(--foreground)' }}>{report.delinquencies.pd30}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>30+ DPD</div>
                 </div>
-                <div style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: report.delinquencies.pd60 > 0 ? '#f8d7da' : '#f8fafc' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: report.delinquencies.pd60 > 0 ? '#842029' : '#1e293b' }}>{report.delinquencies.pd60}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>60+ DPD</div>
+                <div style={{ padding: '1rem', border: '1px solid var(--border-color)', borderRadius: '12px', backgroundColor: report.delinquencies.pd60 > 0 ? 'var(--error-bg)' : 'var(--background)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: report.delinquencies.pd60 > 0 ? 'var(--error-text)' : 'var(--foreground)' }}>{report.delinquencies.pd60}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>60+ DPD</div>
                 </div>
-                <div style={{ padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '12px', backgroundColor: report.delinquencies.pd90 > 0 ? '#f8d7da' : '#f8fafc' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: report.delinquencies.pd90 > 0 ? '#842029' : '#1e293b' }}>{report.delinquencies.pd90}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>90+ DPD</div>
+                <div style={{ padding: '1rem', border: '1px solid var(--border-color)', borderRadius: '12px', backgroundColor: report.delinquencies.pd90 > 0 ? 'var(--error-bg)' : 'var(--background)' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: report.delinquencies.pd90 > 0 ? 'var(--error-text)' : 'var(--foreground)' }}>{report.delinquencies.pd90}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>90+ DPD</div>
                 </div>
               </div>
             </div>
@@ -269,43 +269,43 @@ export default function CbcPage() {
             {/* Key Figures */}
             <div className="card" style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase' }}>Active Loan Contracts</div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginTop: '0.25rem' }}>{report.activeLoans} <span style={{ fontSize: '1rem', color: '#64748b', fontWeight: '500' }}>of {report.totalLoans} total</span></div>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Active Loan Contracts</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--foreground)', marginTop: '0.25rem' }}>{report.activeLoans} <span style={{ fontSize: '1rem', color: 'var(--text-muted)', fontWeight: '500' }}>of {report.totalLoans} total</span></div>
               </div>
               <div>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase' }}>Total Outstanding Obligations</div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginTop: '0.25rem' }}>${report.totalOutstanding.toLocaleString()}</div>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Outstanding Obligations</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--foreground)', marginTop: '0.25rem' }}>${report.totalOutstanding.toLocaleString()}</div>
               </div>
-              <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase' }}>Monthly Repayment Sum</div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginTop: '0.25rem' }}>${report.totalMonthlyObligation.toLocaleString()}</div>
+              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Monthly Repayment Sum</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--foreground)', marginTop: '0.25rem' }}>${report.totalMonthlyObligation.toLocaleString()}</div>
               </div>
-              <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1rem' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b', textTransform: 'uppercase' }}>Inquiries (30 Days)</div>
-                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: '#0f172a', marginTop: '0.25rem' }}>{report.inquiries.length}</div>
+              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Inquiries (30 Days)</div>
+                <div style={{ fontSize: '1.75rem', fontWeight: '800', color: 'var(--foreground)', marginTop: '0.25rem' }}>{report.inquiries.length}</div>
               </div>
             </div>
 
             {/* Credit Contracts details */}
             <div className="card" style={{ padding: '2rem' }}>
-              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.125rem', fontWeight: '800', color: '#0f172a' }}>Active Credit Contracts</h3>
+              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.125rem', fontWeight: '800', color: 'var(--foreground)' }}>Active Credit Contracts</h3>
               
               {report.contracts.length === 0 ? (
-                <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b', border: '1px dashed #cbd5e1', borderRadius: '12px' }}>
+                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)', border: '1px dashed #cbd5e1', borderRadius: '12px' }}>
                   No active credit contracts reported in the registry.
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {report.contracts.map((c, i) => (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', border: '1px solid #e2e8f0', borderRadius: '12px' }}>
+                    <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', border: '1px solid var(--border-color)', borderRadius: '12px' }}>
                       <div>
-                        <div style={{ fontWeight: '700', color: '#0f172a' }}>{c.institution}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>Type: {c.type} | Opened: {c.openedDate}</div>
+                        <div style={{ fontWeight: '700', color: 'var(--foreground)' }}>{c.institution}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>Type: {c.type} | Opened: {c.openedDate}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontWeight: '800', color: '#0f172a' }}>${c.outstanding.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: '500', color: '#64748b' }}>of ${c.amount.toLocaleString()}</span></div>
+                        <div style={{ fontWeight: '800', color: 'var(--foreground)' }}>${c.outstanding.toLocaleString()} <span style={{ fontSize: '0.75rem', fontWeight: '500', color: 'var(--text-muted)' }}>of ${c.amount.toLocaleString()}</span></div>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'flex-end', marginTop: '0.25rem' }}>
-                          <span style={{ fontSize: '0.75rem', color: '#64748b' }}>${c.monthlyPayment}/mo</span>
+                          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>${c.monthlyPayment}/mo</span>
                           <span style={{ padding: '0.125rem 0.5rem', borderRadius: '6px', fontSize: '0.6875rem', fontWeight: '700', ...getStatusStyle(c.status) }}>{c.status}</span>
                         </div>
                       </div>
@@ -317,15 +317,15 @@ export default function CbcPage() {
 
             {/* Inquiries */}
             <div className="card" style={{ padding: '2rem' }}>
-              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.125rem', fontWeight: '800', color: '#0f172a' }}>Inquiry History</h3>
+              <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1.125rem', fontWeight: '800', color: 'var(--foreground)' }}>Inquiry History</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {report.inquiries.map((inq, i) => (
-                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', borderBottom: '1px dashed #e2e8f0', fontSize: '0.875rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0f172a', fontWeight: '600' }}>
-                      <Clock size={16} color="#94a3b8" />
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem', borderBottom: '1px dashed var(--border-color)', fontSize: '0.875rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontWeight: '600' }}>
+                      <Clock size={16} color="var(--text-muted)" />
                       {inq.institution}
                     </div>
-                    <div style={{ color: '#64748b' }}>Purpose: {inq.purpose} | {inq.date}</div>
+                    <div style={{ color: 'var(--text-muted)' }}>Purpose: {inq.purpose} | {inq.date}</div>
                   </div>
                 ))}
               </div>
@@ -338,10 +338,10 @@ export default function CbcPage() {
 
       {/* Default placeholder instructions */}
       {!report && !loading && (
-        <div style={{ textAlign: 'center', padding: '6rem 2rem', color: '#94a3b8', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
+        <div style={{ textAlign: 'center', padding: '6rem 2rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.25rem' }}>
           <FileText size={64} style={{ opacity: 0.4 }} />
           <div>
-            <h3 style={{ margin: 0, color: '#64748b', fontSize: '1.25rem', fontWeight: '700' }}>Ready for Inquiry</h3>
+            <h3 style={{ margin: 0, color: 'var(--text-muted)', fontSize: '1.25rem', fontWeight: '700' }}>Ready for Inquiry</h3>
             <p style={{ margin: '0.5rem 0 0', fontSize: '0.9375rem' }}>Enter a customer name above to query the Credit Bureau Cambodia registry.</p>
           </div>
         </div>

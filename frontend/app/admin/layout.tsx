@@ -6,16 +6,19 @@ import { usePathname } from 'next/navigation';
 import {
   Search, Bell, FileText, Users, MessageSquare,
   Star, Gift, CreditCard, Box, Settings, ChevronDown,
-  GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2
+  GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
+  Sun, Moon
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
 import UserProfileModal from '@/components/UserProfileModal';
 import { api } from '@/services/api';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -26,6 +29,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [sidebarConfig, setSidebarConfig] = useState<Record<string, boolean>>({});
   const [user, setUser] = useState<any>({});
   const profileRef = useRef<HTMLDivElement>(null);
+
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    setIsDarkMode(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  const toggleTheme = () => {
+    const nextDark = !isDarkMode;
+    setIsDarkMode(nextDark);
+    if (nextDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -80,7 +101,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     padding: '0.625rem 0.875rem',
     borderRadius: 'var(--radius-md)',
     backgroundColor: isActive ? 'var(--primary-light)' : 'transparent',
-    color: isActive ? 'var(--primary)' : '#475569',
+    color: isActive ? 'var(--primary)' : 'var(--text-muted-dark)',
     textDecoration: 'none',
     fontSize: '0.875rem',
     fontWeight: isActive ? '600' : '500',
@@ -107,7 +128,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             width: '38px',
             height: '38px',
             borderRadius: '50%',
-            backgroundColor: '#ffffff',
+            backgroundColor: 'transparent',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -123,17 +144,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span style={{ fontWeight: '700', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#ffffff', lineHeight: '1.2' }}>Acabar Plc</span>
-            <span style={{ fontWeight: '500', fontSize: '0.65rem', color: 'rgba(255,255,255,0.7)', marginTop: '1px' }}>ប្រព័ន្ធគ្រប់គ្រងប្រាក់កម្ចី</span>
+            <span style={{ fontWeight: '500', fontSize: '0.65rem', color: 'rgba(255,255,255,0.7)', marginTop: '1px' }}>អាខាបារ ម.ក</span>
           </div>
         </div>
 
         <nav style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
           {sidebarConfig['Dashboard'] !== false && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: '600', color: '#94a3b8', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Overview</div>
+              <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('overview')}</div>
               <Link href="/admin" className="sidebar-link" style={navItemStyle(pathname === '/admin')}>
                 <FileText size={18} />
-                Dashboard
+                {t('dashboard')}
               </Link>
             </div>
           )}
@@ -143,21 +164,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <>
                 <div 
                   onClick={() => setIsCustomerMenuOpen(!isCustomerMenuOpen)}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/customers') ? 'var(--primary)' : '#475569', fontSize: '0.875rem', fontWeight: '500', cursor: 'pointer', transition: 'color var(--transition-fast)' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/customers') ? 'var(--primary)' : 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '500', cursor: 'pointer', transition: 'color var(--transition-fast)' }}
                   onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'}
-                  onMouseOut={(e) => e.currentTarget.style.color = pathname?.startsWith('/admin/customers') ? 'var(--primary)' : '#475569'}
+                  onMouseOut={(e) => e.currentTarget.style.color = pathname?.startsWith('/admin/customers') ? 'var(--primary)' : 'var(--text-muted-dark)'}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <Users size={18} />
-                    Customer
+                    {t('customer')}
                   </div>
                   <ChevronDown size={14} style={{ transform: isCustomerMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
                 </div>
 
                 {isCustomerMenuOpen && (
                   <div style={{ paddingLeft: '2.625rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem', animation: 'fadeIn 0.2s ease-out' }}>
-                    <Link href="/admin/customers/accounts" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/accounts' ? 'var(--primary)' : '#64748b', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/accounts' ? 'var(--primary)' : '#64748b'}>All Customers</Link>
-                    <Link href="/admin/customers/repayments" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/repayments' ? 'var(--primary)' : '#64748b', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/repayments' ? 'var(--primary)' : '#64748b'}>Repayment</Link>
+                    <Link href="/admin/customers/accounts" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/accounts' ? 'var(--primary)' : 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/accounts' ? 'var(--primary)' : 'var(--text-muted)'}>{t('allCustomers')}</Link>
+                    <Link href="/admin/customers/repayments" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/repayments' ? 'var(--primary)' : 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/repayments' ? 'var(--primary)' : 'var(--text-muted)'}>{t('repayment')}</Link>
                   </div>
                 )}
               </>
@@ -166,49 +187,49 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {sidebarConfig['LOS Pipeline'] !== false && (
               <Link href="/admin/los" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/')), marginTop: sidebarConfig['Customer'] !== false ? '0.5rem' : '0' }}>
                 <GitPullRequest size={18} />
-                LOS Pipeline
+                {t('losPipeline')}
               </Link>
             )}
             
             {sidebarConfig['Underwriting'] !== false && (
               <Link href="/admin/underwriting" className="sidebar-link" style={navItemStyle(pathname === '/admin/underwriting')}>
                 <Shield size={18} />
-                Underwriting
+                {t('underwriting')}
               </Link>
             )}
             
             {sidebarConfig['New Application'] !== false && (
               <Link href="/admin/loans/new" className="sidebar-link" style={navItemStyle(pathname === '/admin/loans/new')}>
                 <CreditCard size={18} />
-                New Application
+                {t('newApplication')}
               </Link>
             )}
             
             {sidebarConfig['Loan Product'] !== false && (
               <Link href="/admin/products" className="sidebar-link" style={navItemStyle(pathname === '/admin/products')}>
                 <Box size={18} />
-                Loan Product
+                {t('loanProduct')}
               </Link>
             )}
             
             {sidebarConfig['CBC'] !== false && (
               <Link href="/admin/cbc" className="sidebar-link" style={navItemStyle(pathname === '/admin/cbc')}>
                 <Search size={18} />
-                CBC Check
+                {t('cbcCheck')}
               </Link>
             )}
 
             {sidebarConfig['Bank Statement'] !== false && (
               <Link href="/admin/bank-statement" className="sidebar-link" style={navItemStyle(pathname === '/admin/bank-statement')}>
                 <FileSpreadsheet size={18} />
-                Bank Statement
+                {t('bankStatement')}
               </Link>
             )}
 
             {sidebarConfig['Report'] !== false && (
               <Link href="/admin/report" className="sidebar-link" style={navItemStyle(pathname === '/admin/report')}>
                 <BarChart2 size={18} />
-                Report
+                {t('report')}
               </Link>
             )}
 
@@ -216,8 +237,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         </nav>
 
-        <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid var(--border-color)', fontSize: '0.75rem', color: '#94a3b8', fontWeight: '500' }}>
-          Acabar Plc Admin <span style={{ float: 'right', color: '#64748b' }}>v1.0.0</span>
+        <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid var(--border-color)', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '500' }}>
+          Acabar Plc Admin <span style={{ float: 'right', color: 'var(--text-muted)' }}>v1.0.0</span>
         </div>
       </aside>
 
@@ -228,7 +249,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
 
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', transition: 'background-color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+            <button 
+              onClick={toggleTheme}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', transition: 'background-color var(--transition-fast)' }} 
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted)'} 
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              title="Toggle theme"
+            >
+              {isDarkMode ? <Sun size={20} color="var(--text-muted-dark)" /> : <Moon size={20} color="var(--text-muted-dark)" />}
+            </button>
+
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: '50%', transition: 'background-color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
               <Bell size={20} color="var(--text-muted-dark)" />
               <span style={{ position: 'absolute', top: '8px', right: '10px', width: '8px', height: '8px', backgroundColor: 'var(--error-text)', borderRadius: '50%', border: '2px solid white' }}></span>
             </button>
@@ -237,7 +268,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem', borderRadius: 'var(--radius-md)', transition: 'background-color var(--transition-fast)' }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted)'}
                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
                 <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--secondary)', color: 'var(--foreground)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', fontWeight: '600', border: '2px solid white', boxShadow: 'var(--shadow-sm)' }}>
@@ -251,8 +282,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <span style={{ 
                       fontSize: '0.65rem', 
                       padding: '0.125rem 0.375rem', 
-                      backgroundColor: user?.roles?.[0] === 'SUPER_ADMIN' ? '#fefce8' : '#f1f5f9',
-                      color: user?.roles?.[0] === 'SUPER_ADMIN' ? '#a16207' : '#475569',
+                      backgroundColor: user?.roles?.[0] === 'SUPER_ADMIN' ? 'var(--warning-bg)' : 'var(--bg-muted)',
+                      color: user?.roles?.[0] === 'SUPER_ADMIN' ? 'var(--warning-text)' : 'var(--text-muted-dark)',
                       borderRadius: '4px',
                       fontWeight: '800',
                       textTransform: 'uppercase'
@@ -266,8 +297,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
               {/* Dropdown */}
               {isProfileOpen && (
-                <div style={{ position: 'absolute', top: 'calc(100% + 0.5rem)', right: 0, width: '260px', backgroundColor: 'white', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-xl)', border: '1px solid var(--border-color)', zIndex: 50, overflow: 'hidden', animation: 'fadeIn 0.2s ease-out' }}>
-                  <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '1rem', backgroundColor: '#f8fafc' }}>
+                <div style={{ position: 'absolute', top: 'calc(100% + 0.5rem)', right: 0, width: '260px', backgroundColor: 'var(--card-bg)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-xl)', border: '1px solid var(--border-color)', zIndex: 50, overflow: 'hidden', animation: 'fadeIn 0.2s ease-out' }}>
+                  <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '1rem', backgroundColor: 'var(--background)' }}>
                     <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--secondary)', color: 'var(--foreground)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: '600', border: '2px solid white', boxShadow: 'var(--shadow-sm)' }}>
                       CN
                     </div>
@@ -280,18 +311,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <button 
                       onClick={() => { setIsUserProfileOpen(true); setIsProfileOpen(false); }}
                       style={{ width: '100%', textAlign: 'left', display: 'block', padding: '0.5rem 1rem', fontSize: '0.875rem', color: 'var(--text-muted-dark)', textDecoration: 'none', borderRadius: 'var(--radius-md)', transition: 'all var(--transition-fast)', background: 'none', border: 'none', cursor: 'pointer' }} 
-                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; e.currentTarget.style.color = 'var(--foreground)' }} 
+                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-muted)'; e.currentTarget.style.color = 'var(--foreground)' }} 
                       onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-muted-dark)' }}
                     >
-                      Profile
+                      {t('profile')}
                     </button>
                     <button 
                       onClick={() => { setIsSettingsOpen(true); setSettingsTab('Security'); setIsProfileOpen(false); }}
                       style={{ width: '100%', textAlign: 'left', display: 'block', padding: '0.5rem 1rem', fontSize: '0.875rem', color: 'var(--text-muted-dark)', textDecoration: 'none', borderRadius: 'var(--radius-md)', transition: 'all var(--transition-fast)', background: 'none', border: 'none', cursor: 'pointer' }} 
-                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#f1f5f9'; e.currentTarget.style.color = 'var(--foreground)' }} 
+                      onMouseOver={(e) => { e.currentTarget.style.backgroundColor = 'var(--bg-muted)'; e.currentTarget.style.color = 'var(--foreground)' }} 
                       onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-muted-dark)' }}
                     >
-                      Settings
+                      {t('settings')}
                     </button>
                   </div>
                   <div style={{ borderTop: '1px solid var(--border-color)', padding: '0.5rem' }}>
@@ -302,7 +333,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     >
                       <LogOut size={16} />
-                      Sign out
+                      {t('signOut')}
                     </button>
                   </div>
                 </div>

@@ -85,9 +85,9 @@ export default function UnderwritingDashboardPage() {
 
   // --- Card definitions ---
   const cards = [
-    { key: 'pending',       label: 'Pending Reviews',      value: String(pendingCount),                              icon: <Clock size={18} />,       color: '#d97706', bg: '#fffbeb' },
-    { key: 'approved',      label: 'Approved (This Week)', value: String(approvedCount),                             icon: <CheckCircle2 size={18} />, color: '#059669', bg: '#ecfdf5' },
-    { key: 'auto_rejected', label: 'Auto-Rejected',        value: String(autoRejectedCount),                         icon: <XCircle size={18} />,      color: '#dc2626', bg: '#fef2f2' },
+    { key: 'pending',       label: 'Pending Reviews',      value: String(pendingCount),                              icon: <Clock size={18} />,       color: 'var(--warning-text)', bg: 'var(--warning-bg)' },
+    { key: 'approved',      label: 'Approved (This Week)', value: String(approvedCount),                             icon: <CheckCircle2 size={18} />, color: 'var(--success-text)', bg: 'var(--success-bg)' },
+    { key: 'auto_rejected', label: 'Auto-Rejected',        value: String(autoRejectedCount),                         icon: <XCircle size={18} />,      color: 'var(--error-text)', bg: 'var(--error-bg)' },
     { key: 'cbc',           label: 'Avg. CBC Score',       value: avgCbcScore !== null ? String(avgCbcScore) : '—',  icon: <Shield size={18} />,       color: 'var(--primary)', bg: 'var(--primary-light)' },
   ];
 
@@ -128,7 +128,7 @@ export default function UnderwritingDashboardPage() {
               Filtered by: {cards.find(c => c.key === activeFilter)?.label}
               <button
                 onClick={() => setActiveFilter(null)}
-                style={{ background: 'none', border: 'none', marginLeft: '0.375rem', cursor: 'pointer', color: '#94a3b8', fontWeight: '700', lineHeight: 1, padding: 0 }}
+                style={{ background: 'none', border: 'none', marginLeft: '0.375rem', cursor: 'pointer', color: 'var(--text-muted)', fontWeight: '700', lineHeight: 1, padding: 0 }}
                 title="Clear filter"
               >×</button>
             </span>
@@ -190,7 +190,7 @@ export default function UnderwritingDashboardPage() {
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: 0 }}>{pendingTableTitle}</h3>
-          <span style={{ fontSize: '0.75rem', backgroundColor: '#fffbeb', color: '#d97706', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontWeight: '600' }}>
+          <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--warning-bg)', color: 'var(--warning-text)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontWeight: '600' }}>
             {filteredPending.length} awaiting
           </span>
         </div>
@@ -229,16 +229,16 @@ export default function UnderwritingDashboardPage() {
                     <td style={{ fontWeight: '600', fontSize: '0.875rem' }}>${review.amount.toLocaleString()}</td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <div style={{ width: '60px', height: '6px', borderRadius: '3px', backgroundColor: '#e2e8f0', overflow: 'hidden' }}>
+                        <div style={{ width: '60px', height: '6px', borderRadius: '3px', backgroundColor: 'var(--border-color)', overflow: 'hidden' }}>
                           <div style={{
                             width: `${Math.min(review.dtiRatio * 100, 100)}%`,
                             height: '100%', borderRadius: '3px',
-                            backgroundColor: review.dtiRatio > 0.7 ? '#dc2626' : review.dtiRatio > 0.5 ? '#d97706' : '#059669',
+                            backgroundColor: review.dtiRatio > 0.7 ? 'var(--error-text)' : review.dtiRatio > 0.5 ? 'var(--warning-text)' : 'var(--success-text)',
                           }} />
                         </div>
                         <span style={{
                           fontSize: '0.8125rem', fontWeight: '600',
-                          color: review.dtiRatio > 0.7 ? '#dc2626' : review.dtiRatio > 0.5 ? '#d97706' : '#059669',
+                          color: review.dtiRatio > 0.7 ? 'var(--error-text)' : review.dtiRatio > 0.5 ? 'var(--warning-text)' : 'var(--success-text)',
                         }}>
                           {(review.dtiRatio * 100).toFixed(0)}%
                         </span>
@@ -247,7 +247,7 @@ export default function UnderwritingDashboardPage() {
                     <td>
                       <span style={{
                         fontSize: '0.875rem', fontWeight: '700',
-                        color: review.cbcScore < 300 ? '#dc2626' : review.cbcScore < 500 ? '#d97706' : '#059669',
+                        color: review.cbcScore < 300 ? 'var(--error-text)' : review.cbcScore < 500 ? 'var(--warning-text)' : 'var(--success-text)',
                       }}>
                         {review.cbcScore || '—'}
                       </span>
@@ -255,8 +255,8 @@ export default function UnderwritingDashboardPage() {
                     <td>
                       <span style={{
                         fontSize: '0.6875rem', fontWeight: '600', padding: '0.25rem 0.625rem', borderRadius: 'var(--radius-full)',
-                        backgroundColor: review.tier === 'TIER3_REVIEW' ? '#fdf2f8' : review.tier === 'TIER2_REVIEW' ? '#f5f3ff' : 'var(--primary-light)',
-                        color: review.tier === 'TIER3_REVIEW' ? '#be185d' : review.tier === 'TIER2_REVIEW' ? '#7c3aed' : 'var(--primary)',
+                        backgroundColor: review.tier === 'TIER3_REVIEW' ? 'var(--pink-bg)' : review.tier === 'TIER2_REVIEW' ? 'var(--purple-bg)' : 'var(--primary-light)',
+                        color: review.tier === 'TIER3_REVIEW' ? 'var(--pink-text)' : review.tier === 'TIER2_REVIEW' ? 'var(--purple-text)' : 'var(--primary)',
                       }}>
                         {review.tier.replace('_', ' ')}
                       </span>
@@ -265,13 +265,13 @@ export default function UnderwritingDashboardPage() {
                       {review.riskFlags.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                           {review.riskFlags.map((flag: string, i: number) => (
-                            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.6875rem', color: '#d97706' }}>
+                            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.6875rem', color: 'var(--warning-text)' }}>
                               <AlertTriangle size={10} /> {flag}
                             </span>
                           ))}
                         </div>
                       ) : (
-                        <span style={{ fontSize: '0.75rem', color: '#059669', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--success-text)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                           <CheckCircle2 size={12} /> Clean
                         </span>
                       )}
@@ -312,8 +312,8 @@ export default function UnderwritingDashboardPage() {
           ) : (
             filteredDecisions.map((d) => {
               const isApproved = APPROVED_STATUSES.includes(d.decision);
-              const iconBg    = isApproved ? '#ecfdf5' : '#fef2f2';
-              const iconColor = isApproved ? '#059669' : '#dc2626';
+              const iconBg    = isApproved ? 'var(--success-bg)' : 'var(--error-bg)';
+              const iconColor = isApproved ? 'var(--success-text)' : 'var(--error-text)';
               const label     = d.decision.replace(/_/g, ' ');
               return (
                 <div key={d.id} style={{

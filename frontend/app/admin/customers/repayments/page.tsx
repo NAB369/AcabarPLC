@@ -68,16 +68,16 @@ export default function CustomerRepaymentsPage() {
 
   const getStatusBadge = (schedule: any) => {
     if (!schedule) {
-      return <span style={{ backgroundColor: '#f1f5f9', color: '#64748b', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #cbd5e1' }}>Fully Paid</span>;
+      return <span style={{ backgroundColor: 'var(--bg-muted)', color: 'var(--text-muted)', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid var(--border-hover)' }}>Fully Paid</span>;
     }
 
     if (schedule.status === 'PAID') {
-      return <span style={{ backgroundColor: '#f0fdf4', color: '#16a34a', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #bbf7d0' }}>Paid</span>;
+      return <span style={{ backgroundColor: 'var(--success-bg)', color: 'var(--success-text)', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #bbf7d0' }}>Paid</span>;
     }
 
     const isOverdue = schedule.status === 'OVERDUE' || new Date(schedule.dueDate) < new Date();
     if (isOverdue) {
-      return <span style={{ backgroundColor: '#fef2f2', color: '#dc2626', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #fecdd3' }}>Overdue</span>;
+      return <span style={{ backgroundColor: 'var(--error-bg)', color: 'var(--error-text)', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #fecdd3' }}>Overdue</span>;
     }
 
     return <span style={{ backgroundColor: 'var(--primary-light)', color: 'var(--primary)', padding: '0.25rem 0.75rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: '700', border: '1px solid #bfdbfe' }}>Upcoming</span>;
@@ -148,7 +148,7 @@ export default function CustomerRepaymentsPage() {
         </div>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <div className="card" style={{ padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', boxShadow: 'var(--shadow-sm)' }}>
-             <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#ecfdf5', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+             <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: 'var(--success-bg)', color: 'var(--success-text)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <TrendingUp size={20} />
              </div>
              <div>
@@ -160,14 +160,14 @@ export default function CustomerRepaymentsPage() {
       </div>
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#ffffff' }}>
+        <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
           <div style={{ position: 'relative', width: '320px' }}>
             <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
             <input 
               type="text" 
               placeholder="Search customer repayments..." 
               className="input-field" 
-              style={{ paddingLeft: '2.75rem', marginBottom: 0, backgroundColor: '#f8fafc' }}
+              style={{ paddingLeft: '2.75rem', marginBottom: 0, backgroundColor: 'var(--background)' }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -183,7 +183,7 @@ export default function CustomerRepaymentsPage() {
                   fontSize: '0.8125rem',
                   fontWeight: '600',
                   color: 'var(--text-muted-dark)',
-                  backgroundColor: '#ffffff',
+                  backgroundColor: 'var(--card-bg)',
                   border: '1px solid var(--border-color)',
                   borderRadius: 'var(--radius-md)',
                   outline: 'none',
@@ -210,7 +210,7 @@ export default function CustomerRepaymentsPage() {
                   fontSize: '0.8125rem',
                   fontWeight: '600',
                   color: 'var(--text-muted-dark)',
-                  backgroundColor: '#ffffff',
+                  backgroundColor: 'var(--card-bg)',
                   border: '1px solid var(--border-color)',
                   borderRadius: 'var(--radius-md)',
                   outline: 'none',
@@ -279,7 +279,7 @@ export default function CustomerRepaymentsPage() {
                   <tr key={loan.id}>
                     <td>
                       <Link href={`/admin/customers/repayments/${loan.id}`} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <div style={{ width: '40px', height: '40px', borderRadius: '12px', backgroundColor: '#f5f3ff', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' }}>
+                        <div style={{ width: '40px', height: '40px', borderRadius: '12px', backgroundColor: 'var(--purple-bg)', color: 'var(--purple-text)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700' }}>
                           <CreditCard size={18} />
                         </div>
                         <div>
@@ -298,13 +298,13 @@ export default function CustomerRepaymentsPage() {
                     <td>{getStatusBadge(activeSchedule)}</td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: '600' }}>
-                        <Clock size={14} color="#64748b" />
+                        <Clock size={14} color="var(--text-muted)" />
                         {nextDueDateText}
                       </div>
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <Link href={`/admin/customers/repayments/${loan.id}`} style={{ textDecoration: 'none', display: 'inline-block' }}>
-                        <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', border: '1px solid #e2e8f0' }}>
+                        <button className="btn btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', borderRadius: '8px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', border: '1px solid var(--border-color)' }}>
                           Collect Payment <ArrowRight size={14} />
                         </button>
                       </Link>

@@ -42,7 +42,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#ffffff' }}>
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
 
       {/* Right Side: Registration Form */}
       <div style={{ 
@@ -85,8 +85,8 @@ export default function RegisterPage() {
 
           {success && (
             <div style={{ 
-              backgroundColor: 'rgba(16, 185, 129, 0.1)', 
-              color: '#059669', 
+              backgroundColor: 'var(--success-bg)', 
+              color: 'var(--success-text)', 
               padding: '1rem', 
               borderRadius: 'var(--radius-md)', 
               marginBottom: '1.5rem',
@@ -94,7 +94,7 @@ export default function RegisterPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '0.75rem',
-              border: '1px solid rgba(16, 185, 129, 0.2)'
+              border: '1px solid var(--success-border)'
             }}>
               <ShieldCheck size={18} />
               Registration successful! Redirecting to login...

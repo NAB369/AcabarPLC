@@ -55,7 +55,7 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
       animation: 'fadeIn 0.2s ease-out'
     }}>
       <div style={{ 
-        width: '440px', backgroundColor: 'white', borderRadius: '24px', 
+        width: '440px', backgroundColor: 'var(--card-bg)', borderRadius: '24px', 
         padding: '24px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         position: 'relative', animation: 'slideUp 0.3s ease-out'
       }}>
@@ -64,22 +64,22 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
           <div style={{ display: 'flex', gap: '12px' }}>
             <div style={{ 
               width: '40px', height: '40px', borderRadius: '12px', 
-              backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' 
+              backgroundColor: 'var(--background)', display: 'flex', alignItems: 'center', justifyContent: 'center' 
             }}>
-              <User size={20} color="#64748b" />
+              <User size={20} color="var(--text-muted)" />
             </div>
             <div>
-              <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#0f172a', margin: 0 }}>User Profile</h2>
-              <p style={{ fontSize: '13px', color: '#64748b', margin: '2px 0 0' }}>View and manage your account information</p>
+              <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--foreground)', margin: 0 }}>User Profile</h2>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: '2px 0 0' }}>View and manage your account information</p>
             </div>
           </div>
           <button 
             onClick={onClose}
             style={{ 
-              background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', 
+              background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', 
               padding: '4px', borderRadius: '50%', transition: 'all 0.2s' 
             }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f5f9'}
+            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted)'}
             onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             <X size={20} />
@@ -92,8 +92,8 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
           </div>
         ) : error ? (
           <div style={{ height: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
-            <AlertCircle size={40} color="#ef4444" />
-            <p style={{ color: '#ef4444', fontWeight: '500' }}>{error}</p>
+            <AlertCircle size={40} color="var(--error-text)" />
+            <p style={{ color: 'var(--error-text)', fontWeight: '500' }}>{error}</p>
             <button onClick={fetchProfile} className="btn btn-secondary">Retry</button>
           </div>
         ) : (
@@ -112,29 +112,29 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
                 <button style={{ 
                   position: 'absolute', bottom: '0', right: '0',
                   width: '32px', height: '32px', borderRadius: '50%',
-                  backgroundColor: 'white', border: '1px solid #e2e8f0',
+                  backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-color)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                   cursor: 'pointer'
                 }}>
-                  <Camera size={14} color="#64748b" />
+                  <Camera size={14} color="var(--text-muted)" />
                 </button>
               </div>
-              <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#0f172a', margin: 0 }}>
+              <h3 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--foreground)', margin: 0 }}>
                 {profile.firstName} {profile.lastName}
               </h3>
-              <p style={{ fontSize: '14px', color: '#64748b', margin: '4px 0 0' }}>{profile.email}</p>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: '4px 0 0' }}>{profile.email}</p>
             </div>
 
-            <div style={{ height: '1px', backgroundColor: '#f1f5f9', width: '100%', marginBottom: '24px' }}></div>
+            <div style={{ height: '1px', backgroundColor: 'var(--bg-muted)', width: '100%', marginBottom: '24px' }}></div>
 
             {/* Personal Information */}
             <div style={{ marginBottom: '24px' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#0f172a', marginBottom: '16px' }}>Personal Information</h4>
+              <h4 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--foreground)', marginBottom: '16px' }}>Personal Information</h4>
               
               <div style={{ 
-                border: '1px solid #f1f5f9', borderRadius: '16px', 
-                backgroundColor: '#fff', overflow: 'hidden'
+                border: '1px solid var(--border-color)', borderRadius: '16px', 
+                backgroundColor: 'var(--card-bg)', overflow: 'hidden'
               }}>
                 {[
                   { icon: User, label: 'Name', value: `${profile.firstName} ${profile.lastName}` },
@@ -150,8 +150,8 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
                     padding: '14px 16px', borderBottom: index === 6 ? 'none' : '1px solid #f1f5f9'
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <item.icon size={16} color="#94a3b8" />
-                      <span style={{ fontSize: '14px', fontWeight: '600', color: '#475569' }}>{item.label}</span>
+                      <item.icon size={16} color="var(--text-muted)" />
+                      <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-muted-dark)' }}>{item.label}</span>
                     </div>
                     {item.isBadge ? (
                       <span style={{ 
@@ -163,7 +163,7 @@ export default function UserProfileModal({ isOpen, onClose }: UserProfileModalPr
                     ) : (
                       <span style={{ 
                         fontSize: item.isMono ? '12px' : '14px', 
-                        fontWeight: '500', color: '#64748b',
+                        fontWeight: '500', color: 'var(--text-muted)',
                         textAlign: 'right', maxWidth: '200px', 
                         wordBreak: 'break-all',
                         fontFamily: item.isMono ? 'monospace' : 'inherit'

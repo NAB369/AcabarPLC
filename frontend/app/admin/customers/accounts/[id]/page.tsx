@@ -61,7 +61,7 @@ export default function CustomerProfilePage() {
           width: '80px',
           height: '80px',
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
-          color: '#ef4444',
+          color: 'var(--error-text)',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
@@ -94,7 +94,7 @@ export default function CustomerProfilePage() {
 
   const InfoCard = ({ title, icon: Icon, children }: any) => (
     <div className="card" style={{ padding: '1.5rem', height: '100%' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', borderBottom: '1px solid #f3f4f6', paddingBottom: '0.75rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
         <div style={{ color: 'var(--primary)' }}><Icon size={20} /></div>
         <h3 style={{ fontSize: '1.125rem', fontWeight: '700', margin: 0 }}>{title}</h3>
       </div>
@@ -120,7 +120,7 @@ export default function CustomerProfilePage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
           <Link href="/admin/customers/accounts" style={{ 
-            width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'white', border: '1px solid var(--border-color)', 
+            width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'var(--card-bg)', border: '1px solid var(--border-color)', 
             display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', textDecoration: 'none'
           }}>
             <ArrowLeft size={20} />
@@ -142,7 +142,7 @@ export default function CustomerProfilePage() {
             </button>
           </Link>
           <Link href={`/admin/loans/new?customerId=${customer.id}`} style={{ textDecoration: 'none' }}>
-            <button className="btn btn-primary" style={{ backgroundColor: 'var(--foreground)', color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button className="btn btn-primary" style={{ backgroundColor: 'var(--foreground)', color: 'var(--background)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               New Loan Application
             </button>
           </Link>
@@ -174,7 +174,7 @@ export default function CustomerProfilePage() {
           <InfoRow label="Monthly Income (KHR)" value={customer.monthlyIncomeKhr ? `៛${customer.monthlyIncomeKhr.toLocaleString()}` : null} icon={DollarSign} />
           <InfoRow label="Dependent" value={customer.dependentCount} icon={Users} />
           <InfoRow label="Income Maker" value={customer.incomeMaker} icon={Briefcase} />
-          <div style={{ marginTop: '0.5rem', padding: '1rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)', border: '1px solid #f1f5f9' }}>
+          <div style={{ marginTop: '0.5rem', padding: '1rem', backgroundColor: 'var(--background)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Business Information</span>
             <p style={{ fontSize: '0.875rem', margin: '0.5rem 0 0', lineHeight: 1.5 }}>{customer.businessInfo || 'No business details provided.'}</p>
           </div>
@@ -214,12 +214,12 @@ export default function CustomerProfilePage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {customer.loans.map((loan: any) => (
                 <Link key={loan.id} href={`/admin/los/${loan.id}`} style={{ textDecoration: 'none' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-lg)', border: '1px solid #f1f5f9', cursor: 'pointer', transition: 'all 0.2s' }}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.25rem', backgroundColor: 'var(--background)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', cursor: 'pointer', transition: 'all 0.2s' }}
                     onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.backgroundColor = 'var(--primary-light)'; }}
-                    onMouseOut={(e) => { e.currentTarget.style.borderColor = '#f1f5f9'; e.currentTarget.style.backgroundColor = '#f8fafc'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--bg-muted)'; e.currentTarget.style.backgroundColor = 'var(--background)'; }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', boxShadow: 'var(--shadow-sm)' }}>
+                      <div style={{ width: '40px', height: '40px', borderRadius: '10px', backgroundColor: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', boxShadow: 'var(--shadow-sm)' }}>
                         <DollarSign size={20} />
                       </div>
                       <div>
@@ -239,14 +239,14 @@ export default function CustomerProfilePage() {
               ))}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '3rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border-color)' }}>
+            <div style={{ textAlign: 'center', padding: '3rem', backgroundColor: 'var(--background)', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border-color)' }}>
               <div style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}><Clock size={32} /></div>
               <p style={{ color: 'var(--text-muted)', margin: 0 }}>No loan history recorded for this customer.</p>
             </div>
           )}
 
           {/* Supporting Documents Section */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '2.5rem', marginBottom: '1.5rem', borderTop: '1px solid #f1f5f9', paddingTop: '2.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '2.5rem', marginBottom: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '2.5rem' }}>
             <FileText size={20} color="var(--primary)" />
             <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0 }}>Supporting Documents</h3>
           </div>
@@ -276,7 +276,7 @@ export default function CustomerProfilePage() {
                 };
 
                 return (
-                  <div key={doc.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-lg)', border: '1px solid #f1f5f9' }}>
+                  <div key={doc.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', backgroundColor: 'var(--background)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', overflow: 'hidden' }}>
                       <div style={{ width: '36px', height: '36px', borderRadius: '8px', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                         {getDocIcon(doc.type)}
@@ -290,7 +290,7 @@ export default function CustomerProfilePage() {
                       <span className={`badge ${doc.status === 'APPROVED' ? 'badge-approved' : doc.status === 'REJECTED' ? 'badge-rejected' : 'badge-pending'}`} style={{ fontSize: '0.7rem' }}>
                         {doc.status}
                       </span>
-                      <a href={`http://localhost:4000${doc.filePath}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '6px', backgroundColor: '#e2e8f0', color: 'var(--text-color)', transition: 'all 0.2s' }}>
+                      <a href={`http://localhost:4000${doc.filePath}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '28px', height: '28px', borderRadius: '6px', backgroundColor: 'var(--border-color)', color: 'var(--text-color)', transition: 'all 0.2s' }}>
                         <ExternalLink size={14} />
                       </a>
                     </div>
@@ -299,32 +299,32 @@ export default function CustomerProfilePage() {
               })}
             </div>
           ) : (
-            <div style={{ textAlign: 'center', padding: '2rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border-color)', color: 'var(--text-muted)' }}>
+            <div style={{ textAlign: 'center', padding: '2rem', backgroundColor: 'var(--background)', borderRadius: 'var(--radius-lg)', border: '1px dashed var(--border-color)', color: 'var(--text-muted)' }}>
               No supporting documents uploaded for this customer.
             </div>
           )}
         </div>
 
-        <div className="card" style={{ padding: '2rem', backgroundColor: 'var(--foreground)', color: 'white', border: 'none' }}>
+        <div className="card" style={{ padding: '2rem', background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)', color: 'white', border: 'none' }}>
           <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '1.5rem', color: 'white' }}>Quick Actions</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <button className="btn" style={{ width: '100%', justifyContent: 'flex-start', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', border: 'none', textAlign: 'left' }}>
+            <button className="btn" style={{ width: '100%', justifyContent: 'flex-start', backgroundColor: 'rgba(255, 255, 255, 0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', textAlign: 'left', backdropFilter: 'blur(4px)' }}>
               <ShieldCheck size={18} style={{ marginRight: '0.75rem' }} /> Verify Identity
             </button>
-            <button className="btn" style={{ width: '100%', justifyContent: 'flex-start', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', border: 'none', textAlign: 'left' }}>
+            <button className="btn" style={{ width: '100%', justifyContent: 'flex-start', backgroundColor: 'rgba(255, 255, 255, 0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', textAlign: 'left', backdropFilter: 'blur(4px)' }}>
               <Mail size={18} style={{ marginRight: '0.75rem' }} /> Send Notification
             </button>
-            <button className="btn" style={{ width: '100%', justifyContent: 'flex-start', backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', border: 'none', textAlign: 'left' }}>
+            <button className="btn" style={{ width: '100%', justifyContent: 'flex-start', backgroundColor: 'rgba(255, 255, 255, 0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', textAlign: 'left', backdropFilter: 'blur(4px)' }}>
               <ExternalLink size={18} style={{ marginRight: '0.75rem' }} /> Credit Report (CBC)
             </button>
           </div>
           
-          <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
               <Info size={16} />
-              <span style={{ fontSize: '0.875rem', fontWeight: '600' }}>Administrative Note</span>
+              <span style={{ fontSize: '0.875rem', fontWeight: '600', color: 'white' }}>Administrative Note</span>
             </div>
-            <p style={{ fontSize: '0.75rem', opacity: 0.7, lineHeight: 1.6, margin: 0 }}>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.6, margin: 0 }}>
               This customer profile was last updated on {new Date(customer.updatedAt || customer.createdAt).toLocaleDateString()}. Ensure all KYC documents are verified before loan disbursement.
             </p>
           </div>

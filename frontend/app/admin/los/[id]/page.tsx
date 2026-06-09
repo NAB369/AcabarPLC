@@ -211,7 +211,7 @@ export default function ApplicationDetailPage() {
           width: '80px',
           height: '80px',
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
-          color: '#ef4444',
+          color: 'var(--error-text)',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
@@ -246,17 +246,17 @@ export default function ApplicationDetailPage() {
 
   const getStatusStyle = (status: string) => {
     const map: Record<string, { color: string; bg: string }> = {
-      DRAFT: { color: 'var(--text-muted-dark)', bg: '#f1f5f9' },
-      SUBMITTED: { color: '#6366f1', bg: '#eef2ff' },
-      KYC_REVIEW: { color: '#8b5cf6', bg: '#f5f3ff' },
-      TIER3_REVIEW: { color: '#be185d', bg: '#fdf2f8' },
-      APPROVED: { color: '#059669', bg: '#ecfdf5' },
-      REJECTED: { color: '#dc2626', bg: '#fef2f2' },
-      VERIFIED: { color: '#059669', bg: '#ecfdf5' },
-      PENDING: { color: '#d97706', bg: '#fffbeb' },
-      ACTIVE: { color: '#16a34a', bg: '#f0fdf4' },
+      DRAFT: { color: 'var(--text-muted-dark)', bg: 'var(--bg-muted)' },
+      SUBMITTED: { color: 'var(--indigo-text)', bg: 'var(--indigo-bg)' },
+      KYC_REVIEW: { color: 'var(--purple-text)', bg: 'var(--purple-bg)' },
+      TIER3_REVIEW: { color: 'var(--pink-text)', bg: 'var(--pink-bg)' },
+      APPROVED: { color: 'var(--success-text)', bg: 'var(--success-bg)' },
+      REJECTED: { color: 'var(--error-text)', bg: 'var(--error-bg)' },
+      VERIFIED: { color: 'var(--success-text)', bg: 'var(--success-bg)' },
+      PENDING: { color: 'var(--warning-text)', bg: 'var(--warning-bg)' },
+      ACTIVE: { color: 'var(--success-text)', bg: 'var(--success-bg)' },
     };
-    return map[status] || { color: 'var(--text-muted-dark)', bg: '#f1f5f9' };
+    return map[status] || { color: 'var(--text-muted-dark)', bg: 'var(--bg-muted)' };
   };
 
   const statusStyle = getStatusStyle(application.status);
@@ -268,7 +268,7 @@ export default function ApplicationDetailPage() {
       <div className="card" style={{ padding: '1.5rem', marginBottom: '0.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
           {/* Progress Bar Background */}
-          <div style={{ position: 'absolute', top: '14px', left: '40px', right: '40px', height: '2px', backgroundColor: '#e2e8f0', zIndex: 0 }} />
+          <div style={{ position: 'absolute', top: '14px', left: '40px', right: '40px', height: '2px', backgroundColor: 'var(--border-color)', zIndex: 0 }} />
           {/* Active Progress Bar */}
           <div style={{ 
             position: 'absolute', top: '14px', left: '40px', 
@@ -284,10 +284,10 @@ export default function ApplicationDetailPage() {
               <div key={stage.id} style={{ zIndex: 1, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', width: '80px' }}>
                 <div style={{ 
                   width: '30px', height: '30px', borderRadius: '50%', 
-                  backgroundColor: isCompleted ? 'var(--primary)' : isActive ? 'white' : 'white',
-                  border: isCompleted ? 'none' : isActive ? '2px solid var(--primary)' : '2px solid #e2e8f0',
+                  backgroundColor: isCompleted ? 'var(--primary)' : isActive ? 'var(--card-bg)' : 'var(--card-bg)',
+                   border: isCompleted ? 'none' : isActive ? '2px solid var(--primary)' : '2px solid var(--border-color)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: isCompleted ? 'white' : isActive ? 'var(--primary)' : '#94a3b8',
+                  color: isCompleted ? 'white' : isActive ? 'var(--primary)' : 'var(--text-muted)',
                   fontWeight: '700', fontSize: '0.75rem',
                   boxShadow: isActive ? '0 0 0 4px rgba(37, 99, 235, 0.1)' : 'none',
                   transition: 'all 0.3s'
@@ -305,13 +305,13 @@ export default function ApplicationDetailPage() {
 
       {/* Action Error Banner */}
       {actionError && (
-        <div style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca', borderRadius: 'var(--radius-lg)', padding: '1rem 1.5rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-          <AlertTriangle size={20} color="#dc2626" style={{ flexShrink: 0, marginTop: '0.125rem' }} />
+        <div style={{ backgroundColor: 'var(--error-bg)', border: '1px solid #fecaca', borderRadius: 'var(--radius-lg)', padding: '1rem 1.5rem', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+          <AlertTriangle size={20} color="var(--error-text)" style={{ flexShrink: 0, marginTop: '0.125rem' }} />
           <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: '700', color: '#dc2626', fontSize: '0.9375rem', marginBottom: '0.25rem' }}>Action Failed</div>
-            <div style={{ color: '#7f1d1d', fontSize: '0.875rem', whiteSpace: 'pre-line' }}>{actionError}</div>
+            <div style={{ fontWeight: '700', color: 'var(--error-text)', fontSize: '0.9375rem', marginBottom: '0.25rem' }}>Action Failed</div>
+            <div style={{ color: 'var(--error-text)', fontSize: '0.875rem', whiteSpace: 'pre-line' }}>{actionError}</div>
           </div>
-          <button onClick={() => setActionError(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#dc2626', padding: '0.25rem', borderRadius: '4px', display: 'flex' }}>
+          <button onClick={() => setActionError(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--error-text)', padding: '0.25rem', borderRadius: '4px', display: 'flex' }}>
             <XCircle size={18} />
           </button>
         </div>
@@ -320,7 +320,7 @@ export default function ApplicationDetailPage() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <Link href="/admin/los" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-muted-dark)', backgroundColor: 'white' }}>
+          <Link href="/admin/los" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '40px', height: '40px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', color: 'var(--text-muted-dark)', backgroundColor: 'var(--card-bg)' }}>
             <ArrowLeft size={20} />
           </Link>
           <div>
@@ -352,7 +352,7 @@ export default function ApplicationDetailPage() {
           )}
           {application.status === 'KYC_REVIEW' && (
             <>
-              <button onClick={() => handleAction('kyc-decision', 'PATCH', { approved: false })} disabled={isActionLoading} className="btn btn-secondary" style={{ color: '#dc2626' }}>Reject KYC</button>
+              <button onClick={() => handleAction('kyc-decision', 'PATCH', { approved: false })} disabled={isActionLoading} className="btn btn-secondary" style={{ color: 'var(--error-text)' }}>Reject KYC</button>
               <button onClick={() => handleAction('kyc-decision', 'PATCH', { approved: true })} disabled={isActionLoading} className="btn btn-primary">Approve KYC</button>
             </>
           )}
@@ -368,7 +368,7 @@ export default function ApplicationDetailPage() {
             <>
               {(user?.roles?.includes('SUPER_ADMIN') || user?.roles?.includes('BRANCH_MANAGER')) && (
                 <>
-                  <button onClick={() => openReviewModal('REJECTED')} disabled={isActionLoading} className="btn btn-secondary" style={{ color: '#dc2626' }}>Reject</button>
+                  <button onClick={() => openReviewModal('REJECTED')} disabled={isActionLoading} className="btn btn-secondary" style={{ color: 'var(--error-text)' }}>Reject</button>
                   {application.status !== 'TIER3_REVIEW' && (
                     <button onClick={() => openReviewModal('ESCALATED')} disabled={isActionLoading} className="btn btn-secondary">Escalate</button>
                   )}
@@ -399,8 +399,8 @@ export default function ApplicationDetailPage() {
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.2s' }}>
           <div className="card" style={{ width: '450px', padding: '2rem', animation: 'slideUp 0.3s' }}>
             <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              {reviewDecision === 'APPROVED' && <CheckCircle2 color="#16a34a" />}
-              {reviewDecision === 'REJECTED' && <XCircle color="#dc2626" />}
+              {reviewDecision === 'APPROVED' && <CheckCircle2 color="var(--success-text)" />}
+              {reviewDecision === 'REJECTED' && <XCircle color="var(--error-text)" />}
               {reviewDecision === 'ESCALATED' && <Shield color="var(--primary)" />}
               {reviewDecision.charAt(0) + reviewDecision.slice(1).toLowerCase()} Application
             </h3>
@@ -422,7 +422,7 @@ export default function ApplicationDetailPage() {
                 onClick={() => handleAction('review', 'PATCH', { decision: reviewDecision, comments: reviewComments })} 
                 disabled={isActionLoading || (reviewDecision === 'REJECTED' && !reviewComments)} 
                 className="btn btn-primary" 
-                style={{ flex: 1, backgroundColor: reviewDecision === 'REJECTED' ? '#dc2626' : undefined }}
+                style={{ flex: 1, backgroundColor: reviewDecision === 'REJECTED' ? 'var(--error-text)' : undefined }}
               >
                 {isActionLoading ? <Loader2 className="animate-spin" size={18} /> : `Confirm ${reviewDecision === 'ESCALATED' ? 'Escalation' : reviewDecision.charAt(0) + reviewDecision.slice(1).toLowerCase()}`}
               </button>
@@ -495,7 +495,7 @@ export default function ApplicationDetailPage() {
                    </div>
                    <div style={{ width: '1px', backgroundColor: 'var(--border-color)' }} />
                    <div>
-                     <div style={{ fontSize: '1.75rem', fontWeight: '800', color: application.dtiRatio > 0.6 ? '#dc2626' : '#16a34a' }}>
+                     <div style={{ fontSize: '1.75rem', fontWeight: '800', color: application.dtiRatio > 0.6 ? 'var(--error-text)' : 'var(--success-text)' }}>
                        {application.dtiRatio ? `${(application.dtiRatio * 100).toFixed(0)}%` : '—'}
                      </div>
                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600' }}>DTI RATIO</div>
@@ -508,7 +508,7 @@ export default function ApplicationDetailPage() {
                  <h3 style={{ fontSize: '1rem', fontWeight: '800', marginBottom: '1.25rem' }}>Collateral & Guarantors</h3>
                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {application.collaterals?.length > 0 ? application.collaterals.map((c: any) => (
-                      <div key={c.id} style={{ display: 'flex', gap: '0.75rem', padding: '0.75rem', backgroundColor: '#f8fafc', borderRadius: 'var(--radius-md)' }}>
+                      <div key={c.id} style={{ display: 'flex', gap: '0.75rem', padding: '0.75rem', backgroundColor: 'var(--background)', borderRadius: 'var(--radius-md)' }}>
                         <div style={{ color: 'var(--primary)' }}><MapPin size={16} /></div>
                         <div>
                           <div style={{ fontSize: '0.8125rem', fontWeight: '700' }}>{c.type}</div>
@@ -525,19 +525,19 @@ export default function ApplicationDetailPage() {
         {activeTab === 'Documents' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Status Summary Banner */}
-            <div className="card" style={{ padding: '1.5rem', backgroundColor: kycCompleteness?.complete ? '#f0fdf4' : '#fffbeb', borderLeft: `4px solid ${kycCompleteness?.complete ? '#22c55e' : '#f59e0b'}`, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="card" style={{ padding: '1.5rem', backgroundColor: kycCompleteness?.complete ? 'var(--success-bg)' : 'var(--warning-bg)', borderLeft: `4px solid ${kycCompleteness?.complete ? '#22c55e' : '#f59e0b'}`, display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div>
                 {kycCompleteness?.complete ? (
-                  <CheckCircle2 size={32} color="#22c55e" />
+                  <CheckCircle2 size={32} color="var(--success-text)" />
                 ) : (
-                  <AlertTriangle size={32} color="#f59e0b" />
+                  <AlertTriangle size={32} color="var(--warning-text)" />
                 )}
               </div>
               <div>
-                <h3 style={{ fontSize: '1rem', fontWeight: '800', margin: 0, color: kycCompleteness?.complete ? '#166534' : '#854d0e' }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: '800', margin: 0, color: kycCompleteness?.complete ? 'var(--success-text)' : 'var(--warning-text)' }}>
                   {kycCompleteness?.complete ? 'KYC Complete' : 'KYC Documents Pending Verification or Upload'}
                 </h3>
-                <p style={{ fontSize: '0.875rem', color: kycCompleteness?.complete ? '#15803d' : '#a16207', margin: '0.25rem 0 0 0' }}>
+                <p style={{ fontSize: '0.875rem', color: kycCompleteness?.complete ? 'var(--success-text)' : 'var(--warning-text)', margin: '0.25rem 0 0 0' }}>
                   {kycCompleteness?.complete 
                     ? 'All required documents have been uploaded and successfully verified.' 
                     : `Please review and verify all uploaded documents. Current issues: ${kycCompleteness?.missing?.length || 0} missing, ${kycCompleteness?.pendingVerification?.length || 0} pending verification.`
@@ -565,10 +565,10 @@ export default function ApplicationDetailPage() {
                         gridTemplateColumns: '1.2fr 1.5fr 1fr', 
                         gap: '1.5rem', 
                         padding: '1.25rem', 
-                        backgroundColor: '#f8fafc', 
+                        backgroundColor: 'var(--background)', 
                         borderRadius: '12px', 
                         alignItems: 'center',
-                        border: doc?.status === 'REJECTED' ? '1px solid #fca5a5' : 'none'
+                        border: doc?.status === 'REJECTED' ? '1px solid var(--error-text)' : 'none'
                       }}
                     >
                       {/* Col 1: Doc Type & Requirements */}
@@ -576,7 +576,7 @@ export default function ApplicationDetailPage() {
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                           <span style={{ fontWeight: '800', fontSize: '0.9375rem' }}>{item.label}</span>
                           {item.required && (
-                            <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.375rem', backgroundColor: '#fee2e2', color: '#ef4444', borderRadius: '4px', fontWeight: '700' }}>
+                            <span style={{ fontSize: '0.75rem', padding: '0.125rem 0.375rem', backgroundColor: 'var(--error-bg)', color: 'var(--error-text)', borderRadius: '4px', fontWeight: '700' }}>
                               Required
                             </span>
                           )}
@@ -597,11 +597,11 @@ export default function ApplicationDetailPage() {
                                 borderRadius: '6px', 
                                 fontWeight: '700',
                                 backgroundColor: 
-                                  doc.status === 'VERIFIED' ? '#dcfce7' : 
-                                  doc.status === 'REJECTED' ? '#fee2e2' : '#fef9c3',
+                                  doc.status === 'VERIFIED' ? 'var(--success-bg)' : 
+                                  doc.status === 'REJECTED' ? 'var(--error-bg)' : 'var(--warning-bg)',
                                 color: 
-                                  doc.status === 'VERIFIED' ? '#15803d' : 
-                                  doc.status === 'REJECTED' ? '#b91c1c' : '#a16207'
+                                  doc.status === 'VERIFIED' ? 'var(--success-text)' : 
+                                  doc.status === 'REJECTED' ? 'var(--error-text)' : 'var(--warning-text)'
                               }}>
                                 {doc.status === 'VERIFIED' && '✓ Verified'}
                                 {doc.status === 'REJECTED' && '✗ Rejected'}
@@ -621,13 +621,13 @@ export default function ApplicationDetailPage() {
                               Size: {(doc.sizeBytes / 1024).toFixed(1)} KB • Uploaded: {new Date(doc.createdAt).toLocaleDateString()}
                             </div>
                             {doc.status === 'REJECTED' && doc.rejectionReason && (
-                              <div style={{ fontSize: '0.75rem', color: '#b91c1c', marginTop: '0.25rem', backgroundColor: '#fef2f2', padding: '0.5rem', borderRadius: '6px' }}>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--error-text)', marginTop: '0.25rem', backgroundColor: 'var(--error-bg)', padding: '0.5rem', borderRadius: '6px' }}>
                                 <strong>Reason:</strong> {doc.rejectionReason}
                               </div>
                             )}
                           </div>
                         ) : (
-                          <span style={{ fontSize: '0.875rem', color: '#94a3b8', fontStyle: 'italic' }}>
+                          <span style={{ fontSize: '0.875rem', color: 'var(--text-muted)', fontStyle: 'italic' }}>
                             No file uploaded yet
                           </span>
                         )}
@@ -644,7 +644,7 @@ export default function ApplicationDetailPage() {
                                   placeholder="Enter rejection reason..."
                                   value={rejectionReason}
                                   onChange={(e) => setRejectionReason(e.target.value)}
-                                  style={{ width: '100%', fontSize: '0.75rem', padding: '0.5rem', borderRadius: '8px', border: '1px solid #cbd5e1' }}
+                                  style={{ width: '100%', fontSize: '0.75rem', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-hover)' }}
                                   rows={2}
                                 />
                                 <div style={{ display: 'flex', gap: '0.25rem', justifyContent: 'flex-end' }}>
@@ -658,7 +658,7 @@ export default function ApplicationDetailPage() {
                                   <button 
                                     onClick={() => handleRejectDocument(doc.id, rejectionReason)}
                                     className="btn btn-primary" 
-                                    style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', backgroundColor: '#ef4444' }}
+                                    style={{ fontSize: '0.75rem', padding: '0.25rem 0.5rem', backgroundColor: 'var(--error-text)' }}
                                     disabled={isActionLoading}
                                   >
                                     Confirm Reject
@@ -670,7 +670,7 @@ export default function ApplicationDetailPage() {
                                 <button
                                   onClick={() => setRejectingDocId(doc.id)}
                                   className="btn btn-secondary"
-                                  style={{ color: '#ef4444', fontSize: '0.75rem', padding: '0.375rem 0.75rem' }}
+                                  style={{ color: 'var(--error-text)', fontSize: '0.75rem', padding: '0.375rem 0.75rem' }}
                                   disabled={isActionLoading}
                                 >
                                   Reject
@@ -690,7 +690,7 @@ export default function ApplicationDetailPage() {
 
                         {/* Upload button when missing or rejected */}
                         {(!doc || doc.status === 'REJECTED') && (
-                          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8125rem', fontWeight: '700', color: 'var(--foreground)' }}>
+                          <label style={{ display: 'inline-flex', alignItems: 'center', gap: '0.375rem', padding: '0.5rem 0.875rem', backgroundColor: 'var(--bg-muted)', border: '1px solid var(--border-hover)', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8125rem', fontWeight: '700', color: 'var(--foreground)' }}>
                             <span>Upload Document</span>
                             <input
                               type="file"
@@ -718,7 +718,7 @@ export default function ApplicationDetailPage() {
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                   <thead>
-                    <tr style={{ borderBottom: '2px solid #e2e8f0', color: 'var(--text-muted)', fontSize: '0.8125rem', fontWeight: '700' }}>
+                    <tr style={{ borderBottom: '2px solid var(--border-color)', color: 'var(--text-muted)', fontSize: '0.8125rem', fontWeight: '700' }}>
                       <th style={{ padding: '1rem 0.5rem' }}>INSTALLMENT</th>
                       <th style={{ padding: '1rem 0.5rem' }}>DUE DATE</th>
                       <th style={{ padding: '1rem 0.5rem' }}>PRINCIPAL</th>
@@ -729,7 +729,7 @@ export default function ApplicationDetailPage() {
                   </thead>
                   <tbody>
                     {application.repaymentSchedules.map((item: any) => (
-                      <tr key={item.id} style={{ borderBottom: '1px solid #e2e8f0', fontSize: '0.875rem' }}>
+                      <tr key={item.id} style={{ borderBottom: '1px solid var(--border-color)', fontSize: '0.875rem' }}>
                         <td style={{ padding: '1rem 0.5rem', fontWeight: '700' }}>#{item.installmentNumber}</td>
                         <td style={{ padding: '1rem 0.5rem' }}>{new Date(item.dueDate).toLocaleDateString()}</td>
                         <td style={{ padding: '1rem 0.5rem' }}>${item.principalComponent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
@@ -742,11 +742,11 @@ export default function ApplicationDetailPage() {
                             borderRadius: '6px', 
                             fontWeight: '700',
                             backgroundColor: 
-                              item.status === 'PAID' ? '#dcfce7' : 
-                              item.status === 'PARTIALLY_PAID' || item.status === 'PARTIAL' ? '#fef9c3' : '#fee2e2',
+                              item.status === 'PAID' ? 'var(--success-bg)' : 
+                              item.status === 'PARTIALLY_PAID' || item.status === 'PARTIAL' ? 'var(--warning-bg)' : 'var(--error-bg)',
                             color: 
-                              item.status === 'PAID' ? '#15803d' : 
-                              item.status === 'PARTIALLY_PAID' || item.status === 'PARTIAL' ? '#a16207' : '#b91c1c'
+                              item.status === 'PAID' ? 'var(--success-text)' : 
+                              item.status === 'PARTIALLY_PAID' || item.status === 'PARTIAL' ? 'var(--warning-text)' : 'var(--error-text)'
                           }}>
                             {item.status}
                           </span>
@@ -757,8 +757,8 @@ export default function ApplicationDetailPage() {
                 </table>
               </div>
             ) : (
-              <div style={{ textAlign: 'center', padding: '3rem 1.5rem', backgroundColor: '#f8fafc', borderRadius: '12px' }}>
-                <Banknote size={48} style={{ margin: '0 auto 1rem', color: '#94a3b8' }} />
+              <div style={{ textAlign: 'center', padding: '3rem 1.5rem', backgroundColor: 'var(--background)', borderRadius: '12px' }}>
+                <Banknote size={48} style={{ margin: '0 auto 1rem', color: 'var(--text-muted)' }} />
                 <h4 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '0.25rem' }}>No Repayment Schedule Generated</h4>
                 <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', maxWidth: '400px', margin: '0 auto' }}>
                   The schedule will be generated automatically once this loan application is approved and disbursed.
@@ -781,7 +781,7 @@ export default function ApplicationDetailPage() {
                 ) : (
                   application.approvalSteps.map((step: any, i: number) => (
                     <div key={i} style={{ display: 'flex', gap: '1.25rem', position: 'relative' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: step.decision ? 'var(--success-text)' : '#94a3b8', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: step.decision ? 'var(--success-text)' : 'var(--text-muted)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
                         <CheckCircle2 size={16} />
                       </div>
                       <div>
@@ -789,7 +789,7 @@ export default function ApplicationDetailPage() {
                           Tier {step.tier} Decision
                           {step.decision && (
                             <span className="badge" style={{ 
-                              backgroundColor: step.decision === 'APPROVED' ? 'var(--success-bg)' : '#fef2f2', 
+                              backgroundColor: step.decision === 'APPROVED' ? 'var(--success-bg)' : 'var(--error-bg)', 
                               color: step.decision === 'APPROVED' ? 'var(--success-text)' : '#b91c1c',
                               fontSize: '0.6875rem',
                               fontWeight: '800'
@@ -805,7 +805,7 @@ export default function ApplicationDetailPage() {
                           Decided: {step.decidedAt ? new Date(step.decidedAt).toLocaleString() : 'Pending'}
                         </div>
                         {step.comments && (
-                          <div style={{ marginTop: '0.5rem', padding: '0.75rem', backgroundColor: '#f8fafc', borderRadius: '8px', borderLeft: '3px solid var(--primary)', fontSize: '0.8125rem', fontStyle: 'italic', color: 'var(--text-muted-dark)' }}>
+                          <div style={{ marginTop: '0.5rem', padding: '0.75rem', backgroundColor: 'var(--background)', borderRadius: '8px', borderLeft: '3px solid var(--primary)', fontSize: '0.8125rem', fontStyle: 'italic', color: 'var(--text-muted-dark)' }}>
                             &ldquo;{step.comments}&rdquo;
                           </div>
                         )}
@@ -827,7 +827,7 @@ export default function ApplicationDetailPage() {
                 ) : (
                   auditLogs.map((log: any, idx: number) => (
                     <div key={log.id || idx} style={{ display: 'flex', gap: '1rem', borderBottom: idx < auditLogs.length - 1 ? '1px solid var(--border-color)' : 'none', paddingBottom: '1rem' }}>
-                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: '700', flexShrink: 0 }}>
+                      <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: '700', flexShrink: 0 }}>
                         {log.user ? `${log.user.firstName[0]}${log.user.lastName[0]}` : 'S'}
                       </div>
                       <div style={{ flex: 1 }}>
@@ -837,7 +837,7 @@ export default function ApplicationDetailPage() {
                               {log.user ? `${log.user.firstName} ${log.user.lastName}` : 'System'}
                             </span>
                             {log.user?.roles?.[0]?.role?.name && (
-                              <span style={{ marginLeft: '0.5rem', padding: '0.125rem 0.375rem', backgroundColor: '#f1f5f9', color: '#475569', borderRadius: '4px', fontSize: '0.625rem', fontWeight: '700' }}>
+                              <span style={{ marginLeft: '0.5rem', padding: '0.125rem 0.375rem', backgroundColor: 'var(--bg-muted)', color: 'var(--text-muted-dark)', borderRadius: '4px', fontSize: '0.625rem', fontWeight: '700' }}>
                                 {log.user.roles[0].role.name}
                               </span>
                             )}
@@ -853,8 +853,8 @@ export default function ApplicationDetailPage() {
                             borderRadius: '4px', 
                             fontSize: '0.625rem', 
                             fontWeight: '800',
-                            backgroundColor: log.action.includes('FAILURE') || log.action.includes('REJECT') ? '#fef2f2' : '#f0fdf4',
-                            color: log.action.includes('FAILURE') || log.action.includes('REJECT') ? '#991b1b' : '#166534',
+                            backgroundColor: log.action.includes('FAILURE') || log.action.includes('REJECT') ? 'var(--error-bg)' : 'var(--success-bg)',
+                            color: log.action.includes('FAILURE') || log.action.includes('REJECT') ? 'var(--error-text)' : '#166534',
                           }}>
                             {log.action}
                           </span>
@@ -865,9 +865,9 @@ export default function ApplicationDetailPage() {
                             margin: '0.5rem 0 0 0', 
                             padding: '0.5rem 0.75rem', 
                             borderRadius: '6px', 
-                            backgroundColor: '#f8fafc', 
+                            backgroundColor: 'var(--background)', 
                             border: '1px solid var(--border-color)',
-                            color: '#475569', 
+                            color: 'var(--text-muted-dark)', 
                             fontSize: '0.75rem', 
                             fontFamily: 'monospace', 
                             overflowX: 'auto',
