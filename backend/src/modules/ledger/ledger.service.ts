@@ -10,11 +10,13 @@ export interface LedgerEntryDto {
     | 'LIABILITY'
     | 'FEE_INCOME'
     | 'INTEREST_INCOME'
-    | 'PROVISION';
+    | 'PROVISION'
+    | 'REVENUE'; // support REVENUE for penalty income
   debit?: number;
   credit?: number;
   transactionReference: string;
   description?: string;
+  loanId?: string;
 }
 
 @Injectable()
@@ -38,6 +40,7 @@ export class LedgerService {
           credit: entry.credit || 0,
           transactionReference: entry.transactionReference,
           description: entry.description,
+          loanId: entry.loanId || null,
         })),
       });
 

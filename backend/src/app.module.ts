@@ -15,6 +15,7 @@ import { DisbursementModule } from './modules/disbursement/disbursement.module';
 import { BranchesModule } from './modules/branches/branches.module';
 import { CompanyModule } from './modules/company/company.module';
 import { PayloanModule } from './modules/payloan/payloan.module';
+import { PeriodModule } from './modules/period/period.module';
 
 import { ScheduleModule } from '@nestjs/schedule';
 
@@ -35,6 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     BranchesModule,
     CompanyModule,
     PayloanModule,
+    PeriodModule,
   ],
   controllers: [AppController],
   providers: [AppService],

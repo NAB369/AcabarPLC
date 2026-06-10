@@ -7,7 +7,7 @@ import {
   Search, Bell, FileText, Users, MessageSquare,
   Star, Gift, CreditCard, Box, Settings, ChevronDown,
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
-  Sun, Moon
+  Sun, Moon, Clock, BookOpen
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
@@ -28,6 +28,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const [sidebarConfig, setSidebarConfig] = useState<Record<string, boolean>>({});
   const [user, setUser] = useState<any>({});
+
+  const isAccountant = user?.roles?.includes('ACCOUNTANT') || user?.roles?.includes('SUPER_ADMIN');
   const profileRef = useRef<HTMLDivElement>(null);
 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -231,6 +233,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <BarChart2 size={18} />
                 {t('report')}
               </Link>
+            )}
+
+            {isAccountant && (
+              <>
+                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Accounting</div>
+                
+                <Link href="/admin/period" className="sidebar-link" style={navItemStyle(pathname === '/admin/period')}>
+                  <Clock size={18} />
+                  SOD / EOD Panel
+                </Link>
+
+                <Link href="/admin/accounting/reports" className="sidebar-link" style={navItemStyle(pathname === '/admin/accounting/reports')}>
+                  <BookOpen size={18} />
+                  Trial Balance & Journal
+                </Link>
+              </>
             )}
 
           </div>

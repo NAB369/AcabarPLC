@@ -221,6 +221,7 @@ model Loan {
   customer           Customer            @relation(fields: [customerId], references: [id])
   loanOfficer        User?               @relation("LoanOfficer", fields: [loanOfficerId], references: [id])
   repaymentSchedules RepaymentSchedule[]
+  ledgerEntries      LedgerEntry[]
 }
 
 model CreditReport {
@@ -299,7 +300,26 @@ model LedgerEntry {
   transactionReference String
   description          String?
   createdAt            DateTime @default(now())
+  loanId               String?
+  loan                 Loan?    @relation(fields: [loanId], references: [id])
 }
+
+model SystemState {
+  id           String   @id @default("default")
+  businessDate DateTime @default(now())
+  isOpen       Boolean  @default(true)
+  updatedAt    DateTime @updatedAt
+}
+
+model PeriodLog {
+  id           String   @id @default(uuid())
+  action       String
+  businessDate DateTime
+  performedBy  String
+  createdAt    DateTime @default(now())
+  details      String?
+}
+
 
 model AuditLog {
   id        String   @id @default(uuid())

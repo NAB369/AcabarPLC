@@ -26,6 +26,11 @@ export class RepaymentsService {
     const loanId = dto.loanId;
     const amount = Number(dto.amount);
 
+    const state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+    if (state && !state.isOpen) {
+      throw new BadRequestException('Repayment blocked: The business day is currently CLOSED. Please start a new day first.');
+    }
+
     // Use a transaction to ensure database consistency
     return this.prisma.$transaction(async (tx) => {
       const loan = await tx.loan.findUnique({ where: { id: loanId } });
@@ -70,6 +75,7 @@ export class RepaymentsService {
           debit: amount,
           transactionReference: txReference,
           description: `Repayment received via ${dto.paymentMethod}${dto.bankAccount ? ` (Acc: ${dto.bankAccount})` : ''}${dto.paymentProof ? ` (Proof: ${dto.paymentProof})` : ''}`,
+          loanId: loanId,
         },
       ];
 
@@ -83,6 +89,7 @@ export class RepaymentsService {
           credit: loanPaid,
           transactionReference: txReference,
           description: `Repayment applied to Installment #${nextSchedule.installmentNumber}`,
+          loanId: loanId,
         });
       }
 
@@ -93,6 +100,7 @@ export class RepaymentsService {
           credit: penaltyPaid,
           transactionReference: txReference,
           description: `Late fee penalty for Installment #${nextSchedule.installmentNumber}`,
+          loanId: loanId,
         });
       }
 

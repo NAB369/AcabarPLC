@@ -64,7 +64,7 @@ export default function LoginPage() {
     localStorage.setItem('user', JSON.stringify(data.user));
     
     const roles = data.user.roles || [];
-    if (roles.includes('SUPER_ADMIN') || roles.includes('LOAN_OFFICER') || roles.includes('BRANCH_MANAGER') || roles.includes('CREDIT_OFFICER')) {
+    if (roles.includes('SUPER_ADMIN') || roles.includes('LOAN_OFFICER') || roles.includes('BRANCH_MANAGER') || roles.includes('CREDIT_OFFICER') || roles.includes('ACCOUNTANT')) {
       router.push('/admin');
     } else {
       router.push('/dashboard');

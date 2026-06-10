@@ -55,11 +55,8 @@ export declare class LoansController {
     applyForLoan(createLoanDto: CreateLoanDto): Promise<{
         loan: {
             id: string;
-            branchId: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            status: string;
             lid: string | null;
+            status: string;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
@@ -82,6 +79,8 @@ export declare class LoansController {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -90,6 +89,7 @@ export declare class LoansController {
             customerId: string;
             productId: string;
             loanOfficerId: string | null;
+            branchId: string | null;
         };
         schedules: {
             loanId: string;
@@ -105,22 +105,19 @@ export declare class LoansController {
         repaymentSchedules: {
             id: string;
             status: string;
+            dueDate: Date;
+            loanId: string;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
-            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
-            loanId: string;
         }[];
     } & {
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -143,6 +140,8 @@ export declare class LoansController {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -151,14 +150,12 @@ export declare class LoansController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     approveLoan(id: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -181,6 +178,8 @@ export declare class LoansController {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -189,16 +188,14 @@ export declare class LoansController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     disburseLoan(id: string): Promise<{
         success: boolean;
         loan: {
             id: string;
-            branchId: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            status: string;
             lid: string | null;
+            status: string;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
@@ -221,6 +218,8 @@ export declare class LoansController {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -229,6 +228,7 @@ export declare class LoansController {
             customerId: string;
             productId: string;
             loanOfficerId: string | null;
+            branchId: string | null;
         };
         transactionReference: string;
     }>;

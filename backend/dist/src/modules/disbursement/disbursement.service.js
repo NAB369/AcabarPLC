@@ -24,6 +24,10 @@ let DisbursementService = class DisbursementService {
         this.ledger = ledger;
     }
     async disburse(loanId, method = 'BAKONG') {
+        const state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+        if (state && !state.isOpen) {
+            throw new common_1.BadRequestException('Disbursement blocked: The business day is currently CLOSED. Please start a new day first.');
+        }
         return this.prisma.$transaction(async (tx) => {
             const loan = await tx.loan.findUnique({
                 where: { id: loanId },
@@ -68,6 +72,7 @@ let DisbursementService = class DisbursementService {
                     credit: Number(loan.principalAmount),
                     transactionReference: txReference,
                     description: `Loan disbursement for ${loanId} via ${method}`,
+                    loanId: loanId,
                 },
                 {
                     accountId: loanId,
@@ -75,6 +80,7 @@ let DisbursementService = class DisbursementService {
                     debit: Number(loan.principalAmount),
                     transactionReference: txReference,
                     description: `Principal disbursed to ${loan.customer.firstName} ${loan.customer.lastName}`,
+                    loanId: loanId,
                 },
             ], tx);
             return {

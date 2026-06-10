@@ -8,18 +8,19 @@ export declare class DisbursementService {
     disburse(loanId: string, method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER'): Promise<{
         success: boolean;
         loan: {
+            disbursementRef: string | null;
             id: string;
-            branchId: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            status: string;
             lid: string | null;
+            customerId: string;
+            productId: string;
+            status: string;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
             durationMonths: number;
             currency: string;
             applicationChannel: string | null;
+            loanOfficerId: string | null;
             disbursementDate: Date | null;
             repaymentType: string | null;
             firstInstallmentDate: Date | null;
@@ -33,17 +34,16 @@ export declare class DisbursementService {
             dtiRatio: number | null;
             cbcScore: number | null;
             disbursementMethod: string | null;
-            disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            createdAt: Date;
+            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
+            branchId: string | null;
             reasonOfCredit: string | null;
             loanNote: string | null;
             memoReasonOfCredit: string | null;
-            customerId: string;
-            productId: string;
-            loanOfficerId: string | null;
         };
         disbursementRef: string;
         transactionReference: string;

@@ -93,6 +93,7 @@ export class LoansService {
           credit: Number(loan.principalAmount),
           transactionReference: txReference,
           description: `Loan disbursement for ${loanId}`,
+          loanId: loanId,
         },
         {
           accountId: loanId,
@@ -100,6 +101,7 @@ export class LoansService {
           debit: Number(loan.principalAmount),
           transactionReference: txReference,
           description: `Principal disbursed`,
+          loanId: loanId,
         },
       ]);
 

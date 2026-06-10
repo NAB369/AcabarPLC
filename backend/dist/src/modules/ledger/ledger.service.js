@@ -28,6 +28,7 @@ let LedgerService = class LedgerService {
                     credit: entry.credit || 0,
                     transactionReference: entry.transactionReference,
                     description: entry.description,
+                    loanId: entry.loanId || null,
                 })),
             });
             return { success: true };

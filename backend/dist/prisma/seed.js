@@ -67,6 +67,9 @@ async function main() {
         { name: 'MANAGE_DISBURSEMENT', description: 'LOS Step: Prepare and confirm fund disbursement' },
         { name: 'VIEW_AUDIT', description: 'View system-wide audit logs' },
         { name: 'MANAGE_SYSTEM', description: 'System settings and user management' },
+        { name: 'VIEW_PERIOD', description: 'Access to system period status and SOD/EOD panel' },
+        { name: 'MANAGE_PERIOD', description: 'Ability to run SOD and EOD' },
+        { name: 'VIEW_REPORTS', description: 'Access to accountant reports' },
     ];
     const permissionMap = {};
     for (const perm of permissionsToCreate) {
@@ -111,6 +114,11 @@ async function main() {
             name: 'CUSTOMER_SERVICE',
             description: 'Inquiry and registration',
             perms: ['VIEW_DASHBOARD', 'MANAGE_CUSTOMERS']
+        },
+        {
+            name: 'ACCOUNTANT',
+            description: 'Financial accounting and period closing operations',
+            perms: ['VIEW_DASHBOARD', 'VIEW_PERIOD', 'MANAGE_PERIOD', 'VIEW_REPORTS']
         },
     ];
     for (const roleData of rolesToCreate) {
@@ -188,6 +196,34 @@ async function main() {
         create: {
             userId: officer.id,
             roleId: loanOfficerRole.id,
+        },
+    });
+    const accountantRole = await prisma.role.findUnique({ where: { name: 'ACCOUNTANT' } });
+    if (!accountantRole) {
+        throw new Error('ACCOUNTANT role not found');
+    }
+    const accountantUser = await prisma.user.upsert({
+        where: { email: 'accountant@weloan365.com' },
+        update: {},
+        create: {
+            email: 'accountant@weloan365.com',
+            passwordHash,
+            firstName: 'Accountant',
+            lastName: 'User',
+            branchId: branch1.id,
+        },
+    });
+    await prisma.userRole.upsert({
+        where: {
+            userId_roleId: {
+                userId: accountantUser.id,
+                roleId: accountantRole.id,
+            },
+        },
+        update: {},
+        create: {
+            userId: accountantUser.id,
+            roleId: accountantRole.id,
         },
     });
     const product1 = await prisma.loanProduct.upsert({
@@ -301,6 +337,15 @@ async function main() {
             address: 'Phnom Penh, Cambodia',
             phone: '+855 23 999 888',
             email: 'info@kosign.com.kh',
+        },
+    });
+    await prisma.systemState.upsert({
+        where: { id: 'default' },
+        update: {},
+        create: {
+            id: 'default',
+            businessDate: new Date(),
+            isOpen: true,
         },
     });
     console.log('Seeding completed.');
