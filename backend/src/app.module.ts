@@ -16,6 +16,7 @@ import { BranchesModule } from './modules/branches/branches.module';
 import { CompanyModule } from './modules/company/company.module';
 import { PayloanModule } from './modules/payloan/payloan.module';
 import { PeriodModule } from './modules/period/period.module';
+import { AccountingModule } from './modules/accounting/accounting.module';
 
 import { ScheduleModule } from '@nestjs/schedule';
 
@@ -37,6 +38,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     CompanyModule,
     PayloanModule,
     PeriodModule,
+    AccountingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

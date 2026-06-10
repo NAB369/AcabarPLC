@@ -21,14 +21,18 @@ export declare class LedgerService {
         netBalance: number;
     }>;
     getAccountEntries(accountId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        description: string | null;
+        currency: string;
+        loanId: string | null;
         accountId: string;
         debit: number;
         credit: number;
-        id: string;
+        exchangeRate: number;
+        accountCode: string | null;
         accountType: string;
         transactionReference: string;
-        description: string | null;
-        createdAt: Date;
-        loanId: string | null;
+        journalEntryId: string | null;
     }[]>;
 }

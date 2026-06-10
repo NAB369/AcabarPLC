@@ -291,17 +291,53 @@ model RepaymentSchedule {
   @@unique([loanId, installmentNumber])
 }
 
+// ─── Chart of Accounts ───────────────────────────────────────────────────────
+model Account {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  nameKh      String?
+  type        String   // ASSET | LIABILITY | EQUITY | REVENUE | EXPENSE
+  normalBal   String   // DEBIT | CREDIT
+  parentCode  String?
+  isActive    Boolean  @default(true)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Journal Entry header (groups ledger lines) ────────────────────────────────
+model JournalEntry {
+  id           String        @id @default(uuid())
+  reference    String        @unique
+  date         DateTime
+  memo         String?
+  type         String        // JOURNAL | INCOME | EXPENSE | TRANSFER | SINGLE
+  status       String        @default("POSTED")
+  createdBy    String
+  currency     String        @default("USD")
+  exchangeRate Float         @default(1.0)
+  totalAmount  Float         @default(0.0)
+  createdAt    DateTime      @default(now())
+  lines        LedgerEntry[]
+}
+
 model LedgerEntry {
-  id                   String   @id @default(uuid())
+  id                   String        @id @default(uuid())
   accountId            String
+  accountCode          String?
   accountType          String
-  debit                Float    @default(0.0)
-  credit               Float    @default(0.0)
+  debit                Float         @default(0.0)
+  credit               Float         @default(0.0)
   transactionReference String
   description          String?
-  createdAt            DateTime @default(now())
+  currency             String        @default("USD")
+  exchangeRate         Float         @default(1.0)
+  createdAt            DateTime      @default(now())
   loanId               String?
-  loan                 Loan?    @relation(fields: [loanId], references: [id])
+  journalEntryId       String?
+  loan                 Loan?         @relation(fields: [loanId], references: [id])
+  journalEntry         JournalEntry? @relation(fields: [journalEntryId], references: [id])
 }
 
 model SystemState {

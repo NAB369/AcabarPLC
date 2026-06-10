@@ -7,7 +7,8 @@ import {
   Search, Bell, FileText, Users, MessageSquare,
   Star, Gift, CreditCard, Box, Settings, ChevronDown,
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
-  Sun, Moon, Clock, BookOpen
+  Sun, Moon, Clock, BookOpen, LayoutList, TrendingUp, TrendingDown,
+  ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
@@ -25,6 +26,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
   const [settingsTab, setSettingsTab] = useState('Profile');
   const [isCustomerMenuOpen, setIsCustomerMenuOpen] = useState(pathname?.startsWith('/admin/customers') ?? true);
+  const [isAccountingOpen, setIsAccountingOpen] = useState(pathname?.startsWith('/admin/accounting') || pathname?.startsWith('/admin/period'));
+  const [isAcctReportsOpen, setIsAcctReportsOpen] = useState(pathname?.startsWith('/admin/accounting/reports'));
 
   const [sidebarConfig, setSidebarConfig] = useState<Record<string, boolean>>({});
   const [user, setUser] = useState<any>({});
@@ -238,16 +241,67 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {isAccountant && (
               <>
                 <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Accounting</div>
-                
-                <Link href="/admin/period" className="sidebar-link" style={navItemStyle(pathname === '/admin/period')}>
-                  <Clock size={18} />
-                  SOD / EOD Panel
-                </Link>
 
-                <Link href="/admin/accounting/reports" className="sidebar-link" style={navItemStyle(pathname === '/admin/accounting/reports')}>
-                  <BookOpen size={18} />
-                  Trial Balance & Journal
-                </Link>
+                {/* Collapsible Accounting Menu */}
+                <div
+                  onClick={() => setIsAccountingOpen(!isAccountingOpen)}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/accounting') || pathname?.startsWith('/admin/period') ? 'var(--primary)' : 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '500', cursor: 'pointer', borderRadius: 'var(--radius-md)', backgroundColor: isAccountingOpen ? 'var(--primary-light)' : 'transparent' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <BookMarked size={18} /> Accounting Module
+                  </div>
+                  <ChevronDown size={14} style={{ transform: isAccountingOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+                </div>
+
+                {isAccountingOpen && (
+                  <div style={{ paddingLeft: '1rem', display: 'flex', flexDirection: 'column', gap: '0.125rem', marginTop: '0.25rem' }}>
+
+                    {/* SOD/EOD */}
+                    <Link href="/admin/period" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/period'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <Clock size={15} /> SOD / EOD Panel
+                    </Link>
+
+                    {/* Chart of Accounts */}
+                    <Link href="/admin/accounting/accounts" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/accounts'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <LayoutList size={15} /> Chart of Accounts
+                    </Link>
+
+                    {/* Transactions sub-section */}
+                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>TRANSACTIONS</div>
+
+                    <Link href="/admin/accounting/journal" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/journal'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <BookOpen size={15} /> Journal Entry
+                    </Link>
+                    <Link href="/admin/accounting/income" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/income'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <TrendingUp size={15} /> Income Entry
+                    </Link>
+                    <Link href="/admin/accounting/expense" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/expense'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <TrendingDown size={15} /> Expense Entry
+                    </Link>
+                    <Link href="/admin/accounting/transfer" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/transfer'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <ArrowLeftRight size={15} /> Cash Transfer
+                    </Link>
+                    <Link href="/admin/accounting/single" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/single'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <PenLine size={15} /> Single Entry
+                    </Link>
+
+                    {/* Reports sub-section */}
+                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>REPORTS</div>
+
+                    <Link href="/admin/accounting/reports" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <BookOpen size={15} /> Trial Balance
+                    </Link>
+                    <Link href="/admin/accounting/reports/profit-loss" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/profit-loss'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <BarChart3 size={15} /> Profit &amp; Loss
+                    </Link>
+                    <Link href="/admin/accounting/reports/balance-sheet" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/balance-sheet'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <Scale size={15} /> Balance Sheet
+                    </Link>
+                    <Link href="/admin/accounting/reports/ledger" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/ledger'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
+                      <FileText size={15} /> Account Ledger
+                    </Link>
+                  </div>
+                )}
               </>
             )}
 

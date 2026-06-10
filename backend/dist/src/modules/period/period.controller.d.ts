@@ -4,25 +4,25 @@ export declare class PeriodController {
     constructor(periodService: PeriodService);
     getState(): Promise<{
         id: string;
+        updatedAt: Date;
         businessDate: Date;
         isOpen: boolean;
-        updatedAt: Date;
     }>;
     startOfDay(req: any): Promise<{
         success: boolean;
         state: {
             id: string;
+            updatedAt: Date;
             businessDate: Date;
             isOpen: boolean;
-            updatedAt: Date;
         };
     }>;
     endOfDay(req: any): Promise<{
         state: {
             id: string;
+            updatedAt: Date;
             businessDate: Date;
             isOpen: boolean;
-            updatedAt: Date;
         };
         interestAccrued: number;
         penaltiesRecalculated: number;
@@ -30,11 +30,11 @@ export declare class PeriodController {
     }>;
     getLogs(): Promise<{
         id: string;
+        createdAt: Date;
         businessDate: Date;
         action: string;
-        performedBy: string;
-        createdAt: Date;
         details: string | null;
+        performedBy: string;
     }[]>;
     getTrialBalance(): Promise<{
         accounts: {
@@ -52,21 +52,25 @@ export declare class PeriodController {
     }>;
     getJournal(date?: string): Promise<({
         loan: {
+            lid: string | null;
             customer: {
                 firstName: string;
                 lastName: string;
             };
-            lid: string | null;
         } | null;
     } & {
         id: string;
         createdAt: Date;
+        description: string | null;
+        currency: string;
+        loanId: string | null;
         accountId: string;
         debit: number;
         credit: number;
+        exchangeRate: number;
+        accountCode: string | null;
         accountType: string;
         transactionReference: string;
-        description: string | null;
-        loanId: string | null;
+        journalEntryId: string | null;
     })[]>;
 }

@@ -42,6 +42,9 @@ async function main() {
     { name: 'VIEW_PERIOD', description: 'Access to system period status and SOD/EOD panel' },
     { name: 'MANAGE_PERIOD', description: 'Ability to run SOD and EOD' },
     { name: 'VIEW_REPORTS', description: 'Access to accountant reports' },
+    { name: 'MANAGE_ACCOUNTS', description: 'Create and manage Chart of Accounts' },
+    { name: 'MANAGE_JOURNAL', description: 'Post journal entries, income, expense, and transfers' },
+    { name: 'VIEW_ACCOUNTS', description: 'View chart of accounts and account balances' },
   ];
 
   const permissionMap: Record<string, any> = {};
@@ -93,7 +96,7 @@ async function main() {
     { 
       name: 'ACCOUNTANT', 
       description: 'Financial accounting and period closing operations',
-      perms: ['VIEW_DASHBOARD', 'VIEW_PERIOD', 'MANAGE_PERIOD', 'VIEW_REPORTS']
+      perms: ['VIEW_DASHBOARD', 'VIEW_PERIOD', 'MANAGE_PERIOD', 'VIEW_REPORTS', 'MANAGE_ACCOUNTS', 'MANAGE_JOURNAL', 'VIEW_ACCOUNTS']
     },
   ];
 
@@ -359,6 +362,44 @@ async function main() {
       isOpen: true,
     },
   });
+
+  // Seed Chart of Accounts
+  const chartOfAccounts = [
+    // ASSETS
+    { code: '10100', name: 'Cash Vault (USD)', nameKh: 'ប្រាក់សុទ្ធ (USD)', type: 'ASSET', normalBal: 'DEBIT', description: 'Physical cash held in USD' },
+    { code: '10110', name: 'Cash Vault (KHR)', nameKh: 'ប្រាក់សុទ្ធ (KHR)', type: 'ASSET', normalBal: 'DEBIT', description: 'Physical cash held in KHR' },
+    { code: '10200', name: 'Bank Account', nameKh: 'គណនីធនាគារ', type: 'ASSET', normalBal: 'DEBIT', description: 'Funds deposited in bank' },
+    { code: '12100', name: 'Loan Portfolio', nameKh: 'ផលប័ត្រប្រាក់កម្ចី', type: 'ASSET', normalBal: 'DEBIT', description: 'Outstanding loan principal balances' },
+    { code: '12200', name: 'Interest Receivable', nameKh: 'ការប្រាក់ត្រូវទទួល', type: 'ASSET', normalBal: 'DEBIT', description: 'Accrued but uncollected interest' },
+    { code: '12300', name: 'Allowance for Loan Loss', nameKh: 'ការរំលស់ប្រាក់កម្ចី', type: 'ASSET', normalBal: 'CREDIT', description: 'Provision for non-performing loans' },
+    // LIABILITIES
+    { code: '20100', name: 'Customer Deposits', nameKh: 'ប្រាក់បញ្ញើអតិថិជន', type: 'LIABILITY', normalBal: 'CREDIT', description: 'Savings and deposits from clients' },
+    { code: '20200', name: 'Borrowings', nameKh: 'ការខ្ចីប្រាក់', type: 'LIABILITY', normalBal: 'CREDIT', description: 'Funds borrowed from external sources' },
+    { code: '20300', name: 'Accounts Payable', nameKh: 'បញ្ជីត្រូវបង់', type: 'LIABILITY', normalBal: 'CREDIT', description: 'Amounts owed to suppliers/staff' },
+    // EQUITY
+    { code: '30100', name: 'Equity / Seed Capital', nameKh: 'ភាគហ៊ុន / ទុនដើម', type: 'EQUITY', normalBal: 'CREDIT', description: 'Shareholder equity and initial capital' },
+    { code: '30200', name: 'Retained Earnings', nameKh: 'ប្រាក់ចំណេញសល់', type: 'EQUITY', normalBal: 'CREDIT', description: 'Accumulated profits retained' },
+    // REVENUE
+    { code: '40100', name: 'Interest Income', nameKh: 'ចំណូលការប្រាក់', type: 'REVENUE', normalBal: 'CREDIT', description: 'Interest earned on loans' },
+    { code: '40200', name: 'Penalty Income', nameKh: 'ចំណូលពីការផាក់ពិន័យ', type: 'REVENUE', normalBal: 'CREDIT', description: 'Late payment penalties' },
+    { code: '40300', name: 'Processing Fee Income', nameKh: 'ចំណូលសេវាកម្ម', type: 'REVENUE', normalBal: 'CREDIT', description: 'Loan processing and admin fees' },
+    { code: '40400', name: 'Other Income', nameKh: 'ចំណូលផ្សេងៗ', type: 'REVENUE', normalBal: 'CREDIT', description: 'Miscellaneous income' },
+    // EXPENSES
+    { code: '50100', name: 'Salary Expense', nameKh: 'ចំណាយប្រាក់ខែ', type: 'EXPENSE', normalBal: 'DEBIT', description: 'Employee salaries and wages' },
+    { code: '50200', name: 'Rent Expense', nameKh: 'ចំណាយថ្លៃជួល', type: 'EXPENSE', normalBal: 'DEBIT', description: 'Office and branch rental' },
+    { code: '50300', name: 'Utilities Expense', nameKh: 'ចំណាយប្រើប្រាស់', type: 'EXPENSE', normalBal: 'DEBIT', description: 'Electricity, water, internet' },
+    { code: '50400', name: 'Loan Loss Provision', nameKh: 'ការរំលស់ប្រាក់កម្ចី', type: 'EXPENSE', normalBal: 'DEBIT', description: 'Expense for provisioning loan losses' },
+    { code: '50500', name: 'Marketing Expense', nameKh: 'ចំណាយទីផ្សារ', type: 'EXPENSE', normalBal: 'DEBIT', description: 'Advertising and marketing costs' },
+    { code: '50600', name: 'Other Expense', nameKh: 'ចំណាយផ្សេងៗ', type: 'EXPENSE', normalBal: 'DEBIT', description: 'Miscellaneous expenses' },
+  ];
+
+  for (const acct of chartOfAccounts) {
+    await prisma.account.upsert({
+      where: { code: acct.code },
+      update: { name: acct.name, nameKh: acct.nameKh, type: acct.type, normalBal: acct.normalBal, description: acct.description },
+      create: acct,
+    });
+  }
 
   console.log('Seeding completed.');
 }

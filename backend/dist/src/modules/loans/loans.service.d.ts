@@ -13,8 +13,11 @@ export declare class LoansService {
     applyForLoan(createLoanDto: CreateLoanDto): Promise<{
         loan: {
             id: string;
-            lid: string | null;
+            branchId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             status: string;
+            lid: string | null;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
@@ -37,8 +40,6 @@ export declare class LoansService {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -47,7 +48,6 @@ export declare class LoansService {
             customerId: string;
             productId: string;
             loanOfficerId: string | null;
-            branchId: string | null;
         };
         schedules: {
             loanId: string;
@@ -63,8 +63,11 @@ export declare class LoansService {
         success: boolean;
         loan: {
             id: string;
-            lid: string | null;
+            branchId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             status: string;
+            lid: string | null;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
@@ -87,8 +90,6 @@ export declare class LoansService {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
-            createdAt: Date;
-            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -97,14 +98,16 @@ export declare class LoansService {
             customerId: string;
             productId: string;
             loanOfficerId: string | null;
-            branchId: string | null;
         };
         transactionReference: string;
     }>;
     approveLoan(loanId: string): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -127,8 +130,6 @@ export declare class LoansService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -137,27 +138,26 @@ export declare class LoansService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     private generateRepaymentSchedule;
     findCustomerByEmail(email: string): Promise<{
         id: string;
-        currency: string;
-        createdAt: Date;
-        updatedAt: Date;
-        branchId: string;
+        email: string | null;
         firstName: string;
         lastName: string;
+        branchId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        address: string | null;
+        currency: string;
         cid: string | null;
-        khmerFirstName: string | null;
-        khmerLastName: string | null;
         phone: string;
-        email: string | null;
         nationalId: string | null;
         passport: string | null;
+        khmerFirstName: string | null;
+        khmerLastName: string | null;
         familyBook: string | null;
         dob: Date | null;
-        address: string | null;
         kycStatus: string;
         employmentStatus: string | null;
         occupation: string | null;
@@ -186,19 +186,22 @@ export declare class LoansService {
         repaymentSchedules: {
             id: string;
             status: string;
-            dueDate: Date;
-            loanId: string;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
+            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
+            loanId: string;
         }[];
     } & {
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -221,8 +224,6 @@ export declare class LoansService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -231,7 +232,6 @@ export declare class LoansService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     getAllProducts(): Promise<{
         id: string;
