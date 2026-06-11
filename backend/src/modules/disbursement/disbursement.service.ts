@@ -88,6 +88,7 @@ export class DisbursementService {
         [
           {
             accountId: 'CASH-VAULT',
+            accountCode: '10100', // Cash Vault (USD)
             accountType: 'CASH',
             credit: Number(loan.principalAmount),
             transactionReference: txReference,
@@ -96,6 +97,7 @@ export class DisbursementService {
           },
           {
             accountId: loanId,
+            accountCode: '12100', // Loan Portfolio
             accountType: 'LOAN',
             debit: Number(loan.principalAmount),
             transactionReference: txReference,

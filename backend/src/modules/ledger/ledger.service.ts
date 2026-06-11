@@ -3,6 +3,7 @@ import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 
 export interface LedgerEntryDto {
   accountId: string;
+  accountCode?: string;
   accountType:
     | 'LOAN'
     | 'CASH'
@@ -11,7 +12,8 @@ export interface LedgerEntryDto {
     | 'FEE_INCOME'
     | 'INTEREST_INCOME'
     | 'PROVISION'
-    | 'REVENUE'; // support REVENUE for penalty income
+    | 'REVENUE'
+    | 'EXPENSE'; // support REVENUE for penalty income
   debit?: number;
   credit?: number;
   transactionReference: string;
@@ -35,6 +37,7 @@ export class LedgerService {
       await client.ledgerEntry.createMany({
         data: entries.map((entry) => ({
           accountId: entry.accountId,
+          accountCode: entry.accountCode || null,
           accountType: entry.accountType,
           debit: entry.debit || 0,
           credit: entry.credit || 0,

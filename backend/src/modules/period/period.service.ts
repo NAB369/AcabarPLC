@@ -80,6 +80,7 @@ export class PeriodService {
           data: [
             {
               accountId: loan.id,
+              accountCode: '12200', // Interest Receivable
               accountType: 'LOAN',
               debit: dailyInterest,
               credit: 0,
@@ -89,6 +90,7 @@ export class PeriodService {
             },
             {
               accountId: 'INTEREST-INCOME',
+              accountCode: '40100', // Interest Income
               accountType: 'REVENUE',
               debit: 0,
               credit: dailyInterest,

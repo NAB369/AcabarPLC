@@ -71,6 +71,7 @@ export class RepaymentsService {
       const ledgerEntries: any[] = [
         {
           accountId: 'CASH-VAULT',
+          accountCode: '10100', // Cash Vault (USD)
           accountType: 'CASH',
           debit: amount,
           transactionReference: txReference,
@@ -85,6 +86,7 @@ export class RepaymentsService {
       if (loanPaid > 0) {
         ledgerEntries.push({
           accountId: loanId,
+          accountCode: '12100', // Loan Portfolio
           accountType: 'LOAN',
           credit: loanPaid,
           transactionReference: txReference,
@@ -96,6 +98,7 @@ export class RepaymentsService {
       if (penaltyPaid > 0) {
         ledgerEntries.push({
           accountId: 'PENALTY-INCOME',
+          accountCode: '40200', // Penalty Income
           accountType: 'REVENUE',
           credit: penaltyPaid,
           transactionReference: txReference,
