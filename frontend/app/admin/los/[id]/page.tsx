@@ -769,54 +769,144 @@ export default function ApplicationDetailPage() {
         )}
 
         {activeTab === 'Timeline' && (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '2rem' }}>
-            {/* Left Panel: Approval Decisions */}
-            <div className="card" style={{ padding: '2rem' }}>
-              <h3 style={{ fontSize: '1.125rem', fontWeight: '800', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <Shield size={18} color="var(--primary)" /> Approval Steps
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative' }}>
-                {(!application.approvalSteps || application.approvalSteps.length === 0) ? (
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', fontStyle: 'italic' }}>No approval steps generated yet.</div>
-                ) : (
-                  application.approvalSteps.map((step: any, i: number) => (
-                    <div key={i} style={{ display: 'flex', gap: '1.25rem', position: 'relative' }}>
-                      <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: step.decision ? 'var(--success-text)' : 'var(--text-muted)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-                        <CheckCircle2 size={16} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            {/* Full Width: New Loan Approval Line Diagram */}
+            <div className="card" style={{ padding: '2rem', backgroundColor: '#fafafa', border: '1px solid #eaeaea' }}>
+              
+              {/* Header Box */}
+              <div style={{ textAlign: 'center', marginBottom: '2.5rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px', border: '1px solid #e5e5e5' }}>
+                <h3 style={{ fontSize: '1.125rem', fontWeight: '800', color: '#111', marginBottom: '0.25rem' }}>Loan Approval Line</h3>
+                <p style={{ color: '#555', fontSize: '0.875rem', margin: 0 }}>Sequential authorization workflow</p>
+              </div>
+
+              {/* Flowchart */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative', width: '100%', maxWidth: '850px', margin: '0 auto' }}>
+                
+                {/* Row 1 */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', alignItems: 'center' }}>
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #d1d5db', backgroundColor: '#f3f4f6', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#374151', fontSize: '0.9375rem' }}>Applicant</div>
+                    <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>Submits application</div>
+                    <div style={{ position: 'absolute', right: '-2rem', top: '50%', transform: 'translateY(-50%)', width: '2rem', display: 'flex', alignItems: 'center', zIndex: 10 }}>
+                      <div style={{ flex: 1, height: '2px', backgroundColor: '#9ca3af' }} />
+                      <div style={{ width: 0, height: 0, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderLeft: '6px solid #9ca3af' }} />
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #93c5fd', backgroundColor: '#eff6ff', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#1e3a8a', fontSize: '0.9375rem' }}>Loan officer</div>
+                    <div style={{ fontSize: '0.75rem', color: '#2563eb', marginTop: '0.25rem' }}>Eligibility check</div>
+                    <div style={{ position: 'absolute', right: '-2rem', top: '50%', transform: 'translateY(-50%)', width: '2rem', display: 'flex', alignItems: 'center', zIndex: 10 }}>
+                      <div style={{ flex: 1, height: '2px', backgroundColor: '#9ca3af' }} />
+                      <div style={{ width: 0, height: 0, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderLeft: '6px solid #9ca3af' }} />
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #c4b5fd', backgroundColor: '#f5f3ff', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#4c1d95', fontSize: '0.9375rem' }}>Credit analyst</div>
+                    <div style={{ fontSize: '0.75rem', color: '#7c3aed', marginTop: '0.25rem' }}>Credit assessment</div>
+                    <div style={{ position: 'absolute', right: '-2rem', top: '50%', transform: 'translateY(-50%)', width: '2rem', display: 'flex', alignItems: 'center', zIndex: 10 }}>
+                      <div style={{ flex: 1, height: '2px', backgroundColor: '#9ca3af' }} />
+                      <div style={{ width: 0, height: 0, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderLeft: '6px solid #9ca3af' }} />
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #6ee7b7', backgroundColor: '#ecfdf5', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#065f46', fontSize: '0.9375rem' }}>Branch manager</div>
+                    <div style={{ fontSize: '0.75rem', color: '#059669', marginTop: '0.25rem' }}>1st approval</div>
+                    {/* Vertical Arrow Down */}
+                    <div style={{ position: 'absolute', left: '50%', bottom: '-2rem', transform: 'translateX(-50%)', height: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 10 }}>
+                      <div style={{ flex: 1, width: '2px', backgroundColor: '#9ca3af' }} />
+                      <div style={{ width: 0, height: 0, borderLeft: '4px solid transparent', borderRight: '4px solid transparent', borderTop: '6px solid #9ca3af' }} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 2 */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', alignItems: 'center' }}>
+                  <div /> {/* Empty space under Applicant */}
+
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #86efac', backgroundColor: '#f0fdf4', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#166534', fontSize: '0.9375rem' }}>Disbursement</div>
+                    <div style={{ fontSize: '0.75rem', color: '#15803d', marginTop: '0.25rem' }}>Funds released</div>
+                  </div>
+
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #6ee7b7', backgroundColor: '#ecfdf5', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#065f46', fontSize: '0.9375rem' }}>Final approver</div>
+                    <div style={{ fontSize: '0.75rem', color: '#059669', marginTop: '0.25rem' }}>Authorization sign-off</div>
+                    <div style={{ position: 'absolute', left: '-2rem', top: '50%', transform: 'translateY(-50%)', width: '2rem', display: 'flex', alignItems: 'center', zIndex: 10 }}>
+                      <div style={{ width: 0, height: 0, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderRight: '6px solid #9ca3af' }} />
+                      <div style={{ flex: 1, height: '2px', backgroundColor: '#9ca3af' }} />
+                    </div>
+                  </div>
+
+                  <div style={{ padding: '1rem', borderRadius: '8px', border: '1px solid #fca5a5', backgroundColor: '#fef2f2', textAlign: 'center', position: 'relative' }}>
+                    <div style={{ fontWeight: '700', color: '#991b1b', fontSize: '0.9375rem' }}>Risk committee</div>
+                    <div style={{ fontSize: '0.75rem', color: '#b91c1c', marginTop: '0.25rem' }}>Risk evaluation</div>
+                    <div style={{ position: 'absolute', left: '-2rem', top: '50%', transform: 'translateY(-50%)', width: '2rem', display: 'flex', alignItems: 'center', zIndex: 10 }}>
+                      <div style={{ width: 0, height: 0, borderTop: '4px solid transparent', borderBottom: '4px solid transparent', borderRight: '6px solid #9ca3af' }} />
+                      <div style={{ flex: 1, height: '2px', backgroundColor: '#9ca3af' }} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rejected Stage Indicator */}
+              <div style={{ textAlign: 'center', margin: '3rem 0 2rem 0', color: '#888', fontSize: '0.8125rem', position: 'relative' }}>
+                <span style={{ backgroundColor: '#fafafa', padding: '0 1rem', zIndex: 1, position: 'relative', fontWeight: '500' }}>
+                  If rejected at any stage — file returned with written remarks
+                </span>
+                <div style={{ position: 'absolute', top: '50%', left: '15%', right: '15%', borderTop: '1px dashed #d1d5db', zIndex: 0 }} />
+              </div>
+
+              {/* Approval Signatures */}
+              <div style={{ marginTop: '2rem' }}>
+                <h4 style={{ textAlign: 'center', fontWeight: '800', marginBottom: '1.5rem', color: '#111' }}>Approval signatures</h4>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1rem' }}>
+                  {['Loan officer', 'Credit analyst', 'Branch manager', 'Risk committee', 'Final approver'].map(role => (
+                    <div key={role}>
+                      <div style={{ fontSize: '0.8125rem', color: '#4b5563', marginBottom: '0.375rem', fontWeight: '500' }}>{role}</div>
+                      <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', height: '90px', backgroundColor: '#ffffff', position: 'relative' }}>
+                        <div style={{ color: '#d1d5db', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.8125rem', whiteSpace: 'nowrap' }}>
+                          — Signature —
+                        </div>
                       </div>
-                      <div>
-                        <div style={{ fontWeight: '700', fontSize: '0.9375rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          Tier {step.tier} Decision
-                          {step.decision && (
-                            <span className="badge" style={{ 
-                              backgroundColor: step.decision === 'APPROVED' ? 'var(--success-bg)' : 'var(--error-bg)', 
-                              color: step.decision === 'APPROVED' ? 'var(--success-text)' : '#b91c1c',
-                              fontSize: '0.6875rem',
-                              fontWeight: '800'
-                            }}>
-                              {step.decision}
-                            </span>
-                          )}
-                        </div>
-                        <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                          Reviewer ID: <span style={{ fontFamily: 'monospace' }}>{step.assignedTo || 'Unassigned'}</span>
-                        </div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.125rem' }}>
-                          Decided: {step.decidedAt ? new Date(step.decidedAt).toLocaleString() : 'Pending'}
-                        </div>
-                        {step.comments && (
-                          <div style={{ marginTop: '0.5rem', padding: '0.75rem', backgroundColor: 'var(--background)', borderRadius: '8px', borderLeft: '3px solid var(--primary)', fontSize: '0.8125rem', fontStyle: 'italic', color: 'var(--text-muted-dark)' }}>
-                            &ldquo;{step.comments}&rdquo;
-                          </div>
-                        )}
+                      <div style={{ display: 'flex', alignItems: 'center', marginTop: '0.5rem', fontSize: '0.75rem', color: '#6b7280' }}>
+                        Date: <div style={{ borderBottom: '1px dashed #d1d5db', flex: 1, marginLeft: '0.25rem', height: '10px' }} />
                       </div>
                     </div>
-                  ))
-                )}
+                  ))}
+                </div>
+              </div>
+
+              {/* Remarks / Conditions */}
+              <div style={{ marginTop: '3rem' }}>
+                <h4 style={{ textAlign: 'center', fontWeight: '800', marginBottom: '1.25rem', color: '#111' }}>Remarks / conditions</h4>
+                <textarea 
+                  placeholder="Enter any conditions, collateral notes, or rejection reasons here"
+                  style={{ width: '100%', height: '120px', borderRadius: '8px', border: '1px solid #e5e7eb', backgroundColor: '#ffffff', padding: '1.25rem', resize: 'none', color: '#374151', fontSize: '0.875rem', outline: 'none' }}
+                />
+                
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+                  {[
+                    { label: 'Loan officer', color: '#3b82f6', bg: '#eff6ff', border: '#93c5fd' },
+                    { label: 'Credit analyst', color: '#8b5cf6', bg: '#f5f3ff', border: '#c4b5fd' },
+                    { label: 'Manager / approver', color: '#10b981', bg: '#ecfdf5', border: '#6ee7b7' },
+                    { label: 'Risk committee', color: '#ef4444', bg: '#fef2f2', border: '#fca5a5' },
+                    { label: 'Disbursement', color: '#22c55e', bg: '#f0fdf4', border: '#86efac' }
+                  ].map(cb => (
+                    <label key={cb.label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', color: '#4b5563', cursor: 'pointer' }}>
+                      <div style={{ width: '16px', height: '16px', borderRadius: '4px', border: `1px solid ${cb.border}`, backgroundColor: cb.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {/* Checkbox empty state to match design */}
+                      </div>
+                      {cb.label}
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Right Panel: Detail System Audit Logs */}
+            {/* System Audit Trail (Moved below the Approval Line) */}
             <div className="card" style={{ padding: '2rem' }}>
               <h3 style={{ fontSize: '1.125rem', fontWeight: '800', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <FileText size={18} color="var(--primary)" /> System Audit Trail
