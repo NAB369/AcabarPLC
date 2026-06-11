@@ -150,21 +150,19 @@ export default function UnderwritingDashboardPage() {
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: isClickable ? 'pointer' : 'default',
-                backgroundColor: 'var(--card-bg)',
-                borderRadius: '1rem',
-                border: '1px solid var(--border-color)',
-                boxShadow: isActive ? `0 8px 24px ${card.bg}` : '0 4px 12px rgba(0,0,0,0.03)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: isActive ? 'translateY(-4px)' : undefined,
+                backgroundColor: '#FFFFFF',
+                borderRadius: '8px',
+                border: 'none',
+                boxShadow: isActive ? `0 0 0 2px ${card.color}, 0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08)` : '0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08)',
+                transition: 'all 0.2s ease',
+                transform: isActive ? 'translateY(-2px)' : undefined,
                 padding: '1.25rem'
               }}
-              onMouseOver={(e) => { if (isClickable && !isActive) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.06)'; } }}
-              onMouseOut={(e) => { if (!isActive) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.03)'; } }}
+              onMouseOver={(e) => { if (isClickable && !isActive) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 7px 14px rgba(50,50,93,0.1), 0 3px 6px rgba(0,0,0,0.08)'; } }}
+              onMouseOut={(e) => { if (!isActive) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08)'; } }}
             >
-              {/* Colored left edge accent */}
-              <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '4px', backgroundColor: isActive ? card.color : 'transparent', transition: 'background-color 0.3s ease' }} />
               
-              <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', borderRadius: '50%', background: `radial-gradient(circle, ${card.bg} 0%, transparent 70%)`, opacity: isActive ? 1 : 0.4, transition: 'opacity 0.3s ease' }} />
+              <div style={{ position: 'absolute', top: '-30px', right: '-30px', width: '120px', height: '120px', borderRadius: '50%', background: `radial-gradient(circle, ${card.bg} 0%, transparent 70%)`, opacity: isActive ? 1 : 0.4, transition: 'opacity 0.2s ease' }} />
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.75rem' }}>
                 <div style={{
                   width: '32px', height: '32px', borderRadius: '8px',
@@ -193,26 +191,26 @@ export default function UnderwritingDashboardPage() {
       </div>
 
       {/* Pending Reviews Table */}
-      <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: '700', margin: 0, color: 'var(--foreground)' }}>{pendingTableTitle}</h3>
-          <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--warning-bg)', color: 'var(--warning-text)', padding: '0.375rem 0.875rem', borderRadius: '99px', fontWeight: '700' }}>
+      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: 0, color: '#32325D' }}>{pendingTableTitle}</h3>
+          <span style={{ fontSize: '0.75rem', backgroundColor: '#FFF9E6', color: '#F5B041', padding: '0.25rem 0.75rem', borderRadius: '99px', fontWeight: '600' }}>
             {filteredPending.length} awaiting
           </span>
         </div>
 
-        <div style={{ overflowX: 'auto', padding: '0 0.5rem 0.5rem 0.5rem' }}>
-          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.5rem' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Application</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Product</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Amount</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>DTI Ratio</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>CBC Score</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Approval Tier</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Risk Flags</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}></th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Application</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Product</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Amount</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>DTI Ratio</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>CBC Score</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Approval Tier</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Risk Flags</th>
+                <th style={{ padding: '0.75rem 1.5rem', borderBottom: '1px solid #E3E8EE' }}></th>
               </tr>
             </thead>
             <tbody>
@@ -226,14 +224,14 @@ export default function UnderwritingDashboardPage() {
                 </tr>
               ) : (
                 filteredPending.map((review) => (
-                  <tr key={review.id} style={{ transition: 'all 0.2s ease', backgroundColor: 'var(--background)' }} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                    <td style={{ padding: '1rem', borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
-                      <div style={{ fontWeight: '700', fontSize: '0.875rem' }}>{review.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontWeight: '500', marginTop: '2px' }}>#{review.id.substring(0, 8).toUpperCase()}</div>
+                  <tr key={review.id} style={{ borderBottom: '1px solid #E3E8EE', transition: 'background-color 0.2s ease' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#F6F9FC'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                    <td style={{ padding: '1rem 1.5rem' }}>
+                      <div style={{ fontWeight: '500', fontSize: '0.9375rem', color: '#32325D' }}>{review.name}</div>
+                      <div style={{ fontSize: '0.8125rem', color: '#8898AA', fontFamily: 'monospace', marginTop: '2px' }}>#{review.id.substring(0, 8).toUpperCase()}</div>
                     </td>
-                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '500' }}>{review.product}</td>
-                    <td style={{ padding: '1rem', fontWeight: '700', fontSize: '0.875rem' }}>${review.amount.toLocaleString()}</td>
-                    <td style={{ padding: '1rem' }}>
+                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: '#525F7F' }}>{review.product}</td>
+                    <td style={{ padding: '1rem 1.5rem', fontWeight: '500', fontSize: '0.9375rem', color: '#32325D' }}>${review.amount.toLocaleString()}</td>
+                    <td style={{ padding: '1rem 1.5rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <div style={{ width: '60px', height: '6px', borderRadius: '3px', backgroundColor: 'var(--border-color)', overflow: 'hidden' }}>
                           <div style={{
@@ -306,11 +304,11 @@ export default function UnderwritingDashboardPage() {
       </div>
 
       {/* Recent Decisions */}
-      <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', padding: '1.5rem' }}>
-        <h3 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '1.25rem', color: 'var(--foreground)' }}>{decisionsTitle}</h3>
+      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08)', padding: '1.5rem', marginTop: '1rem' }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1.25rem', color: '#32325D' }}>{decisionsTitle}</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {filteredDecisions.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)', border: '1px dashed var(--border-color)', borderRadius: '0.75rem', backgroundColor: 'var(--bg-muted)' }}>
+            <div style={{ textAlign: 'center', padding: '2rem', color: '#8898AA', border: '1px dashed #E3E8EE', borderRadius: '8px', backgroundColor: '#F6F9FC' }}>
               {activeFilter === 'pending'
                 ? 'No recent decisions match the "Pending Reviews" filter.'
                 : 'No recent decisions recorded.'}
@@ -324,13 +322,13 @@ export default function UnderwritingDashboardPage() {
               return (
                 <div key={d.id} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '1rem 1.25rem', borderRadius: '0.75rem',
-                  backgroundColor: 'var(--background)',
-                  border: '1px solid var(--border-color)',
-                  transition: 'transform 0.2s ease',
+                  padding: '1rem 1.25rem', borderRadius: '8px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E3E8EE',
+                  transition: 'background-color 0.2s ease',
                 }}
-                onMouseOver={(e) => e.currentTarget.style.transform = 'translateX(4px)'}
-                onMouseOut={(e) => e.currentTarget.style.transform = 'none'}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#F6F9FC'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#FFFFFF'}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div style={{

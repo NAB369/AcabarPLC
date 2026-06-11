@@ -136,8 +136,8 @@ export default function LosQueuePage() {
         </Link>
       </div>
 
-      {/* Pipeline Stage Tabs - Segmented Control Style */}
-      <div style={{ backgroundColor: 'var(--bg-muted)', padding: '0.375rem', borderRadius: '1rem', display: 'flex', gap: '0.25rem', overflowX: 'auto', border: '1px solid var(--border-color)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}>
+      {/* Pipeline Stage Tabs - Stripe Style Pills */}
+      <div style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border-color)' }}>
         {PIPELINE_STAGES.map((stage) => {
           const isActive = activeFilter === stage.value;
           const count = getCounts(stage.value);
@@ -146,33 +146,32 @@ export default function LosQueuePage() {
               key={stage.value}
               onClick={() => setActiveFilter(stage.value)}
               style={{
-                padding: '0.625rem 1.25rem',
-                borderRadius: '0.75rem',
-                border: 'none',
-                background: isActive ? 'white' : 'transparent',
-                color: isActive ? 'var(--primary)' : 'var(--text-muted-dark)',
-                fontSize: '0.8125rem',
-                fontWeight: isActive ? '700' : '600',
+                padding: '0.5rem 1rem',
+                borderRadius: '99px',
+                border: isActive ? 'none' : '1px solid transparent',
+                backgroundColor: isActive ? 'rgba(99, 91, 255, 0.08)' : 'transparent',
+                color: isActive ? '#635BFF' : 'var(--text-muted-dark)',
+                fontSize: '0.875rem',
+                fontWeight: '600',
                 cursor: 'pointer',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: 'all 0.2s ease',
                 whiteSpace: 'nowrap',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                boxShadow: isActive ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
               }}
-              onMouseOver={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--foreground)'; }}
-              onMouseOut={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--text-muted-dark)'; }}
+              onMouseOver={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'var(--bg-muted)'; }}
+              onMouseOut={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
             >
               {stage.label}
               <span style={{
-                fontSize: '0.6875rem',
+                fontSize: '0.75rem',
                 padding: '0.125rem 0.5rem',
                 borderRadius: '99px',
-                backgroundColor: isActive ? 'var(--primary-light)' : 'var(--border-color)',
-                color: isActive ? 'var(--primary)' : 'var(--text-muted)',
-                fontWeight: '700',
-                transition: 'all 0.3s ease'
+                backgroundColor: isActive ? '#635BFF' : 'var(--border-color)',
+                color: isActive ? 'white' : 'var(--text-muted-dark)',
+                fontWeight: '600',
+                transition: 'all 0.2s ease'
               }}>
                 {count}
               </span>
@@ -181,10 +180,10 @@ export default function LosQueuePage() {
         })}
       </div>
 
-      {/* Table */}
-      <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
-          <div style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--foreground)' }}>
+      {/* Table Stripe-Style Card */}
+      <div style={{ backgroundColor: '#FFFFFF', borderRadius: '8px', boxShadow: '0 4px 6px rgba(50,50,93,0.11), 0 1px 3px rgba(0,0,0,0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
+          <div style={{ fontSize: '1rem', fontWeight: '600', color: '#32325D' }}>
             {filteredData.length} Application{filteredData.length !== 1 ? 's' : ''}
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -203,20 +202,20 @@ export default function LosQueuePage() {
           </div>
         </div>
 
-        <div style={{ overflowX: 'auto', padding: '0 0.5rem' }}>
-          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.5rem' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>ID</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Applicant</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Product</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Amount</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Status</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>DTI</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>CBC Score</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Channel</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Date</th>
-                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}></th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>ID</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Applicant</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Product</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Amount</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Status</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>DTI</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>CBC Score</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Channel</th>
+                <th style={{ padding: '0.75rem 1.5rem', fontSize: '0.75rem', fontWeight: '600', color: '#8898AA', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid #E3E8EE' }}>Date</th>
+                <th style={{ padding: '0.75rem 1.5rem', borderBottom: '1px solid #E3E8EE' }}></th>
               </tr>
             </thead>
             <tbody>
@@ -235,17 +234,17 @@ export default function LosQueuePage() {
               ) : paginatedData.map((app) => {
                 const statusCfg = STATUS_CONFIG[app.status] || STATUS_CONFIG.DRAFT;
                 return (
-                  <tr key={app.id} style={{ transition: 'all 0.2s ease', backgroundColor: 'var(--background)' }} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '600', borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }} title={app.lid || app.id}>{app.lid || `#${app.id.substring(0, 6).toUpperCase()}`}</td>
-                    <td style={{ padding: '1rem' }}>
-                      <div style={{ fontWeight: '700', fontSize: '0.875rem', color: 'var(--foreground)' }}>
+                  <tr key={app.id} style={{ borderBottom: '1px solid #E3E8EE', transition: 'background-color 0.2s ease' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#F6F9FC'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: '#525F7F', fontFamily: 'monospace' }} title={app.lid || app.id}>{app.lid || `#${app.id.substring(0, 6).toUpperCase()}`}</td>
+                    <td style={{ padding: '1rem 1.5rem' }}>
+                      <div style={{ fontWeight: '500', fontSize: '0.9375rem', color: '#32325D' }}>
                         {app.name}
-                        {app.khmerName && <span style={{ marginLeft: '0.4rem', color: 'var(--text-muted)', fontWeight: '500', fontSize: '0.8125rem' }}>({app.khmerName})</span>}
+                        {app.khmerName && <span style={{ marginLeft: '0.4rem', color: '#8898AA', fontSize: '0.8125rem' }}>({app.khmerName})</span>}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '600', marginTop: '0.125rem' }}>{app.phone}</div>
+                      <div style={{ fontSize: '0.8125rem', color: '#635BFF', marginTop: '0.125rem' }}>{app.phone}</div>
                     </td>
-                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '500' }}>{app.product}</td>
-                    <td style={{ padding: '1rem', fontWeight: '700', fontSize: '0.875rem' }}>
+                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: '#525F7F' }}>{app.product}</td>
+                    <td style={{ padding: '1rem 1.5rem', fontWeight: '500', fontSize: '0.9375rem', color: '#32325D' }}>
                       ${app.amount.toLocaleString()}
                       <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginLeft: '0.25rem' }}>{app.currency}</span>
                     </td>
@@ -304,8 +303,8 @@ export default function LosQueuePage() {
                         {app.channel}
                       </span>
                     </td>
-                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '500' }}>{app.createdAt}</td>
-                    <td style={{ padding: '1rem', borderTopRightRadius: '0.5rem', borderBottomRightRadius: '0.5rem' }}>
+                    <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: '#8898AA' }}>{app.createdAt}</td>
+                    <td style={{ padding: '1rem 1.5rem' }}>
                       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                         <Link href={`/admin/los/${app.id}`} style={{ textDecoration: 'none' }}>
                           <button
