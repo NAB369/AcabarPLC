@@ -8,7 +8,8 @@ import {
   Star, Gift, CreditCard, Box, Settings, ChevronDown,
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
   Sun, Moon, Clock, BookOpen, LayoutList, TrendingUp, TrendingDown,
-  ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight
+  ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight,
+  FileCheck, Landmark, CheckSquare, Briefcase
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
@@ -154,93 +155,99 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <nav style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
-          {sidebarConfig['Dashboard'] !== false && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('overview')}</div>
-              <Link href="/admin" className="sidebar-link" style={navItemStyle(pathname === '/admin')}>
-                <FileText size={18} />
-                {t('dashboard')}
-              </Link>
-            </div>
-          )}
-
+          {/* CUSTOMERS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CUSTOMERS</div>
+            
             {sidebarConfig['Customer'] !== false && (
-              <>
-                <div 
-                  onClick={() => setIsCustomerMenuOpen(!isCustomerMenuOpen)}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/customers') ? 'var(--primary)' : 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '500', cursor: 'pointer', transition: 'color var(--transition-fast)' }}
-                  onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'}
-                  onMouseOut={(e) => e.currentTarget.style.color = pathname?.startsWith('/admin/customers') ? 'var(--primary)' : 'var(--text-muted-dark)'}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <Users size={18} />
-                    {t('customer')}
-                  </div>
-                  <ChevronDown size={14} style={{ transform: isCustomerMenuOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
-                </div>
-
-                {isCustomerMenuOpen && (
-                  <div style={{ paddingLeft: '2.625rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', marginTop: '0.25rem', animation: 'fadeIn 0.2s ease-out' }}>
-                    <Link href="/admin/customers/accounts" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/accounts' ? 'var(--primary)' : 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/accounts' ? 'var(--primary)' : 'var(--text-muted)'}>{t('allCustomers')}</Link>
-                    <Link href="/admin/customers/repayments" className="sidebar-link" style={{ padding: '0.375rem 0.5rem', borderRadius: '4px', color: pathname === '/admin/customers/repayments' ? 'var(--primary)' : 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color var(--transition-fast)' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.color = pathname === '/admin/customers/repayments' ? 'var(--primary)' : 'var(--text-muted)'}>{t('repayment')}</Link>
-                  </div>
-                )}
-              </>
+              <Link href="/admin/customers/accounts" className="sidebar-link" style={navItemStyle(pathname === '/admin/customers/accounts')}>
+                <Users size={18} />
+                {t('customer')}
+              </Link>
             )}
+
+            {sidebarConfig['CBC'] !== false && (
+              <Link href="/admin/cbc" className="sidebar-link" style={navItemStyle(pathname === '/admin/cbc')}>
+                <FileCheck size={18} />
+                KYC Review
+              </Link>
+            )}
+          </div>
+
+          {/* LOANS Section */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>LOANS</div>
 
             {sidebarConfig['LOS Pipeline'] !== false && (
-              <Link href="/admin/los" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/')), marginTop: sidebarConfig['Customer'] !== false ? '0.5rem' : '0' }}>
-                <GitPullRequest size={18} />
-                {t('losPipeline')}
+              <Link href="/admin/los" className="sidebar-link" style={navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/'))}>
+                <Landmark size={18} />
+                Loans
               </Link>
             )}
-            
-            {sidebarConfig['Underwriting'] !== false && (
-              <Link href="/admin/underwriting" className="sidebar-link" style={navItemStyle(pathname === '/admin/underwriting')}>
-                <Shield size={18} />
-                {t('underwriting')}
-              </Link>
-            )}
-            
+
             {sidebarConfig['New Application'] !== false && (
               <Link href="/admin/loans/new" className="sidebar-link" style={navItemStyle(pathname === '/admin/loans/new')}>
-                <CreditCard size={18} />
-                {t('newApplication')}
+                <FileText size={18} />
+                Apply for Loan
               </Link>
             )}
-            
+
+            {sidebarConfig['Underwriting'] !== false && (
+              <Link href="/admin/underwriting" className="sidebar-link" style={navItemStyle(pathname === '/admin/underwriting')}>
+                <CheckSquare size={18} />
+                Approvals
+              </Link>
+            )}
+
             {sidebarConfig['Loan Product'] !== false && (
               <Link href="/admin/products" className="sidebar-link" style={navItemStyle(pathname === '/admin/products')}>
                 <Box size={18} />
                 {t('loanProduct')}
               </Link>
             )}
-            
-            {sidebarConfig['CBC'] !== false && (
-              <Link href="/admin/cbc" className="sidebar-link" style={navItemStyle(pathname === '/admin/cbc')}>
-                <Search size={18} />
-                {t('cbcCheck')}
+          </div>
+
+          {/* OPERATIONS Section */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>OPERATIONS</div>
+
+            {sidebarConfig['Customer'] !== false && (
+              <Link href="/admin/customers/repayments" className="sidebar-link" style={navItemStyle(pathname === '/admin/customers/repayments')}>
+                <CreditCard size={18} />
+                Repayments
               </Link>
             )}
 
             {sidebarConfig['Bank Statement'] !== false && (
               <Link href="/admin/bank-statement" className="sidebar-link" style={navItemStyle(pathname === '/admin/bank-statement')}>
-                <FileSpreadsheet size={18} />
-                {t('bankStatement')}
+                <Briefcase size={18} />
+                Collections
+              </Link>
+            )}
+          </div>
+
+          {/* REPORTS Section */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>REPORTS</div>
+
+            {sidebarConfig['Dashboard'] !== false && (
+              <Link href="/admin" className="sidebar-link" style={navItemStyle(pathname === '/admin')}>
+                <BarChart3 size={18} />
+                {t('dashboard')}
               </Link>
             )}
 
             {sidebarConfig['Report'] !== false && (
               <Link href="/admin/report" className="sidebar-link" style={navItemStyle(pathname === '/admin/report')}>
                 <BarChart2 size={18} />
-                {t('report')}
+                Analytics & Reports
               </Link>
             )}
+          </div>
 
             {isAccountant && (
               <>
-                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Accounting</div>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ACCOUNTING</div>
 
                 {/* Collapsible Accounting Menu */}
                 <div
