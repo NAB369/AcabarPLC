@@ -312,8 +312,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </>
             )}
 
-          </div>
-
         </nav>
 
         <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid var(--border-color)', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '500' }}>
