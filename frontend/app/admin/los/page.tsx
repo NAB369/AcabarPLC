@@ -136,8 +136,8 @@ export default function LosQueuePage() {
         </Link>
       </div>
 
-      {/* Pipeline Stage Tabs */}
-      <div className="card" style={{ padding: '0.5rem', display: 'flex', gap: '0.25rem', overflowX: 'auto' }}>
+      {/* Pipeline Stage Tabs - Segmented Control Style */}
+      <div style={{ backgroundColor: 'var(--bg-muted)', padding: '0.375rem', borderRadius: '1rem', display: 'flex', gap: '0.25rem', overflowX: 'auto', border: '1px solid var(--border-color)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}>
         {PIPELINE_STAGES.map((stage) => {
           const isActive = activeFilter === stage.value;
           const count = getCounts(stage.value);
@@ -147,28 +147,32 @@ export default function LosQueuePage() {
               onClick={() => setActiveFilter(stage.value)}
               style={{
                 padding: '0.625rem 1.25rem',
-                borderRadius: 'var(--radius-md)',
+                borderRadius: '0.75rem',
                 border: 'none',
-                background: isActive ? 'var(--primary)' : 'transparent',
-                color: isActive ? 'white' : 'var(--text-muted-dark)',
+                background: isActive ? 'white' : 'transparent',
+                color: isActive ? 'var(--primary)' : 'var(--text-muted-dark)',
                 fontSize: '0.8125rem',
-                fontWeight: '600',
+                fontWeight: isActive ? '700' : '600',
                 cursor: 'pointer',
-                transition: 'all var(--transition-fast)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 whiteSpace: 'nowrap',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
+                boxShadow: isActive ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
               }}
+              onMouseOver={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--foreground)'; }}
+              onMouseOut={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--text-muted-dark)'; }}
             >
               {stage.label}
               <span style={{
                 fontSize: '0.6875rem',
                 padding: '0.125rem 0.5rem',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: isActive ? 'rgba(255,255,255,0.2)' : 'var(--bg-muted)',
-                color: isActive ? 'white' : 'var(--text-muted)',
+                borderRadius: '99px',
+                backgroundColor: isActive ? 'var(--primary-light)' : 'var(--border-color)',
+                color: isActive ? 'var(--primary)' : 'var(--text-muted)',
                 fontWeight: '700',
+                transition: 'all 0.3s ease'
               }}>
                 {count}
               </span>
@@ -178,9 +182,9 @@ export default function LosQueuePage() {
       </div>
 
       {/* Table */}
-      <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
-        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
-          <div style={{ fontSize: '0.9375rem', fontWeight: '600' }}>
+      <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
+          <div style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--foreground)' }}>
             {filteredData.length} Application{filteredData.length !== 1 ? 's' : ''}
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
@@ -199,20 +203,20 @@ export default function LosQueuePage() {
           </div>
         </div>
 
-        <div style={{ overflowX: 'auto' }}>
-          <table className="data-table">
+        <div style={{ overflowX: 'auto', padding: '0 0.5rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.5rem' }}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Applicant</th>
-                <th>Product</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>DTI</th>
-                <th>CBC Score</th>
-                <th>Channel</th>
-                <th>Date</th>
-                <th></th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>ID</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Applicant</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Product</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Amount</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Status</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>DTI</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>CBC Score</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Channel</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Date</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}></th>
               </tr>
             </thead>
             <tbody>
@@ -231,21 +235,21 @@ export default function LosQueuePage() {
               ) : paginatedData.map((app) => {
                 const statusCfg = STATUS_CONFIG[app.status] || STATUS_CONFIG.DRAFT;
                 return (
-                  <tr key={app.id}>
-                    <td style={{ fontFamily: 'monospace', fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '600' }} title={app.lid || app.id}>{app.lid || `#${app.id.substring(0, 6).toUpperCase()}`}</td>
-                    <td>
+                  <tr key={app.id} style={{ transition: 'all 0.2s ease', backgroundColor: 'var(--background)' }} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '600', borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }} title={app.lid || app.id}>{app.lid || `#${app.id.substring(0, 6).toUpperCase()}`}</td>
+                    <td style={{ padding: '1rem' }}>
                       <div style={{ fontWeight: '700', fontSize: '0.875rem', color: 'var(--foreground)' }}>
                         {app.name}
                         {app.khmerName && <span style={{ marginLeft: '0.4rem', color: 'var(--text-muted)', fontWeight: '500', fontSize: '0.8125rem' }}>({app.khmerName})</span>}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '500', marginTop: '0.125rem' }}>{app.phone}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: '600', marginTop: '0.125rem' }}>{app.phone}</div>
                     </td>
-                    <td style={{ fontSize: '0.8125rem', color: 'var(--text-muted-dark)' }}>{app.product}</td>
-                    <td style={{ fontWeight: '600', fontSize: '0.875rem' }}>
+                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '500' }}>{app.product}</td>
+                    <td style={{ padding: '1rem', fontWeight: '700', fontSize: '0.875rem' }}>
                       ${app.amount.toLocaleString()}
                       <span style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', marginLeft: '0.25rem' }}>{app.currency}</span>
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       <span style={{
                         display: 'inline-flex',
                         alignItems: 'center',
@@ -262,7 +266,7 @@ export default function LosQueuePage() {
                         {statusCfg.label}
                       </span>
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       {app.dtiRatio !== null ? (
                         <span style={{
                           fontSize: '0.8125rem',
@@ -275,7 +279,7 @@ export default function LosQueuePage() {
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>—</span>
                       )}
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       {app.cbcScore !== null ? (
                         <span style={{
                           fontSize: '0.8125rem',
@@ -288,7 +292,7 @@ export default function LosQueuePage() {
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>—</span>
                       )}
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       <span style={{
                         fontSize: '0.6875rem',
                         padding: '0.125rem 0.5rem',
@@ -300,8 +304,8 @@ export default function LosQueuePage() {
                         {app.channel}
                       </span>
                     </td>
-                    <td style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>{app.createdAt}</td>
-                    <td>
+                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '500' }}>{app.createdAt}</td>
+                    <td style={{ padding: '1rem', borderTopRightRadius: '0.5rem', borderBottomRightRadius: '0.5rem' }}>
                       <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                         <Link href={`/admin/los/${app.id}`} style={{ textDecoration: 'none' }}>
                           <button
@@ -358,7 +362,7 @@ export default function LosQueuePage() {
           </table>
         </div>
 
-        <div style={{ padding: '0.875rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', backgroundColor: 'var(--background)' }}>
+        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '500' }}>
               Showing <span style={{ color: 'var(--foreground)', fontWeight: '600' }}>{totalItems === 0 ? 0 : startIndex + 1}-{Math.min(startIndex + rowsPerPage, totalItems)}</span> of <span style={{ color: 'var(--foreground)', fontWeight: '600' }}>{totalItems}</span>

@@ -150,15 +150,21 @@ export default function UnderwritingDashboardPage() {
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: isClickable ? 'pointer' : 'default',
-                border: isActive ? `2px solid ${card.color}` : '1px solid var(--border-color)',
-                boxShadow: isActive ? `0 0 0 3px ${card.bg}` : undefined,
-                transition: 'all 0.2s ease',
-                transform: isActive ? 'translateY(-2px)' : undefined,
+                backgroundColor: 'var(--card-bg)',
+                borderRadius: '1rem',
+                border: '1px solid var(--border-color)',
+                boxShadow: isActive ? `0 8px 24px ${card.bg}` : '0 4px 12px rgba(0,0,0,0.03)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: isActive ? 'translateY(-4px)' : undefined,
+                padding: '1.25rem'
               }}
-              onMouseOver={(e) => { if (isClickable && !isActive) (e.currentTarget as HTMLElement).style.borderColor = card.color; }}
-              onMouseOut={(e) => { if (!isActive) (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-color)'; }}
+              onMouseOver={(e) => { if (isClickable && !isActive) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(0,0,0,0.06)'; } }}
+              onMouseOut={(e) => { if (!isActive) { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.03)'; } }}
             >
-              <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '80px', height: '80px', borderRadius: '50%', background: `radial-gradient(circle, ${card.bg} 0%, transparent 70%)`, opacity: 0.8 }} />
+              {/* Colored left edge accent */}
+              <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '4px', backgroundColor: isActive ? card.color : 'transparent', transition: 'background-color 0.3s ease' }} />
+              
+              <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', borderRadius: '50%', background: `radial-gradient(circle, ${card.bg} 0%, transparent 70%)`, opacity: isActive ? 1 : 0.4, transition: 'opacity 0.3s ease' }} />
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.75rem' }}>
                 <div style={{
                   width: '32px', height: '32px', borderRadius: '8px',
@@ -187,26 +193,26 @@ export default function UnderwritingDashboardPage() {
       </div>
 
       {/* Pending Reviews Table */}
-      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: '600', margin: 0 }}>{pendingTableTitle}</h3>
-          <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--warning-bg)', color: 'var(--warning-text)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontWeight: '600' }}>
+      <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: '700', margin: 0, color: 'var(--foreground)' }}>{pendingTableTitle}</h3>
+          <span style={{ fontSize: '0.75rem', backgroundColor: 'var(--warning-bg)', color: 'var(--warning-text)', padding: '0.375rem 0.875rem', borderRadius: '99px', fontWeight: '700' }}>
             {filteredPending.length} awaiting
           </span>
         </div>
 
-        <div style={{ overflowX: 'auto' }}>
-          <table className="data-table">
+        <div style={{ overflowX: 'auto', padding: '0 0.5rem 0.5rem 0.5rem' }}>
+          <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 0.5rem' }}>
             <thead>
               <tr>
-                <th>Application</th>
-                <th>Product</th>
-                <th>Amount</th>
-                <th>DTI Ratio</th>
-                <th>CBC Score</th>
-                <th>Approval Tier</th>
-                <th>Risk Flags</th>
-                <th></th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Application</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Product</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Amount</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>DTI Ratio</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>CBC Score</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Approval Tier</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}>Risk Flags</th>
+                <th style={{ padding: '0 1rem', fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '2px solid var(--border-color)' }}></th>
               </tr>
             </thead>
             <tbody>
@@ -220,14 +226,14 @@ export default function UnderwritingDashboardPage() {
                 </tr>
               ) : (
                 filteredPending.map((review) => (
-                  <tr key={review.id}>
-                    <td>
-                      <div style={{ fontWeight: '600', fontSize: '0.875rem' }}>{review.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>#{review.id.substring(0, 8).toUpperCase()}</div>
+                  <tr key={review.id} style={{ transition: 'all 0.2s ease', backgroundColor: 'var(--background)' }} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                    <td style={{ padding: '1rem', borderTopLeftRadius: '0.5rem', borderBottomLeftRadius: '0.5rem' }}>
+                      <div style={{ fontWeight: '700', fontSize: '0.875rem' }}>{review.name}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontWeight: '500', marginTop: '2px' }}>#{review.id.substring(0, 8).toUpperCase()}</div>
                     </td>
-                    <td style={{ fontSize: '0.8125rem', color: 'var(--text-muted-dark)' }}>{review.product}</td>
-                    <td style={{ fontWeight: '600', fontSize: '0.875rem' }}>${review.amount.toLocaleString()}</td>
-                    <td>
+                    <td style={{ padding: '1rem', fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '500' }}>{review.product}</td>
+                    <td style={{ padding: '1rem', fontWeight: '700', fontSize: '0.875rem' }}>${review.amount.toLocaleString()}</td>
+                    <td style={{ padding: '1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <div style={{ width: '60px', height: '6px', borderRadius: '3px', backgroundColor: 'var(--border-color)', overflow: 'hidden' }}>
                           <div style={{
@@ -244,7 +250,7 @@ export default function UnderwritingDashboardPage() {
                         </span>
                       </div>
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       <span style={{
                         fontSize: '0.875rem', fontWeight: '700',
                         color: review.cbcScore < 300 ? 'var(--error-text)' : review.cbcScore < 500 ? 'var(--warning-text)' : 'var(--success-text)',
@@ -252,7 +258,7 @@ export default function UnderwritingDashboardPage() {
                         {review.cbcScore || '—'}
                       </span>
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       <span style={{
                         fontSize: '0.6875rem', fontWeight: '600', padding: '0.25rem 0.625rem', borderRadius: 'var(--radius-full)',
                         backgroundColor: review.tier === 'TIER3_REVIEW' ? 'var(--pink-bg)' : review.tier === 'TIER2_REVIEW' ? 'var(--purple-bg)' : 'var(--primary-light)',
@@ -261,7 +267,7 @@ export default function UnderwritingDashboardPage() {
                         {review.tier.replace('_', ' ')}
                       </span>
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem' }}>
                       {review.riskFlags.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                           {review.riskFlags.map((flag: string, i: number) => (
@@ -276,7 +282,7 @@ export default function UnderwritingDashboardPage() {
                         </span>
                       )}
                     </td>
-                    <td>
+                    <td style={{ padding: '1rem', borderTopRightRadius: '0.5rem', borderBottomRightRadius: '0.5rem' }}>
                       <Link href={`/admin/los/${review.id}`} style={{ textDecoration: 'none' }}>
                         <button style={{
                           background: 'none', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)',
@@ -300,11 +306,11 @@ export default function UnderwritingDashboardPage() {
       </div>
 
       {/* Recent Decisions */}
-      <div className="card">
-        <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '1.25rem' }}>{decisionsTitle}</h3>
+      <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '1rem', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', padding: '1.5rem' }}>
+        <h3 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '1.25rem', color: 'var(--foreground)' }}>{decisionsTitle}</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           {filteredDecisions.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)' }}>
+            <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)', border: '1px dashed var(--border-color)', borderRadius: '0.75rem', backgroundColor: 'var(--bg-muted)' }}>
               {activeFilter === 'pending'
                 ? 'No recent decisions match the "Pending Reviews" filter.'
                 : 'No recent decisions recorded.'}
@@ -318,9 +324,14 @@ export default function UnderwritingDashboardPage() {
               return (
                 <div key={d.id} style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  padding: '1rem 1.25rem', borderRadius: 'var(--radius-md)',
+                  padding: '1rem 1.25rem', borderRadius: '0.75rem',
+                  backgroundColor: 'var(--background)',
                   border: '1px solid var(--border-color)',
-                }}>
+                  transition: 'transform 0.2s ease',
+                }}
+                onMouseOver={(e) => e.currentTarget.style.transform = 'translateX(4px)'}
+                onMouseOut={(e) => e.currentTarget.style.transform = 'none'}
+                >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div style={{
                       width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
