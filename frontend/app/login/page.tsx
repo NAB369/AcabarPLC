@@ -91,7 +91,7 @@ export default function LoginPage() {
 
         <div style={{ width: '100%', maxWidth: '420px' }} className="animate-slide-up">
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' }}>Secure Portal</h1>
+            <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' }}>Acabar Plc</h1>
             <p style={{ color: 'var(--text-muted)' }}>Enter your credentials to access your account</p>
           </div>
 
@@ -172,7 +172,7 @@ export default function LoginPage() {
               >
                 {isLoading ? 'Authenticating...' : (
                   <>
-                    Secure Login
+                    Login
                     <ArrowRight size={18} />
                   </>
                 )}

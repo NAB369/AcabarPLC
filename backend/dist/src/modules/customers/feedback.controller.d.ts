@@ -39,6 +39,7 @@ export declare class FeedbackController {
             phone: string;
             nationalId: string | null;
             passport: string | null;
+            accountNumber: string | null;
             khmerFirstName: string | null;
             khmerLastName: string | null;
             familyBook: string | null;

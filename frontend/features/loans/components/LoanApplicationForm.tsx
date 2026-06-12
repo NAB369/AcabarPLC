@@ -759,76 +759,7 @@ export default function LoanApplicationForm() {
               )}
             </div>
 
-            {/* CBC Check Section */}
-            <div style={{ 
-              padding: '0.75rem 1rem', 
-              backgroundColor: cbcChecked ? 'var(--success-bg)' : 'var(--background)', 
-              borderRadius: 'var(--radius-md)', 
-              border: `1px solid ${cbcChecked ? 'var(--success-border)' : 'var(--border-color)'}`,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.5rem',
-              transition: 'all 0.3s ease'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <div style={{ padding: '0.375rem', backgroundColor: cbcChecked ? '#dcfce7' : 'var(--border-color)', borderRadius: '6px', color: cbcChecked ? 'var(--success-text)' : 'var(--text-muted)', transition: 'all 0.3s ease' }}>
-                    <ShieldCheck size={16} />
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: '0.8125rem', fontWeight: '700', margin: 0, color: 'var(--foreground)' }}>Credit Bureau Cambodia (CBC)</h3>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-muted)' }}>Verify credit history before origination.</p>
-                  </div>
-                </div>
-                
-                {!cbcChecked && (
-                  <button 
-                    type="button" 
-                    onClick={runCbcCheck}
-                    disabled={!selectedCustomer || checkingCbc}
-                    className="btn"
-                    style={{ 
-                      backgroundColor: (!selectedCustomer || checkingCbc) ? 'var(--border-color)' : '#1e293b', 
-                      color: (!selectedCustomer || checkingCbc) ? 'var(--text-muted)' : 'white',
-                      padding: '0.375rem 0.75rem',
-                      borderRadius: '6px',
-                      fontWeight: '600',
-                      fontSize: '0.75rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.375rem',
-                      cursor: (!selectedCustomer || checkingCbc) ? 'not-allowed' : 'pointer',
-                      border: 'none',
-                      transition: 'all 0.2s ease',
-                      height: '32px'
-                    }}
-                  >
-                    {checkingCbc ? (
-                      <>
-                        <div className="animate-spin" style={{ width: '12px', height: '12px', border: '2px solid white', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
-                        Checking...
-                      </>
-                    ) : 'Run CBC Check'}
-                  </button>
-                )}
-              </div>
-              
-              {cbcChecked && cbcScore && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '0.5rem 0.75rem', backgroundColor: 'var(--card-bg)', borderRadius: '6px', border: '1px solid #bbf7d0', animation: 'fadeIn 0.3s ease-out' }}>
-                  <div>
-                    <div style={{ fontSize: '0.6rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.1rem' }}>CBC Score</div>
-                    <div style={{ fontSize: '1.125rem', fontWeight: '800', color: 'var(--success-text)', lineHeight: 1 }}>{cbcScore.score}</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.6rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.1rem' }}>Risk Level</div>
-                    <div style={{ fontSize: '0.875rem', fontWeight: '700', color: 'var(--success-text)' }}>{cbcScore.status}</div>
-                  </div>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--success-text)', fontSize: '0.75rem', fontWeight: '700', backgroundColor: '#dcfce7', padding: '0.2rem 0.4rem', borderRadius: '20px' }}>
-                    <CheckCircle size={12} /> Verified
-                  </div>
-                </div>
-              )}
-            </div>
+
           </div>
         )}
 

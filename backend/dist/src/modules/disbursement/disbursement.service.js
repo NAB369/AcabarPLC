@@ -68,6 +68,7 @@ let DisbursementService = class DisbursementService {
             await this.ledger.recordTransaction([
                 {
                     accountId: 'CASH-VAULT',
+                    accountCode: '10100',
                     accountType: 'CASH',
                     credit: Number(loan.principalAmount),
                     transactionReference: txReference,
@@ -76,6 +77,7 @@ let DisbursementService = class DisbursementService {
                 },
                 {
                     accountId: loanId,
+                    accountCode: '12100',
                     accountType: 'LOAN',
                     debit: Number(loan.principalAmount),
                     transactionReference: txReference,

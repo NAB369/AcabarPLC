@@ -183,7 +183,8 @@ export default function LoanProductsPage() {
                 style={{
                   position: 'absolute',
                   top: '1.5rem', left: '1.5rem', right: '1.5rem', bottom: '1.5rem',
-                  backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                  backgroundColor: 'var(--card-bg)',
+                  border: '1px solid var(--border-color)',
                   backdropFilter: 'blur(6px)',
                   display: 'flex',
                   flexDirection: 'column',

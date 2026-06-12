@@ -32,6 +32,8 @@ export declare class DisbursementService {
             refinanceFeeAmt: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
+            internalCreditScore: number | null;
+            creditRiskBand: string | null;
             disbursementMethod: string | null;
             disbursementRef: string | null;
             rejectionReason: string | null;

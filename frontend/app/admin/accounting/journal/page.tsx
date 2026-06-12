@@ -109,14 +109,14 @@ export default function JournalEntriesPage() {
               <input value={form.memo} onChange={e => setForm(f => ({ ...f, memo: e.target.value }))} placeholder="Transaction memo..." style={{ width: '100%', padding: '0.625rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', background: 'var(--background)' }} />
             </div>
             <div>
-              <label style={{ fontSize: '0.8125rem', fontWeight: '700', display: 'block', marginBottom: '0.375rem' }}>Currency</label>
+              <label style={{ fontSize: '0.8125rem', fontWeight: '700', display: 'block', marginBottom: '0.375rem' }}>Currency *</label>
               <select value={form.currency} onChange={e => setForm(f => ({ ...f, currency: e.target.value }))} style={{ width: '100%', padding: '0.625rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', background: 'var(--background)' }}>
                 <option value="USD">USD ($)</option>
                 <option value="KHR">KHR (₭)</option>
               </select>
             </div>
             <div>
-              <label style={{ fontSize: '0.8125rem', fontWeight: '700', display: 'block', marginBottom: '0.375rem' }}>Exchange Rate</label>
+              <label style={{ fontSize: '0.8125rem', fontWeight: '700', display: 'block', marginBottom: '0.375rem' }}>Exchange Rate *</label>
               <input type="number" value={form.exchangeRate} onChange={e => setForm(f => ({ ...f, exchangeRate: parseFloat(e.target.value) || 1 }))} style={{ width: '100%', padding: '0.625rem', border: '1px solid var(--border-color)', borderRadius: '8px', fontSize: '0.875rem', background: 'var(--background)' }} />
             </div>
           </div>

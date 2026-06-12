@@ -113,9 +113,9 @@ model Customer {
   occupation       String?
   employerName     String?
   businessInfo     String?
-  monthlyIncome    Float?
-  monthlyIncomeKhr Float?
-  monthlyExpenses  Float?
+  monthlyIncome    Int?
+  monthlyIncomeKhr Int?
+  monthlyExpenses  Int?
   currency         String         @default("USD")
   businessType     String?
   incomeBracket    String?
@@ -132,6 +132,7 @@ model Customer {
   guarantorPhone       String?
   guarantorNationalId  String?
   guarantorRelationship String?
+  accountNumber        String?        @unique
   createdAt            DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   consultations    Consultation[]
@@ -162,9 +163,9 @@ model LoanProduct {
   id               String   @id @default(uuid())
   name             String   @unique
   description      String?
-  minAmount        Float
-  maxAmount        Float
-  baseInterestRate Float
+  minAmount        Int
+  maxAmount        Int
+  baseInterestRate Int
   interestType     String
   createdAt        DateTime @default(now())
   loans            Loan[]
@@ -177,8 +178,8 @@ model Loan {
   productId          String
   status             String              @default("DRAFT")
   previousStatus     String?
-  principalAmount    Float
-  interestRate       Float
+  principalAmount    Int
+  interestRate       Int
   durationMonths     Int
   currency           String              @default("USD")
   applicationChannel String?
@@ -188,15 +189,17 @@ model Loan {
   repaymentType      String?             @default("MONTHLY")
   firstInstallmentDate DateTime?
   numberOfInstallments Int?
-  penaltyRate        Float?
-  adminFeeRate       Float?
+  penaltyRate        Int?
+  adminFeeRate       Int?
   collectionFeeType  String?             @default("RATE")
-  collectionFeeValue Float?
+  collectionFeeValue Int?
   gracePeriod        Int?
-  refinanceFeeAmt    Float?
+  refinanceFeeAmt    Int?
   // Existing fields
   dtiRatio           Float?
   cbcScore           Int?
+  internalCreditScore Int?
+  creditRiskBand     String?
   disbursementMethod String?
   disbursementRef    String?
   rejectionReason    String?
@@ -229,7 +232,7 @@ model CreditReport {
   customerId      String
   loanId          String?
   cbcScore        Int?
-  totalExposure   Float?
+  totalExposure   Int?
   activeLoans     Int?
   delinquencyFlag Boolean  @default(false)
   reportData      Json?
@@ -243,7 +246,7 @@ model Collateral {
   loanId         String
   type           String
   description    String
-  estimatedValue Float
+  estimatedValue Int
   currency       String   @default("USD")
   documentIds    String
   createdAt      DateTime @default(now())
@@ -279,12 +282,12 @@ model RepaymentSchedule {
   id                 String   @id @default(uuid())
   loanId             String
   installmentNumber  Int
-  amountDue          Float
-  principalComponent Float
-  interestComponent  Float
+  amountDue          Int
+  principalComponent Int
+  interestComponent  Int
   dueDate            DateTime
   status             String   @default("PENDING")
-  penaltyAmount      Float    @default(0.0)
+  penaltyAmount      Int      @default(0)
   lateDays           Int      @default(0)
   loan               Loan     @relation(fields: [loanId], references: [id], onDelete: Cascade)
 
@@ -317,7 +320,7 @@ model JournalEntry {
   createdBy    String
   currency     String        @default("USD")
   exchangeRate Float         @default(1.0)
-  totalAmount  Float         @default(0.0)
+  totalAmount  Int           @default(0)
   createdAt    DateTime      @default(now())
   lines        LedgerEntry[]
 }
@@ -327,8 +330,8 @@ model LedgerEntry {
   accountId            String
   accountCode          String?
   accountType          String
-  debit                Float         @default(0.0)
-  credit               Float         @default(0.0)
+  debit                Int           @default(0)
+  credit               Int           @default(0)
   transactionReference String
   description          String?
   currency             String        @default("USD")

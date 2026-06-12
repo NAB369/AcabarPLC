@@ -9,7 +9,7 @@ import {
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
   Sun, Moon, Clock, BookOpen, LayoutList, TrendingUp, TrendingDown,
   ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight,
-  FileCheck, Landmark, CheckSquare, Briefcase
+  FileCheck, Landmark, CheckSquare, Briefcase, Menu, X
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
@@ -29,6 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isCustomerMenuOpen, setIsCustomerMenuOpen] = useState(pathname?.startsWith('/admin/customers') ?? true);
   const [isAccountingOpen, setIsAccountingOpen] = useState(pathname?.startsWith('/admin/accounting') || pathname?.startsWith('/admin/period'));
   const [isAcctReportsOpen, setIsAcctReportsOpen] = useState(pathname?.startsWith('/admin/accounting/reports'));
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [sidebarConfig, setSidebarConfig] = useState<Record<string, boolean>>({});
   const [user, setUser] = useState<any>({});
@@ -115,9 +116,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   });
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--background)' }}>
+    <div className="flex min-h-screen bg-[var(--background)]">
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
       {/* Sidebar */}
-      <aside style={{ width: '280px', backgroundColor: 'var(--sidebar-bg)', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', zIndex: 10 }}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Logo block with Blue Gradient */}
         <div style={{ 
           height: '72px',
@@ -129,34 +138,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           borderBottom: '1px solid rgba(255,255,255,0.1)',
           boxSizing: 'border-box'
         }}>
-          <div style={{
-            width: '38px',
-            height: '38px',
-            borderRadius: '50%',
-            backgroundColor: 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            overflow: 'hidden',
-            boxShadow: '0 0 8px rgba(255, 255, 255, 0.2)',
-          }}>
-            <img
-              src="/acabar-logo.png"
-              alt="Acabar Plc Logo"
-              style={{ width: '38px', height: '38px', objectFit: 'cover' }}
-            />
+          <div className="flex-1 flex items-center gap-3">
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              backgroundColor: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              overflow: 'hidden',
+              boxShadow: '0 0 8px rgba(255, 255, 255, 0.2)',
+            }}>
+              <img
+                src="/acabar-logo.png"
+                alt="Acabar Plc Logo"
+                style={{ width: '38px', height: '38px', objectFit: 'cover' }}
+              />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontWeight: '700', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#ffffff', lineHeight: '1.2' }}>Acabar Plc</span>
+              <span style={{ fontWeight: '500', fontSize: '0.65rem', color: 'rgba(255,255,255,0.7)', marginTop: '1px' }}>អាខាបារ ម.ក</span>
+            </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontWeight: '700', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#ffffff', lineHeight: '1.2' }}>Acabar Plc</span>
-            <span style={{ fontWeight: '500', fontSize: '0.65rem', color: 'rgba(255,255,255,0.7)', marginTop: '1px' }}>អាខាបារ ម.ក</span>
-          </div>
+          <button className="md:hidden text-white/80 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>
+            <X size={20} />
+          </button>
         </div>
 
         <nav style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
           {/* CUSTOMERS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>CUSTOMERS</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionCustomers')}</div>
             
             <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {sidebarConfig['Customer'] !== false && (
@@ -169,7 +183,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               {sidebarConfig['CBC'] !== false && (
                 <Link href="/admin/cbc" className="sidebar-link" style={navItemStyle(pathname === '/admin/cbc')}>
                   <FileCheck size={18} />
-                  KYC Review
+                  {t('kycReview')}
                 </Link>
               )}
             </div>
@@ -177,27 +191,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* LOANS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>LOANS</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionLoans')}</div>
 
             <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {sidebarConfig['LOS Pipeline'] !== false && (
                 <Link href="/admin/los" className="sidebar-link" style={navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/'))}>
                   <Landmark size={18} />
-                  Loans
+                  {t('loansNav')}
                 </Link>
               )}
 
               {sidebarConfig['New Application'] !== false && (
                 <Link href="/admin/loans/new" className="sidebar-link" style={navItemStyle(pathname === '/admin/loans/new')}>
                   <FileText size={18} />
-                  Apply for Loan
+                  {t('applyForLoan')}
                 </Link>
               )}
 
               {sidebarConfig['Underwriting'] !== false && (
                 <Link href="/admin/underwriting" className="sidebar-link" style={navItemStyle(pathname === '/admin/underwriting')}>
                   <CheckSquare size={18} />
-                  Approvals
+                  {t('approvals')}
                 </Link>
               )}
 
@@ -212,20 +226,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* OPERATIONS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>OPERATIONS</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionOperations')}</div>
 
             <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {sidebarConfig['Customer'] !== false && (
                 <Link href="/admin/customers/repayments" className="sidebar-link" style={navItemStyle(pathname === '/admin/customers/repayments')}>
                   <CreditCard size={18} />
-                  Repayments
+                  {t('repaymentsNav')}
                 </Link>
               )}
 
               {sidebarConfig['Bank Statement'] !== false && (
                 <Link href="/admin/bank-statement" className="sidebar-link" style={navItemStyle(pathname === '/admin/bank-statement')}>
                   <Briefcase size={18} />
-                  Collections
+                  {t('collectionsNav')}
                 </Link>
               )}
             </div>
@@ -233,7 +247,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* REPORTS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>REPORTS</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionReports')}</div>
 
             <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
               {sidebarConfig['Dashboard'] !== false && (
@@ -244,17 +258,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               )}
 
               {sidebarConfig['Report'] !== false && (
-                <Link href="/admin/report" className="sidebar-link" style={navItemStyle(pathname === '/admin/report')}>
-                  <BarChart2 size={18} />
-                  Analytics & Reports
-                </Link>
+                <>
+                  <Link href="/admin/report" className="sidebar-link" style={navItemStyle(pathname === '/admin/report')}>
+                    <BarChart2 size={18} />
+                    {t('analyticsMenu')}
+                  </Link>
+                  <Link href="/admin/report/credit-officer" className="sidebar-link" style={navItemStyle(pathname === '/admin/report/credit-officer')}>
+                    <Users size={18} />
+                    {t('creditOfficerPortfolio')}
+                  </Link>
+                </>
               )}
             </div>
           </div>
 
             {isAccountant && (
               <>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ACCOUNTING</div>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionAccounting')}</div>
 
                 {/* Collapsible Accounting Menu */}
                 <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -263,7 +283,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/accounting') || pathname?.startsWith('/admin/period') ? 'var(--primary)' : 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer', borderRadius: '8px', backgroundColor: isAccountingOpen ? 'var(--primary-light)' : 'transparent' }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <BookMarked size={18} /> Accounting Module
+                      <BookMarked size={18} /> {t('accountingModule')}
                     </div>
                     <ChevronDown size={14} style={{ transform: isAccountingOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
                   </div>
@@ -273,47 +293,47 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                     {/* SOD/EOD */}
                     <Link href="/admin/period" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/period'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <Clock size={15} /> SOD / EOD Panel
+                      <Clock size={15} /> {t('sodEodPanel')}
                     </Link>
 
                     {/* Chart of Accounts */}
                     <Link href="/admin/accounting/accounts" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/accounts'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <LayoutList size={15} /> Chart of Accounts
+                      <LayoutList size={15} /> {t('chartOfAccounts')}
                     </Link>
 
                     {/* Transactions sub-section */}
-                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>TRANSACTIONS</div>
+                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t('transactionsMenu')}</div>
 
                     <Link href="/admin/accounting/journal" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/journal'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <BookOpen size={15} /> Journal Entry
+                      <BookOpen size={15} /> {t('journalEntry')}
                     </Link>
                     <Link href="/admin/accounting/income" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/income'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <TrendingUp size={15} /> Income Entry
+                      <TrendingUp size={15} /> {t('incomeEntry')}
                     </Link>
                     <Link href="/admin/accounting/expense" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/expense'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <TrendingDown size={15} /> Expense Entry
+                      <TrendingDown size={15} /> {t('expenseEntry')}
                     </Link>
                     <Link href="/admin/accounting/transfer" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/transfer'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <ArrowLeftRight size={15} /> Cash Transfer
+                      <ArrowLeftRight size={15} /> {t('cashTransfer')}
                     </Link>
                     <Link href="/admin/accounting/single" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/single'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <PenLine size={15} /> Single Entry
+                      <PenLine size={15} /> {t('singleEntry')}
                     </Link>
 
                     {/* Reports sub-section */}
-                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>REPORTS</div>
+                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t('sectionReports')}</div>
 
                     <Link href="/admin/accounting/reports" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <BookOpen size={15} /> Trial Balance
+                      <BookOpen size={15} /> {t('trialBalance')}
                     </Link>
                     <Link href="/admin/accounting/reports/profit-loss" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/profit-loss'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <BarChart3 size={15} /> Profit &amp; Loss
+                      <BarChart3 size={15} /> {t('profitAndLoss')}
                     </Link>
                     <Link href="/admin/accounting/reports/balance-sheet" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/balance-sheet'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <Scale size={15} /> Balance Sheet
+                      <Scale size={15} /> {t('balanceSheet')}
                     </Link>
                     <Link href="/admin/accounting/reports/ledger" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/ledger'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <FileText size={15} /> Account Ledger
+                      <FileText size={15} /> {t('accountLedger')}
                     </Link>
                   </div>
                 )}
@@ -329,9 +349,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header - Glassmorphism */}
-        <header className="glass" style={{ position: 'sticky', top: 0, height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 2.5rem', zIndex: 5 }}>
+        <header className="glass sticky top-0 h-[72px] flex items-center justify-between md:justify-end px-4 md:px-10 z-30">
+          
+          <button 
+            className="md:hidden p-2 rounded-md hover:bg-[var(--bg-muted)] text-[var(--text-muted-dark)]"
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
+            <Menu size={24} />
+          </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
 
@@ -429,7 +456,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content */}
-        <main style={{ flex: 1, overflowY: 'auto', padding: '2.5rem' }}>
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
           {children}
         </main>
       </div>

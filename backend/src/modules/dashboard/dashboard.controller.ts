@@ -14,4 +14,10 @@ export class DashboardController {
   getMetrics() {
     return this.dashboardService.getMetrics();
   }
+
+  @Get('reports/credit-officers')
+  @Roles('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER')
+  getCreditOfficerReport() {
+    return this.dashboardService.getCreditOfficerReport();
+  }
 }

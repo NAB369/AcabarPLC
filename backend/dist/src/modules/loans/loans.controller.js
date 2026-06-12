@@ -54,6 +54,9 @@ let LoansController = class LoansController {
     disburseLoan(id) {
         return this.loansService.disburseLoan(id);
     }
+    calculateCreditScore(id) {
+        return this.loansService.calculateCreditScore(id);
+    }
 };
 exports.LoansController = LoansController;
 __decorate([
@@ -127,6 +130,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], LoansController.prototype, "disburseLoan", null);
+__decorate([
+    (0, common_1.Post)(':id/credit-score'),
+    (0, permissions_decorator_1.Permissions)('UNDERWRITE_LOAN'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], LoansController.prototype, "calculateCreditScore", null);
 exports.LoansController = LoansController = __decorate([
     (0, common_1.Controller)('loans'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionsGuard),

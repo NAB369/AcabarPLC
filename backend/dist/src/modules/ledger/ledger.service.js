@@ -23,6 +23,7 @@ let LedgerService = class LedgerService {
             await client.ledgerEntry.createMany({
                 data: entries.map((entry) => ({
                     accountId: entry.accountId,
+                    accountCode: entry.accountCode || null,
                     accountType: entry.accountType,
                     debit: entry.debit || 0,
                     credit: entry.credit || 0,

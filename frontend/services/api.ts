@@ -15,6 +15,48 @@ const getHeaders = () => {
   return headers;
 };
 
+const FINANCIAL_KEYS = new Set([
+  'principalAmount', 'interestRate', 'minAmount', 'maxAmount', 
+  'baseInterestRate', 'penaltyRate', 'adminFeeRate', 'collectionFeeValue', 
+  'refinanceFeeAmt', 'amountDue', 'principalComponent', 'interestComponent', 
+  'penaltyAmount', 'totalExposure', 'estimatedValue', 'debit', 'credit', 
+  'totalAmount', 'monthlyIncome', 'monthlyIncomeKhr', 'monthlyExpenses', 'amount'
+]);
+
+const convertToDollars = (obj: any): any => {
+  if (Array.isArray(obj)) return obj.map(convertToDollars);
+  if (obj !== null && typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (FINANCIAL_KEYS.has(key) && typeof obj[key] === 'number') {
+        newObj[key] = obj[key] / 100;
+      } else {
+        newObj[key] = convertToDollars(obj[key]);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+};
+
+const convertToCents = (obj: any): any => {
+  if (Array.isArray(obj)) return obj.map(convertToCents);
+  if (obj !== null && typeof obj === 'object') {
+    const newObj: any = {};
+    for (const key in obj) {
+      if (FINANCIAL_KEYS.has(key) && typeof obj[key] === 'number') {
+        newObj[key] = Math.round(obj[key] * 100);
+      } else if (FINANCIAL_KEYS.has(key) && typeof obj[key] === 'string' && !isNaN(Number(obj[key]))) {
+        newObj[key] = Math.round(Number(obj[key]) * 100);
+      } else {
+        newObj[key] = convertToCents(obj[key]);
+      }
+    }
+    return newObj;
+  }
+  return obj;
+};
+
 const handleResponse = async (response: Response) => {
   if (response.status === 401) {
     if (typeof window !== 'undefined') {
@@ -25,7 +67,8 @@ const handleResponse = async (response: Response) => {
     throw new Error('Unauthorized');
   }
 
-  const data = await response.json().catch(() => ({}));
+  const rawData = await response.json().catch(() => ({}));
+  const data = convertToDollars(rawData);
 
   if (!response.ok) {
     const error = new Error(data.message || data.error || 'API Error') as any;
@@ -50,7 +93,7 @@ export const api = {
           ...getHeaders(),
           ...(customConfig?.headers || {})
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(convertToCents(data)),
       });
       return handleResponse(response);
     } catch (error) {
@@ -77,7 +120,7 @@ export const api = {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'PATCH',
         headers: getHeaders(),
-        body: data ? JSON.stringify(data) : undefined,
+        body: data ? JSON.stringify(convertToCents(data)) : undefined,
       });
       return handleResponse(response);
     } catch (error) {

@@ -77,4 +77,10 @@ export class LoansController {
   disburseLoan(@Param('id') id: string) {
     return this.loansService.disburseLoan(id);
   }
+
+  @Post(':id/credit-score')
+  @Permissions('UNDERWRITE_LOAN')
+  calculateCreditScore(@Param('id') id: string) {
+    return this.loansService.calculateCreditScore(id);
+  }
 }

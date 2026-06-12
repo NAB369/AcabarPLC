@@ -12,6 +12,8 @@ export declare class PayloanService {
         transactionId: string;
         id: string;
         createdAt: Date;
+        amount: number;
+        remark: string | null;
         billNo: string;
         transactionDate: string;
         transactionTime: string;
@@ -19,14 +21,12 @@ export declare class PayloanService {
         payerName: string;
         currencyCode: string;
         paymentMethod: string;
-        amount: number;
         senderBankName: string;
         senderAccountName: string;
         settlementDate: string;
         settlementTime: string | null;
         settlementStatus: string;
         settlementErrorMessage: string | null;
-        remark: string | null;
         bankTransactionId: string | null;
     }[]>;
 }

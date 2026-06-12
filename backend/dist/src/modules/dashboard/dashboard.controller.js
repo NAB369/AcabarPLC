@@ -23,6 +23,9 @@ let DashboardController = class DashboardController {
     getMetrics() {
         return this.dashboardService.getMetrics();
     }
+    getCreditOfficerReport() {
+        return this.dashboardService.getCreditOfficerReport();
+    }
 };
 exports.DashboardController = DashboardController;
 __decorate([
@@ -32,6 +35,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], DashboardController.prototype, "getMetrics", null);
+__decorate([
+    (0, common_1.Get)('reports/credit-officers'),
+    (0, roles_decorator_1.Roles)('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], DashboardController.prototype, "getCreditOfficerReport", null);
 exports.DashboardController = DashboardController = __decorate([
     (0, common_1.Controller)('dashboard'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),

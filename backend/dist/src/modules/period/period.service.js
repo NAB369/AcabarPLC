@@ -79,6 +79,7 @@ let PeriodService = class PeriodService {
                     data: [
                         {
                             accountId: loan.id,
+                            accountCode: '12200',
                             accountType: 'LOAN',
                             debit: dailyInterest,
                             credit: 0,
@@ -88,6 +89,7 @@ let PeriodService = class PeriodService {
                         },
                         {
                             accountId: 'INTEREST-INCOME',
+                            accountCode: '40100',
                             accountType: 'REVENUE',
                             debit: 0,
                             credit: dailyInterest,

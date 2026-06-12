@@ -129,11 +129,7 @@ export default function LosQueuePage() {
             Track and manage applications through the origination workflow
           </p>
         </div>
-        <Link href="/admin/loans/new" style={{ textDecoration: 'none' }}>
-          <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Plus size={16} /> New Application
-          </button>
-        </Link>
+
       </div>
 
       {/* Pipeline Stage Tabs */}

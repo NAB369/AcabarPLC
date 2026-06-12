@@ -96,10 +96,10 @@ export default function AdminDashboardPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', animation: 'fadeIn 0.6s ease-out' }}>
 
       {/* Top Section: Chart and Stats */}
-      <div style={{ display: 'flex', gap: '2rem', alignItems: 'stretch' }}>
+      <div className="flex flex-col xl:flex-row gap-8 items-stretch">
 
         {/* Chart Card */}
-        <div className="card" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div className="card flex-1 flex flex-col">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', gap: '2rem' }}>
               <div 
@@ -169,7 +169,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Stats Cards */}
-        <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div className="w-full xl:w-80 flex flex-col gap-8">
           <div className="card" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', borderRadius: '50%', background: 'radial-gradient(circle, var(--success-bg) 0%, transparent 70%)', opacity: 0.6, pointerEvents: 'none' }}></div>
             <div style={{ fontSize: '0.875rem', color: 'var(--text-muted-dark)', display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '1rem', fontWeight: '500' }}>
@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        <div style={{ width: '320px', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <div className="w-full xl:w-80 flex flex-col gap-8">
           <div className="card" style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '100px', height: '100px', borderRadius: '50%', background: 'radial-gradient(circle, var(--primary-light) 0%, transparent 70%)', opacity: 0.8, pointerEvents: 'none' }}></div>
             <div style={{ fontSize: '0.875rem', color: 'var(--text-muted-dark)', display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '1rem', fontWeight: '500' }}>
@@ -253,8 +253,8 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Toolbar */}
-        <div className="toolbar">
-          <div style={{ position: 'relative', width: '300px' }}>
+        <div className="toolbar flex flex-col md:flex-row gap-4">
+          <div className="relative w-full md:w-[300px]">
             <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }} />
             <input 
               type="text" 

@@ -14,4 +14,5 @@ export declare class DashboardService {
             value: number;
         }[];
     }>;
+    getCreditOfficerReport(): Promise<any[]>;
 }

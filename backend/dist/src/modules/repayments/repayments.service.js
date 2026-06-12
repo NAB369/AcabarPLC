@@ -65,6 +65,7 @@ let RepaymentsService = class RepaymentsService {
             const ledgerEntries = [
                 {
                     accountId: 'CASH-VAULT',
+                    accountCode: '10100',
                     accountType: 'CASH',
                     debit: amount,
                     transactionReference: txReference,
@@ -77,6 +78,7 @@ let RepaymentsService = class RepaymentsService {
             if (loanPaid > 0) {
                 ledgerEntries.push({
                     accountId: loanId,
+                    accountCode: '12100',
                     accountType: 'LOAN',
                     credit: loanPaid,
                     transactionReference: txReference,
@@ -87,6 +89,7 @@ let RepaymentsService = class RepaymentsService {
             if (penaltyPaid > 0) {
                 ledgerEntries.push({
                     accountId: 'PENALTY-INCOME',
+                    accountCode: '40200',
                     accountType: 'REVENUE',
                     credit: penaltyPaid,
                     transactionReference: txReference,

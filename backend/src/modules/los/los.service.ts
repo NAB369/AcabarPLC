@@ -560,7 +560,7 @@ export class LosService {
       const totalInterest = principal * (annualRate / 100) * (months / 12);
       const monthlyInterest = totalInterest / months;
       const monthlyPrincipal = principal / months;
-      const amountDue = monthlyPrincipal + monthlyInterest;
+      const amountDue = Math.round(monthlyPrincipal + monthlyInterest);
 
       for (let i = 1; i <= months; i++) {
         startDate.setMonth(startDate.getMonth() + 1);
@@ -568,8 +568,8 @@ export class LosService {
           loanId,
           installmentNumber: i,
           amountDue,
-          principalComponent: monthlyPrincipal,
-          interestComponent: monthlyInterest,
+          principalComponent: Math.round(monthlyPrincipal),
+          interestComponent: Math.round(monthlyInterest),
           dueDate: new Date(startDate),
           status: 'PENDING',
         });
@@ -589,9 +589,9 @@ export class LosService {
         schedules.push({
           loanId,
           installmentNumber: i,
-          amountDue: emi,
-          principalComponent: principalForMonth,
-          interestComponent: interestForMonth,
+          amountDue: Math.round(emi),
+          principalComponent: Math.round(principalForMonth),
+          interestComponent: Math.round(interestForMonth),
           dueDate: new Date(startDate),
           status: 'PENDING',
         });

@@ -72,6 +72,43 @@ let DashboardService = class DashboardService {
             chartData: monthlyData,
         };
     }
+    async getCreditOfficerReport() {
+        const loans = await this.prisma.loan.findMany({
+            where: { loanOfficerId: { not: null } },
+            include: {
+                loanOfficer: {
+                    select: { id: true, firstName: true, lastName: true, email: true },
+                },
+            },
+        });
+        const report = loans.reduce((acc, loan) => {
+            const officerId = loan.loanOfficerId;
+            if (!acc[officerId]) {
+                acc[officerId] = {
+                    officerId,
+                    officerName: `${loan.loanOfficer?.firstName} ${loan.loanOfficer?.lastName}`,
+                    officerEmail: loan.loanOfficer?.email,
+                    totalLoans: 0,
+                    totalVolume: 0,
+                    overdueCount: 0,
+                    riskBands: { A: 0, B: 0, C: 0, D: 0, Unscored: 0 },
+                };
+            }
+            acc[officerId].totalLoans++;
+            acc[officerId].totalVolume += loan.principalAmount;
+            if (loan.status === 'OVERDUE')
+                acc[officerId].overdueCount++;
+            const band = loan.creditRiskBand?.charAt(0) || 'Unscored';
+            if (acc[officerId].riskBands[band] !== undefined) {
+                acc[officerId].riskBands[band]++;
+            }
+            else {
+                acc[officerId].riskBands['Unscored']++;
+            }
+            return acc;
+        }, {});
+        return Object.values(report);
+    }
 };
 exports.DashboardService = DashboardService;
 exports.DashboardService = DashboardService = __decorate([

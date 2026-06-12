@@ -24,6 +24,7 @@ export declare class LosService {
             phone: string;
             nationalId: string | null;
             passport: string | null;
+            accountNumber: string | null;
             khmerFirstName: string | null;
             khmerLastName: string | null;
             familyBook: string | null;
@@ -92,6 +93,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -133,6 +136,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -171,6 +176,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -209,6 +216,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -252,6 +261,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -290,6 +301,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -328,6 +341,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -368,6 +383,8 @@ export declare class LosService {
             refinanceFeeAmt: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
+            internalCreditScore: number | null;
+            creditRiskBand: string | null;
             disbursementMethod: string | null;
             disbursementRef: string | null;
             rejectionReason: string | null;
@@ -410,6 +427,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -432,8 +451,8 @@ export declare class LosService {
             id: string;
             createdAt: Date;
             loanId: string;
-            decision: string | null;
             tier: number;
+            decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
             assignedTo: string | null;
@@ -487,6 +506,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -519,8 +540,8 @@ export declare class LosService {
             id: string;
             createdAt: Date;
             loanId: string;
-            decision: string | null;
             tier: number;
+            decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
             assignedTo: string | null;
@@ -550,6 +571,7 @@ export declare class LosService {
             phone: string;
             nationalId: string | null;
             passport: string | null;
+            accountNumber: string | null;
             khmerFirstName: string | null;
             khmerLastName: string | null;
             familyBook: string | null;
@@ -649,6 +671,8 @@ export declare class LosService {
         refinanceFeeAmt: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
+        internalCreditScore: number | null;
+        creditRiskBand: string | null;
         disbursementMethod: string | null;
         disbursementRef: string | null;
         rejectionReason: string | null;
@@ -667,8 +691,8 @@ export declare class LosService {
             id: string;
             createdAt: Date;
             loanId: string;
-            decision: string | null;
             tier: number;
+            decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
             assignedTo: string | null;

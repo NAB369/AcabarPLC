@@ -364,7 +364,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       type="text" 
                       value={profile.firstName}
                       onChange={(e) => setProfile({...profile, firstName: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                       onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
                       onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                     />
@@ -375,7 +375,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       type="text" 
                       value={profile.lastName}
                       onChange={(e) => setProfile({...profile, lastName: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                       onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
                       onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                     />
@@ -388,7 +388,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     type="email" 
                     value={profile.email}
                     onChange={(e) => setProfile({...profile, email: e.target.value})}
-                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
                     onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
                     onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                   />
@@ -421,7 +421,9 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     type="password" 
                     value={passwordData.currentPassword}
                     onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
-                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                    style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                    onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
+                    onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                   />
                 </div>
 
@@ -432,7 +434,9 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       type="password" 
                       value={passwordData.newPassword}
                       onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
+                      onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
                   <div className="input-group">
@@ -441,7 +445,9 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                       type="password" 
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
-                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      style={{ width: '100%', padding: '0.875rem 1rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', color: 'var(--foreground)', outline: 'none', transition: 'all 0.2s', fontSize: '0.9375rem' }} 
+                      onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'; }}
+                      onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
                 </div>

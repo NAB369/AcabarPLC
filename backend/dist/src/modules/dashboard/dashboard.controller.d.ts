@@ -14,4 +14,5 @@ export declare class DashboardController {
             value: number;
         }[];
     }>;
+    getCreditOfficerReport(): Promise<any[]>;
 }

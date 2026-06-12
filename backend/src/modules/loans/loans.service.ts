@@ -117,9 +117,33 @@ export class LoansService {
 
   // Approve a loan prior to disbursement
   async approveLoan(loanId: string) {
-    return this.prisma.loan.update({
-      where: { id: loanId },
-      data: { status: 'APPROVED' },
+    return this.prisma.$transaction(async (tx) => {
+      const loan = await tx.loan.update({
+        where: { id: loanId },
+        data: { status: 'APPROVED' },
+        include: { customer: true }
+      });
+
+      if (!loan.customer.accountNumber) {
+        let newAccountNumber = '';
+        let isUnique = false;
+        
+        while (!isUnique) {
+          // Generate 10-digit random number
+          newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+          const existing = await tx.customer.findUnique({ where: { accountNumber: newAccountNumber } });
+          if (!existing) {
+            isUnique = true;
+          }
+        }
+
+        await tx.customer.update({
+          where: { id: loan.customerId },
+          data: { accountNumber: newAccountNumber }
+        });
+      }
+
+      return loan;
     });
   }
 
@@ -246,6 +270,58 @@ export class LoansService {
 
   async getProduct(id: string) {
     return this.prisma.loanProduct.findUnique({ where: { id } });
+  }
+
+  async calculateCreditScore(loanId: string) {
+    const loan = await this.prisma.loan.findUnique({
+      where: { id: loanId },
+      include: { customer: true }
+    });
+
+    if (!loan) throw new NotFoundException('Loan not found');
+
+    let score = 500; // Base score
+
+    // DTI Ratio impact
+    if (loan.dtiRatio !== null && loan.dtiRatio !== undefined) {
+      if (loan.dtiRatio < 0.3) score += 150;
+      else if (loan.dtiRatio <= 0.5) score += 50;
+      else score -= 100;
+    } else {
+      // Missing DTI is a risk
+      score -= 50;
+    }
+
+    // CBC Score impact (Assuming CBC is roughly 0-850)
+    if (loan.cbcScore) {
+      if (loan.cbcScore >= 700) score += 200;
+      else if (loan.cbcScore >= 600) score += 100;
+      else if (loan.cbcScore >= 500) score += 0;
+      else score -= 100;
+    }
+
+    // Income impact
+    const income = loan.customer.monthlyIncome || 0;
+    const incomeDollar = income / 100; // Convert cents to dollars for logic
+    if (incomeDollar > 2000) score += 150;
+    else if (incomeDollar >= 1000) score += 100;
+    else if (incomeDollar >= 500) score += 50;
+
+    // Cap score at 1000
+    score = Math.min(Math.max(score, 0), 1000);
+
+    let riskBand = 'D (High Risk)';
+    if (score >= 800) riskBand = 'A (Excellent)';
+    else if (score >= 650) riskBand = 'B (Good)';
+    else if (score >= 500) riskBand = 'C (Fair)';
+
+    return this.prisma.loan.update({
+      where: { id: loanId },
+      data: {
+        internalCreditScore: score,
+        creditRiskBand: riskBand,
+      }
+    });
   }
 
   async deleteProduct(id: string) {

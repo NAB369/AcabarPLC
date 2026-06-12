@@ -1,7 +1,8 @@
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 export interface LedgerEntryDto {
     accountId: string;
-    accountType: 'LOAN' | 'CASH' | 'INCOME' | 'LIABILITY' | 'FEE_INCOME' | 'INTEREST_INCOME' | 'PROVISION' | 'REVENUE';
+    accountCode?: string;
+    accountType: 'LOAN' | 'CASH' | 'INCOME' | 'LIABILITY' | 'FEE_INCOME' | 'INTEREST_INCOME' | 'PROVISION' | 'REVENUE' | 'EXPENSE';
     debit?: number;
     credit?: number;
     transactionReference: string;
