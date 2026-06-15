@@ -30,14 +30,14 @@ let DashboardController = class DashboardController {
 exports.DashboardController = DashboardController;
 __decorate([
     (0, common_1.Get)('metrics'),
-    (0, roles_decorator_1.Roles)('SUPER_ADMIN', 'BRANCH_MANAGER'),
+    (0, roles_decorator_1.Roles)('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER', 'ACCOUNTANT', 'COLLECTION_OFFICER', 'TELLER', 'AUDITOR', 'CUSTOMER_SERVICE'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], DashboardController.prototype, "getMetrics", null);
 __decorate([
     (0, common_1.Get)('reports/credit-officers'),
-    (0, roles_decorator_1.Roles)('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER'),
+    (0, roles_decorator_1.Roles)('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER', 'ACCOUNTANT', 'AUDITOR'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)

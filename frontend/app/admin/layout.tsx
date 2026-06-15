@@ -8,7 +8,7 @@ import {
   Star, Gift, CreditCard, Box, Settings, ChevronDown,
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
   Sun, Moon, Clock, BookOpen, LayoutList, TrendingUp, TrendingDown,
-  ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight,
+  ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight, ChevronLeft,
   FileCheck, Landmark, CheckSquare, Briefcase, Menu, X
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -105,15 +105,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     display: 'flex',
     alignItems: 'center',
     gap: '0.75rem',
-    padding: '0.625rem 0.875rem',
-    borderRadius: 'var(--radius-md)',
-    backgroundColor: isActive ? 'var(--primary-light)' : 'transparent',
-    color: isActive ? 'var(--primary)' : 'var(--text-muted-dark)',
+    padding: '0.75rem 1rem',
+    borderRadius: '24px',
+    backgroundColor: 'var(--nav-bg, #ffffff)',
+    color: isActive ? 'var(--nav-text-active, #16a34a)' : 'var(--nav-text, #475569)',
+    borderTop: '1px solid var(--nav-border, #e2e8f0)',
+    borderRight: '1px solid var(--nav-border, #e2e8f0)',
+    borderBottom: '1px solid var(--nav-border, #e2e8f0)',
+    borderLeft: '4px solid #22c55e',
+    boxShadow: 'var(--nav-shadow, 0 1px 3px rgba(0,0,0,0.04))',
     textDecoration: 'none',
-    fontSize: '0.875rem',
-    fontWeight: isActive ? '600' : '500',
+    fontSize: '0.9rem',
+    fontWeight: isActive ? '700' : '500',
     transition: 'all 0.2s ease',
+    marginBottom: '0.5rem',
+    position: 'relative' as any,
   });
+
+  const NavChevron = ({ isActive }: { isActive: boolean }) => null;
 
   return (
     <div className="flex min-h-screen bg-[var(--background)]">
@@ -127,15 +136,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-[var(--sidebar-bg)] border-r border-[var(--border-color)] flex flex-col transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        {/* Logo block with Blue Gradient */}
+        {/* Logo block with Green Gradient */}
         <div style={{ 
           height: '72px',
           padding: '0 1.5rem', 
           display: 'flex', 
           alignItems: 'center', 
           gap: '0.75rem', 
-          background: 'linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%)',
-          borderBottom: '1px solid rgba(255,255,255,0.1)',
+          background: '#ffffff',
+          borderBottom: '1px solid var(--border-color)',
           boxSizing: 'border-box'
         }}>
           <div className="flex-1 flex items-center gap-3">
@@ -149,7 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               justifyContent: 'center',
               flexShrink: 0,
               overflow: 'hidden',
-              boxShadow: '0 0 8px rgba(255, 255, 255, 0.2)',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
             }}>
               <img
                 src="/acabar-logo.png"
@@ -158,32 +167,48 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontWeight: '700', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#ffffff', lineHeight: '1.2' }}>Acabar Plc</span>
-              <span style={{ fontWeight: '500', fontSize: '0.65rem', color: 'rgba(255,255,255,0.7)', marginTop: '1px' }}>អាខាបារ ម.ក</span>
+              <span style={{ fontWeight: '800', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#1e3a8a', lineHeight: '1.2' }}>Acabar Plc</span>
+              <span style={{ fontWeight: '600', fontSize: '0.65rem', color: '#64748b', marginTop: '1px' }}>អាខាបារ ម.ក</span>
             </div>
           </div>
-          <button className="md:hidden text-white/80 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>
+          <button className="md:hidden text-slate-500 hover:text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={20} />
           </button>
         </div>
 
         <nav style={{ flex: 1, overflowY: 'auto', padding: '1rem' }}>
+          
+          {/* OVERVIEW Section */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {sidebarConfig['Dashboard'] !== false && (
+                <Link href="/admin" className={`sidebar-link ${(pathname === '/admin') ? "active" : ""}`} style={navItemStyle(pathname === '/admin')}>
+                  <BarChart3 size={18} />
+                  {t('dashboard')}
+                  <NavChevron isActive={pathname === '/admin'} />
+                </Link>
+              )}
+            </div>
+          </div>
+
           {/* CUSTOMERS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionCustomers')}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionCustomers')}</div>
             
-            <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {sidebarConfig['Customer'] !== false && (
-                <Link href="/admin/customers/accounts" className="sidebar-link" style={navItemStyle(pathname === '/admin/customers/accounts')}>
+                <Link href="/admin/customers/accounts" className={`sidebar-link ${(pathname === '/admin/customers/accounts') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/customers/accounts')}>
                   <Users size={18} />
                   {t('customer')}
+                  <NavChevron isActive={pathname === '/admin/customers/accounts'} />
                 </Link>
               )}
 
               {sidebarConfig['CBC'] !== false && (
-                <Link href="/admin/cbc" className="sidebar-link" style={navItemStyle(pathname === '/admin/cbc')}>
+                <Link href="/admin/cbc" className={`sidebar-link ${(pathname === '/admin/cbc') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/cbc')}>
                   <FileCheck size={18} />
                   {t('kycReview')}
+                  <NavChevron isActive={pathname === '/admin/cbc'} />
                 </Link>
               )}
             </div>
@@ -191,34 +216,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* LOANS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionLoans')}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionLoans')}</div>
 
-            <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {sidebarConfig['LOS Pipeline'] !== false && (
-                <Link href="/admin/los" className="sidebar-link" style={navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/'))}>
+                <Link href="/admin/los" className={`sidebar-link ${(pathname === '/admin/los' || pathname?.startsWith('/admin/los/')) ? "active" : ""}`} style={navItemStyle(pathname === '/admin/los' || pathname?.startsWith('/admin/los/'))}>
                   <Landmark size={18} />
                   {t('loansNav')}
+                  <NavChevron isActive={pathname === '/admin/los' || pathname?.startsWith('/admin/los/')} />
                 </Link>
               )}
 
               {sidebarConfig['New Application'] !== false && (
-                <Link href="/admin/loans/new" className="sidebar-link" style={navItemStyle(pathname === '/admin/loans/new')}>
+                <Link href="/admin/loans/new" className={`sidebar-link ${(pathname === '/admin/loans/new') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/loans/new')}>
                   <FileText size={18} />
                   {t('applyForLoan')}
+                  <NavChevron isActive={pathname === '/admin/loans/new'} />
                 </Link>
               )}
 
               {sidebarConfig['Underwriting'] !== false && (
-                <Link href="/admin/underwriting" className="sidebar-link" style={navItemStyle(pathname === '/admin/underwriting')}>
+                <Link href="/admin/underwriting" className={`sidebar-link ${(pathname === '/admin/underwriting') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/underwriting')}>
                   <CheckSquare size={18} />
                   {t('approvals')}
+                  <NavChevron isActive={pathname === '/admin/underwriting'} />
                 </Link>
               )}
 
               {sidebarConfig['Loan Product'] !== false && (
-                <Link href="/admin/products" className="sidebar-link" style={navItemStyle(pathname === '/admin/products')}>
+                <Link href="/admin/products" className={`sidebar-link ${(pathname === '/admin/products') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/products')}>
                   <Box size={18} />
                   {t('loanProduct')}
+                  <NavChevron isActive={pathname === '/admin/products'} />
                 </Link>
               )}
             </div>
@@ -226,46 +255,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* OPERATIONS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionOperations')}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionOperations')}</div>
 
-            <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
               {sidebarConfig['Customer'] !== false && (
-                <Link href="/admin/customers/repayments" className="sidebar-link" style={navItemStyle(pathname === '/admin/customers/repayments')}>
+                <Link href="/admin/customers/repayments" className={`sidebar-link ${(pathname === '/admin/customers/repayments') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/customers/repayments')}>
                   <CreditCard size={18} />
                   {t('repaymentsNav')}
+                  <NavChevron isActive={pathname === '/admin/customers/repayments'} />
                 </Link>
               )}
 
-              {sidebarConfig['Bank Statement'] !== false && (
-                <Link href="/admin/bank-statement" className="sidebar-link" style={navItemStyle(pathname === '/admin/bank-statement')}>
-                  <Briefcase size={18} />
-                  {t('collectionsNav')}
-                </Link>
-              )}
+
             </div>
           </div>
 
           {/* REPORTS Section */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionReports')}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionReports')}</div>
 
-            <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              {sidebarConfig['Dashboard'] !== false && (
-                <Link href="/admin" className="sidebar-link" style={navItemStyle(pathname === '/admin')}>
-                  <BarChart3 size={18} />
-                  {t('dashboard')}
-                </Link>
-              )}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
 
               {sidebarConfig['Report'] !== false && (
                 <>
-                  <Link href="/admin/report" className="sidebar-link" style={navItemStyle(pathname === '/admin/report')}>
+                  <Link href="/admin/report" className={`sidebar-link ${(pathname === '/admin/report') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/report')}>
                     <BarChart2 size={18} />
                     {t('analyticsMenu')}
+                    <NavChevron isActive={pathname === '/admin/report'} />
                   </Link>
-                  <Link href="/admin/report/credit-officer" className="sidebar-link" style={navItemStyle(pathname === '/admin/report/credit-officer')}>
+                  <Link href="/admin/report/credit-officer" className={`sidebar-link ${(pathname === '/admin/report/credit-officer') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/report/credit-officer')}>
                     <Users size={18} />
                     {t('creditOfficerPortfolio')}
+                    <NavChevron isActive={pathname === '/admin/report/credit-officer'} />
                   </Link>
                 </>
               )}
@@ -274,69 +295,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             {isAccountant && (
               <>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionAccounting')}</div>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionAccounting')}</div>
 
-                {/* Collapsible Accounting Menu */}
-                <div style={{ backgroundColor: 'var(--card-bg)', borderRadius: '12px', padding: '0.25rem', boxShadow: '0 1px 2px rgba(0,0,0,0.03)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  <div
-                    onClick={() => setIsAccountingOpen(!isAccountingOpen)}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.625rem 0.875rem', color: pathname?.startsWith('/admin/accounting') || pathname?.startsWith('/admin/period') ? 'var(--primary)' : 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '600', cursor: 'pointer', borderRadius: '8px', backgroundColor: isAccountingOpen ? 'var(--primary-light)' : 'transparent' }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <BookMarked size={18} /> {t('accountingModule')}
-                    </div>
-                    <ChevronDown size={14} style={{ transform: isAccountingOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
-                  </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  {/* Accounting Hub */}
+                  <Link href="/admin/accounting" className={`sidebar-link ${pathname === '/admin/accounting' ? 'active' : ''}`} style={{ ...navItemStyle(pathname === '/admin/accounting') }}>
+                    <BookOpen size={18} /> Accounting Hub
+                    <NavChevron isActive={pathname === '/admin/accounting'} />
+                  </Link>
 
-                {isAccountingOpen && (
-                  <div style={{ paddingLeft: '1rem', display: 'flex', flexDirection: 'column', gap: '0.125rem', marginTop: '0.25rem' }}>
-
-                    {/* SOD/EOD */}
-                    <Link href="/admin/period" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/period'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <Clock size={15} /> {t('sodEodPanel')}
-                    </Link>
-
-                    {/* Chart of Accounts */}
-                    <Link href="/admin/accounting/accounts" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/accounts'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <LayoutList size={15} /> {t('chartOfAccounts')}
-                    </Link>
-
-                    {/* Transactions sub-section */}
-                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t('transactionsMenu')}</div>
-
-                    <Link href="/admin/accounting/journal" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/journal'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <BookOpen size={15} /> {t('journalEntry')}
-                    </Link>
-                    <Link href="/admin/accounting/income" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/income'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <TrendingUp size={15} /> {t('incomeEntry')}
-                    </Link>
-                    <Link href="/admin/accounting/expense" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/expense'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <TrendingDown size={15} /> {t('expenseEntry')}
-                    </Link>
-                    <Link href="/admin/accounting/transfer" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/transfer'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <ArrowLeftRight size={15} /> {t('cashTransfer')}
-                    </Link>
-                    <Link href="/admin/accounting/single" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/single'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <PenLine size={15} /> {t('singleEntry')}
-                    </Link>
-
-                    {/* Reports sub-section */}
-                    <div style={{ fontSize: '0.6875rem', fontWeight: '800', color: 'var(--text-muted)', marginTop: '0.5rem', marginBottom: '0.125rem', paddingLeft: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t('sectionReports')}</div>
-
-                    <Link href="/admin/accounting/reports" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <BookOpen size={15} /> {t('trialBalance')}
-                    </Link>
-                    <Link href="/admin/accounting/reports/profit-loss" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/profit-loss'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <BarChart3 size={15} /> {t('profitAndLoss')}
-                    </Link>
-                    <Link href="/admin/accounting/reports/balance-sheet" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/balance-sheet'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <Scale size={15} /> {t('balanceSheet')}
-                    </Link>
-                    <Link href="/admin/accounting/reports/ledger" className="sidebar-link" style={{ ...navItemStyle(pathname === '/admin/accounting/reports/ledger'), paddingLeft: '0.625rem', fontSize: '0.8125rem' }}>
-                      <FileText size={15} /> {t('accountLedger')}
-                    </Link>
-                  </div>
-                )}
+                  {/* SOD/EOD */}
+                  <Link href="/admin/period" className={`sidebar-link ${pathname === '/admin/period' ? 'active' : ''}`} style={{ ...navItemStyle(pathname === '/admin/period') }}>
+                    <Clock size={18} /> {t('sodEodPanel')}
+                    <NavChevron isActive={pathname === '/admin/period'} />
+                  </Link>
                 </div>
               </>
             )}
@@ -471,9 +443,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       />
       <style dangerouslySetInnerHTML={{
         __html: `
+        :root {
+          --nav-bg: #ffffff;
+          --nav-text: #475569;
+          --nav-text-active: #16a34a;
+          --nav-border: #e2e8f0;
+          --nav-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .dark {
+          --nav-bg: #1e293b;
+          --nav-text: #94a3b8;
+          --nav-text-active: #22c55e;
+          --nav-border: #334155;
+          --nav-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(-10px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        .sidebar-link:hover {
+          background-color: var(--nav-bg) !important;
+          opacity: 0.9;
+          color: var(--nav-text-active) !important;
+        }
+        .sidebar-link > svg {
+          color: #22c55e;
+        }
+        .sidebar-link.active {
+          color: var(--nav-text-active) !important;
+          font-weight: 700 !important;
+        }
+        .sidebar-link.active > svg {
+          color: var(--nav-text-active) !important;
         }
       `}} />
     </div>

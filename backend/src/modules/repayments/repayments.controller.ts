@@ -20,7 +20,7 @@ export class RepaymentsController {
   constructor(private readonly repaymentsService: RepaymentsService) {}
 
   @Post('process')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'ACCOUNTANT')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'ACCOUNTANT')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({

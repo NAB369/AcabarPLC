@@ -1,0 +1,141 @@
+.pos-sidebar {
+  width: 280px;
+  background-color: #ffffff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-y: auto;
+  padding: 1rem 0 1rem 1rem; /* Padding left to allow the rounded left borders to show nicely */
+}
+
+/* Scrollbar styling */
+.pos-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.pos-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pos-sidebar::-webkit-scrollbar-thumb {
+  background-color: #e2e8f0;
+  border-radius: 10px;
+}
+
+.pos-sidebar-header {
+  padding: 0 1rem 1.5rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pos-logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.pos-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.pos-brand-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #16a34a;
+  letter-spacing: -0.02em;
+}
+
+.pos-brand-subtitle {
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pos-menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pos-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  /* The signature styling from the image: rounded left side, border top/left/bottom */
+  border: 1.5px solid #22c55e;
+  border-right: none;
+  border-radius: 20px 0 0 20px;
+  margin-bottom: 0.25rem;
+}
+
+.pos-menu-item:hover {
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+.pos-menu-item.active {
+  background-color: #22c55e;
+  color: white;
+  border-color: #22c55e;
+}
+
+.pos-menu-icon {
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #22c55e;
+}
+
+.pos-menu-item.active .pos-menu-icon {
+  color: white;
+}
+
+.pos-menu-text {
+  flex-grow: 1;
+}
+
+.pos-menu-arrow {
+  color: #22c55e;
+  opacity: 0.7;
+}
+
+.pos-menu-item.active .pos-menu-arrow {
+  color: white;
+  opacity: 1;
+}
+
+/* A slight right dot for the active item */
+.pos-menu-item.active::after {
+  content: '';
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}

@@ -10,13 +10,13 @@ export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
   @Get()
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER')
   findAll() {
     return this.feedbackService.findAll();
   }
 
   @Post()
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
   create(
     @Body()
     body: {

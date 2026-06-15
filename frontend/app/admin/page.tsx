@@ -244,11 +244,7 @@ export default function AdminDashboardPage() {
         <div style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: '700', letterSpacing: '-0.02em' }}>{t('liveLoanPipeline')}</h2>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <Link href="/admin/loans/new" style={{ textDecoration: 'none' }}>
-              <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', border: 'none' }}>
-                <Plus size={16} /> {t('newApplicationBtn')}
-              </button>
-            </Link>
+
           </div>
         </div>
 

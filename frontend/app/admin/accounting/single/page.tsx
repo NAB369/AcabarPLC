@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/services/api';
-import { FileText, CheckCircle2, AlertCircle } from 'lucide-react';
+import { FileText, CheckCircle2, AlertCircle, ChevronLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function SingleEntryPage() {
   const [accounts, setAccounts] = useState<any[]>([]);
@@ -43,6 +44,9 @@ export default function SingleEntryPage() {
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
       <div style={{ marginBottom: '2rem' }}>
+        <Link href="/admin/accounting" className="hover:text-blue-700 transition-colors" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', color: 'var(--primary)', fontWeight: '600', fontSize: '0.875rem', marginBottom: '1rem', textDecoration: 'none' }}>
+          <ChevronLeft size={16} /> Back to Accounting Hub
+        </Link>
         <h1 style={{ fontSize: '2rem', fontWeight: '800', letterSpacing: '-0.03em', margin: 0 }}>
           Single <span className="text-gradient">Entry</span>
         </h1>

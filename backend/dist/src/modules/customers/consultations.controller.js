@@ -36,14 +36,14 @@ let ConsultationsController = class ConsultationsController {
 exports.ConsultationsController = ConsultationsController;
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ConsultationsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -51,7 +51,7 @@ __decorate([
 ], ConsultationsController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

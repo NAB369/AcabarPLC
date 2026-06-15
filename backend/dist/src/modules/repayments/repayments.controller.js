@@ -39,7 +39,7 @@ let RepaymentsController = class RepaymentsController {
 exports.RepaymentsController = RepaymentsController;
 __decorate([
     (0, common_1.Post)('process'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'ACCOUNTANT'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'ACCOUNTANT'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
             destination: './uploads/repayments',

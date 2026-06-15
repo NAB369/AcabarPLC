@@ -118,40 +118,13 @@ export default function BankStatementPage() {
         </div>
       </div>
 
-      {/* Upload Zone & Samples */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
-        
-        {/* Upload Zone */}
-        <div className="card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--border-color)', cursor: 'pointer', textAlign: 'center' }}>
+      {/* Upload Zone */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div className="card" style={{ padding: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed var(--border-color)', cursor: 'pointer', textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
           <UploadCloud size={48} color="var(--primary)" style={{ marginBottom: '1rem' }} />
           <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '700', color: 'var(--foreground)' }}>Upload Bank Statement PDF</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem', maxWidth: '300px' }}>Drag and drop files here, or click to browse. Supports standard PDF export formats.</p>
         </div>
-
-        {/* Sample Selection */}
-        <div className="card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <h3 style={{ margin: 0, fontSize: '1.125rem', fontWeight: '800', color: 'var(--foreground)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Sparkles size={18} color="#3b82f6" /> Quick Test Samples
-          </h3>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', margin: 0 }}>Select a pre-configured sample statement to verify DTI and automated transaction parsing.</p>
-          
-          <button className="btn btn-secondary" onClick={() => simulateAnalysis('aba')} style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', borderRadius: '12px', width: '100%', border: '1px solid var(--border-color)', textAlign: 'left' }}>
-            <div>
-              <div style={{ fontWeight: '700', color: 'var(--foreground)' }}>ABA Bank - Sophea</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>Regular salary, stable savings, DTI 24.5%</div>
-            </div>
-            <ArrowUpRight size={20} color="#3b82f6" />
-          </button>
-
-          <button className="btn btn-secondary" onClick={() => simulateAnalysis('acleda')} style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', borderRadius: '12px', width: '100%', border: '1px solid var(--border-color)', textAlign: 'left' }}>
-            <div>
-              <div style={{ fontWeight: '700', color: 'var(--foreground)' }}>ACLEDA Bank - Samnang</div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>Tight margins, NSF fees, DTI 48.2%</div>
-            </div>
-            <ArrowUpRight size={20} color="#3b82f6" />
-          </button>
-        </div>
-
       </div>
 
       {/* Loading Steps */}
@@ -291,7 +264,7 @@ export default function BankStatementPage() {
           <UploadCloud size={64} style={{ opacity: 0.4 }} />
           <div>
             <h3 style={{ margin: 0, color: 'var(--text-muted)', fontSize: '1.25rem', fontWeight: '700' }}>No Statement Uploaded</h3>
-            <p style={{ margin: '0.5rem 0 0', fontSize: '0.9375rem' }}>Upload a PDF statement or click one of our quick test samples to analyze client bank transactions.</p>
+            <p style={{ margin: '0.5rem 0 0', fontSize: '0.9375rem' }}>Upload a PDF statement to analyze client bank transactions.</p>
           </div>
         </div>
       )}

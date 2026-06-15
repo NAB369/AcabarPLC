@@ -55,7 +55,7 @@ let CustomersController = class CustomersController {
 exports.CustomersController = CustomersController;
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CUSTOMER_SERVICE'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_customer_dto_1.CreateCustomerDto]),
@@ -63,14 +63,14 @@ __decorate([
 ], CustomersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CustomersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)('search'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT'),
     __param(0, (0, common_1.Query)('query')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -78,14 +78,14 @@ __decorate([
 ], CustomersController.prototype, "search", null);
 __decorate([
     (0, common_1.Get)('next-cid'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CUSTOMER_SERVICE'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CustomersController.prototype, "getNextCid", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -93,7 +93,7 @@ __decorate([
 ], CustomersController.prototype, "findOne", null);
 __decorate([
     (0, common_1.Patch)(':id'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CUSTOMER_SERVICE'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

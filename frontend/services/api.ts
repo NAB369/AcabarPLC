@@ -129,6 +129,20 @@ export const api = {
     }
   },
 
+  async put(endpoint: string, data: any) {
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: getHeaders(),
+        body: JSON.stringify(convertToCents(data)),
+      });
+      return handleResponse(response);
+    } catch (error) {
+      console.warn(`API PUT ${endpoint} failed:`, error);
+      throw error;
+    }
+  },
+
   async delete(endpoint: string) {
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {

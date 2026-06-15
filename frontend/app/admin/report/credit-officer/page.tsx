@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/services/api';
-import { Users, PieChart, ShieldAlert, BarChart3, Briefcase, ChevronRight, Printer } from 'lucide-react';
+import { Users, PieChart, ShieldAlert, BarChart3, Briefcase, ChevronRight, Printer, Search } from 'lucide-react';
 import Link from 'next/link';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
@@ -25,6 +25,7 @@ interface OfficerReport {
 export default function CreditOfficerReportPage() {
   const [reports, setReports] = useState<OfficerReport[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -49,6 +50,11 @@ export default function CreditOfficerReportPage() {
   }
 
   const sortedReports = [...reports].sort((a, b) => b.totalVolume - a.totalVolume);
+
+  const filteredReports = sortedReports.filter(report => 
+    report.officerName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    report.officerEmail.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="animate-fade-in">
@@ -86,7 +92,7 @@ export default function CreditOfficerReportPage() {
                 <Tooltip 
                   cursor={{ fill: 'transparent' }} 
                   contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }} 
-                  formatter={(val: number) => ['$' + (val/100).toLocaleString(), 'Total Volume']} 
+                  formatter={(val: any) => ['$' + ((Number(val) || 0)/100).toLocaleString(), 'Total Volume']} 
                 />
                 <Bar dataKey="totalVolume" radius={[4, 4, 0, 0]}>
                   {sortedReports.map((entry, index) => (
@@ -99,75 +105,95 @@ export default function CreditOfficerReportPage() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-        {sortedReports.map((report) => (
-          <div key={report.officerId} className="card" style={{ padding: '0', overflow: 'hidden' }}>
-            <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--card-bg)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--primary-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', fontWeight: '800', fontSize: '1.25rem' }}>
-                  {report.officerName.charAt(0)}
-                </div>
-                <div>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: '800', margin: 0 }}>{report.officerName}</h3>
-                  <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>{report.officerEmail}</div>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <div style={{ backgroundColor: 'var(--background)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <Briefcase size={14} /> Total Loans
-                </div>
-                <div style={{ fontSize: '1.5rem', fontWeight: '800' }}>{report.totalLoans}</div>
-              </div>
-              <div style={{ backgroundColor: 'var(--background)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <BarChart3 size={14} /> Total Volume
-                </div>
-                <div style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--primary)' }}>
-                  ${(report.totalVolume / 100).toLocaleString()}
-                </div>
-              </div>
-            </div>
-
-            <div style={{ padding: '0 1.5rem 1.5rem' }}>
-               <h4 style={{ fontSize: '0.875rem', fontWeight: '700', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                 <PieChart size={16} /> Risk Distribution
-               </h4>
-               <div style={{ display: 'flex', height: '12px', borderRadius: '6px', overflow: 'hidden', marginBottom: '0.5rem' }}>
-                 <div style={{ flex: report.riskBands.A || 0.1, backgroundColor: 'var(--success-text)', opacity: 0.9 }}></div>
-                 <div style={{ flex: report.riskBands.B || 0.1, backgroundColor: 'var(--success-bg)', border: '1px solid var(--success-text)' }}></div>
-                 <div style={{ flex: report.riskBands.C || 0.1, backgroundColor: 'var(--warning-text)', opacity: 0.9 }}></div>
-                 <div style={{ flex: report.riskBands.D || 0.1, backgroundColor: 'var(--error-text)', opacity: 0.9 }}></div>
-                 <div style={{ flex: report.riskBands.Unscored || 0.1, backgroundColor: 'var(--text-muted-dark)' }}></div>
-               </div>
-               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600' }}>
-                 <span>A: {report.riskBands.A}</span>
-                 <span>B: {report.riskBands.B}</span>
-                 <span>C: {report.riskBands.C}</span>
-                 <span>D: {report.riskBands.D}</span>
-                 <span>Unscored: {report.riskBands.Unscored}</span>
-               </div>
-            </div>
-
-            {report.overdueCount > 0 && (
-              <div style={{ padding: '1rem 1.5rem', backgroundColor: 'var(--error-bg)', borderTop: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--error-text)' }}>
-                <ShieldAlert size={18} />
-                <span style={{ fontSize: '0.875rem', fontWeight: '700' }}>{report.overdueCount} Overdue Account(s)</span>
-              </div>
-            )}
-            
+      {/* Table */}
+      <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
+        <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
+          <div style={{ fontSize: '0.9375rem', fontWeight: '600' }}>
+            {filteredReports.length} Credit Officer{filteredReports.length !== 1 ? 's' : ''}
           </div>
-        ))}
-
-        {reports.length === 0 && !loading && (
-          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '4rem', backgroundColor: 'var(--card-bg)', borderRadius: '16px', border: '1px dashed var(--border-color)' }}>
-            <Briefcase size={48} color="var(--text-muted)" style={{ margin: '0 auto 1.5rem', opacity: 0.5 }} />
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '0.5rem' }}>No Data Available</h3>
-            <p style={{ color: 'var(--text-muted)' }}>Loans have not been assigned to Credit Officers yet.</p>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+            <div style={{ position: 'relative' }}>
+              <Search style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={15} />
+              <input
+                type="text"
+                placeholder="Search by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ padding: '0.5rem 0.875rem 0.5rem 2.25rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', fontSize: '0.8125rem', width: '280px', outline: 'none', transition: 'all var(--transition-fast)', backgroundColor: 'var(--background)' }}
+                onFocus={(e) => { e.target.style.borderColor = 'var(--primary)'; e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.1)'; e.target.style.backgroundColor = 'var(--card-bg)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'var(--border-color)'; e.target.style.boxShadow = 'none'; e.target.style.backgroundColor = 'var(--background)'; }}
+              />
+            </div>
           </div>
-        )}
+        </div>
+
+        <div style={{ overflowX: 'auto' }}>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Credit Officer</th>
+                <th>Total Loans</th>
+                <th>Total Volume</th>
+                <th>Risk Distribution (A/B/C/D/U)</th>
+                <th>Overdue</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredReports.map((report) => (
+                <tr key={report.officerId} style={{ transition: 'background-color 0.2s', cursor: 'default' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <td>
+                    <div style={{ fontWeight: '700', fontSize: '0.875rem', color: 'var(--foreground)' }}>
+                      {report.officerName}
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{report.officerEmail}</div>
+                  </td>
+                  <td style={{ fontWeight: '600' }}>{report.totalLoans}</td>
+                  <td style={{ fontWeight: '700', color: 'var(--primary)' }}>${(report.totalVolume / 100).toLocaleString()}</td>
+                  <td>
+                    <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.75rem', fontWeight: '600' }}>
+                      <span style={{ color: 'var(--success-text)' }}>{report.riskBands.A || 0}</span>/
+                      <span style={{ color: 'var(--success-text)' }}>{report.riskBands.B || 0}</span>/
+                      <span style={{ color: 'var(--warning-text)' }}>{report.riskBands.C || 0}</span>/
+                      <span style={{ color: 'var(--error-text)' }}>{report.riskBands.D || 0}</span>/
+                      <span style={{ color: 'var(--text-muted)' }}>{report.riskBands.Unscored || 0}</span>
+                    </div>
+                    <div style={{ display: 'flex', height: '6px', borderRadius: '3px', overflow: 'hidden', marginTop: '0.5rem', width: '120px', backgroundColor: 'var(--bg-muted)' }}>
+                      {report.riskBands.A > 0 && <div style={{ flex: report.riskBands.A, backgroundColor: 'var(--success-text)', opacity: 0.9 }}></div>}
+                      {report.riskBands.B > 0 && <div style={{ flex: report.riskBands.B, backgroundColor: 'var(--success-bg)', border: '1px solid var(--success-text)' }}></div>}
+                      {report.riskBands.C > 0 && <div style={{ flex: report.riskBands.C, backgroundColor: 'var(--warning-text)', opacity: 0.9 }}></div>}
+                      {report.riskBands.D > 0 && <div style={{ flex: report.riskBands.D, backgroundColor: 'var(--error-text)', opacity: 0.9 }}></div>}
+                      {report.riskBands.Unscored > 0 && <div style={{ flex: report.riskBands.Unscored, backgroundColor: 'var(--text-muted-dark)' }}></div>}
+                    </div>
+                  </td>
+                  <td>
+                    {report.overdueCount > 0 ? (
+                      <span className="badge badge-rejected" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <ShieldAlert size={12} /> {report.overdueCount}
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>None</span>
+                    )}
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <Link href={`/admin/report/credit-officer/${report.officerId}`} style={{ textDecoration: 'none' }}>
+                      <button className="btn btn-secondary" style={{ padding: '0.375rem 0.75rem', fontSize: '0.75rem', display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }} onClick={(e) => e.stopPropagation()}>
+                        View Details <ChevronRight size={14} />
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+              {filteredReports.length === 0 && !loading && (
+                <tr>
+                  <td colSpan={6} style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                    No officers match your search criteria.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

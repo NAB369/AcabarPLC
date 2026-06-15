@@ -48,7 +48,7 @@ let KycController = class KycController {
 exports.KycController = KycController;
 __decorate([
     (0, common_1.Post)('upload'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
             destination: './uploads/kyc',
@@ -78,7 +78,7 @@ __decorate([
 ], KycController.prototype, "verifyDocument", null);
 __decorate([
     (0, common_1.Get)('documents/:id/download'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -87,7 +87,7 @@ __decorate([
 ], KycController.prototype, "downloadDocument", null);
 __decorate([
     (0, common_1.Get)('customers/:customerId/documents'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER'),
     __param(0, (0, common_1.Param)('customerId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -95,7 +95,7 @@ __decorate([
 ], KycController.prototype, "getCustomerDocuments", null);
 __decorate([
     (0, common_1.Get)('customers/:customerId/completeness/:productName'),
-    (0, roles_decorator_1.Roles)('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
+    (0, roles_decorator_1.Roles)('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN'),
     __param(0, (0, common_1.Param)('customerId')),
     __param(1, (0, common_1.Param)('productName')),
     __metadata("design:type", Function),

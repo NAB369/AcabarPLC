@@ -25,37 +25,37 @@ export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 
   @Post()
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CUSTOMER_SERVICE')
   create(@Body() createCustomerDto: CreateCustomerDto) {
     return this.customersService.create(createCustomerDto);
   }
 
   @Get()
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT')
   findAll() {
     return this.customersService.findAll();
   }
 
   @Get('search')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT')
   search(@Query('query') query: string) {
     return this.customersService.search(query);
   }
 
   @Get('next-cid')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CUSTOMER_SERVICE')
   getNextCid() {
     return this.customersService.getNextCid();
   }
 
   @Get(':id')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT')
   findOne(@Param('id') id: string) {
     return this.customersService.findOne(id);
   }
 
   @Patch(':id')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CUSTOMER_SERVICE')
   update(
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,

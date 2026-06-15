@@ -29,7 +29,7 @@ export class KycController {
   constructor(private readonly kycService: KycService) {}
 
   @Post('upload')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -67,7 +67,7 @@ export class KycController {
   }
 
   @Get('documents/:id/download')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER')
   async downloadDocument(@Param('id') id: string, @Res() res: any) {
     const fileInfo = await this.kycService.getDocumentFile(id);
     res.setHeader('Content-Type', fileInfo.mimeType);
@@ -79,13 +79,13 @@ export class KycController {
   }
 
   @Get('customers/:customerId/documents')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'CREDIT_ANALYST')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER')
   getCustomerDocuments(@Param('customerId') customerId: string) {
     return this.kycService.getCustomerDocuments(customerId);
   }
 
   @Get('customers/:customerId/completeness/:productName')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
   checkCompleteness(
     @Param('customerId') customerId: string,
     @Param('productName') productName: string,

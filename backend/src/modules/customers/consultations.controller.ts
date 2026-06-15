@@ -18,13 +18,13 @@ export class ConsultationsController {
   constructor(private readonly consultationsService: ConsultationsService) {}
 
   @Get()
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
   findAll() {
     return this.consultationsService.findAll();
   }
 
   @Post()
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
   create(
     @Body()
     body: {
@@ -38,7 +38,7 @@ export class ConsultationsController {
   }
 
   @Patch(':id')
-  @Roles('LOAN_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
+  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN')
   updateStatus(
     @Param('id') id: string,
     @Body() body: { status: 'COMPLETED' | 'CANCELLED' },

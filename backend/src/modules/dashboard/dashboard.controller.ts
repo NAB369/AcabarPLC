@@ -10,13 +10,13 @@ export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @Get('metrics')
-  @Roles('SUPER_ADMIN', 'BRANCH_MANAGER')
+  @Roles('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER', 'ACCOUNTANT', 'COLLECTION_OFFICER', 'TELLER', 'AUDITOR', 'CUSTOMER_SERVICE')
   getMetrics() {
     return this.dashboardService.getMetrics();
   }
 
   @Get('reports/credit-officers')
-  @Roles('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER')
+  @Roles('SUPER_ADMIN', 'BRANCH_MANAGER', 'CREDIT_OFFICER', 'ACCOUNTANT', 'AUDITOR')
   getCreditOfficerReport() {
     return this.dashboardService.getCreditOfficerReport();
   }
