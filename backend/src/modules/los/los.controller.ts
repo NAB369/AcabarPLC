@@ -101,8 +101,6 @@ export class LosController {
     return this.losService.activateLoan(id, req.user.sub);
   }
 
-
-
   @Get('queue')
   @Permissions('VIEW_DASHBOARD')
   getQueue(

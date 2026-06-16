@@ -77,9 +77,13 @@ export class LosService {
         status: 'DRAFT',
         loanOfficerId: dto.loanOfficerId || null,
         // Loan term details
-        disbursementDate: dto.disbursementDate ? new Date(dto.disbursementDate) : null,
+        disbursementDate: dto.disbursementDate
+          ? new Date(dto.disbursementDate)
+          : null,
         repaymentType: dto.repaymentType || 'MONTHLY',
-        firstInstallmentDate: dto.firstInstallmentDate ? new Date(dto.firstInstallmentDate) : null,
+        firstInstallmentDate: dto.firstInstallmentDate
+          ? new Date(dto.firstInstallmentDate)
+          : null,
         numberOfInstallments: dto.numberOfInstallments || null,
         penaltyRate: dto.penaltyRate ?? null,
         adminFeeRate: dto.adminFeeRate ?? null,
@@ -94,15 +98,18 @@ export class LosService {
         reasonOfCredit: dto.reasonOfCredit || null,
         loanNote: dto.loanNote || null,
         memoReasonOfCredit: dto.memoReasonOfCredit || null,
-        collaterals: dto.collaterals && dto.collaterals.length > 0 ? {
-          create: dto.collaterals.map(c => ({
-            type: c.type,
-            description: c.description,
-            estimatedValue: c.estimatedValue,
-            currency: c.currency || 'USD',
-            documentIds: JSON.stringify(c.documentIds || [])
-          }))
-        } : undefined,
+        collaterals:
+          dto.collaterals && dto.collaterals.length > 0
+            ? {
+                create: dto.collaterals.map((c) => ({
+                  type: c.type,
+                  description: c.description,
+                  estimatedValue: c.estimatedValue,
+                  currency: c.currency || 'USD',
+                  documentIds: JSON.stringify(c.documentIds || []),
+                })),
+              }
+            : undefined,
       },
       include: {
         customer: true,

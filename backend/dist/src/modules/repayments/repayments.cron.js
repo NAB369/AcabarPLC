@@ -41,7 +41,7 @@ let RepaymentsCron = RepaymentsCron_1 = class RepaymentsCron {
                     continue;
                 const diffTime = Math.abs(now.getTime() - schedule.dueDate.getTime());
                 const lateDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const dailyPenaltyRate = (schedule.loan.penaltyRate / 100) / 365;
+                const dailyPenaltyRate = schedule.loan.penaltyRate / 100 / 365;
                 const penaltyAmount = Number((schedule.amountDue * dailyPenaltyRate * lateDays).toFixed(2));
                 await this.prisma.repaymentSchedule.update({
                     where: { id: schedule.id },

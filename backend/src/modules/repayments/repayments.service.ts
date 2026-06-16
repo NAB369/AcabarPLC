@@ -26,9 +26,13 @@ export class RepaymentsService {
     const loanId = dto.loanId;
     const amount = Number(dto.amount);
 
-    const state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+    const state = await this.prisma.systemState.findUnique({
+      where: { id: 'default' },
+    });
     if (state && !state.isOpen) {
-      throw new BadRequestException('Repayment blocked: The business day is currently CLOSED. Please start a new day first.');
+      throw new BadRequestException(
+        'Repayment blocked: The business day is currently CLOSED. Please start a new day first.',
+      );
     }
 
     // Use a transaction to ensure database consistency
@@ -55,7 +59,7 @@ export class RepaymentsService {
       const totalDue = Number(nextSchedule.amountDue) + penaltyAmount;
       const isFullPayment = amount === totalDue;
       const isOverpaid = amount > totalDue;
-      
+
       await tx.repaymentSchedule.update({
         where: { id: nextSchedule.id },
         data: {

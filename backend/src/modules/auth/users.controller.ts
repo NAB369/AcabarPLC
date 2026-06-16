@@ -60,7 +60,13 @@ export class UsersController {
           some: {
             role: {
               name: {
-                in: ['CREDIT_OFFICER', 'LOAN_OFFICER', 'BRANCH_MANAGER', 'ADMIN', 'SUPER_ADMIN'],
+                in: [
+                  'CREDIT_OFFICER',
+                  'LOAN_OFFICER',
+                  'BRANCH_MANAGER',
+                  'ADMIN',
+                  'SUPER_ADMIN',
+                ],
               },
             },
           },
@@ -168,7 +174,9 @@ export class UsersController {
     if (!user) throw new Error('User not found');
 
     if (roleName) {
-      const role = await this.prisma.role.findUnique({ where: { name: roleName } });
+      const role = await this.prisma.role.findUnique({
+        where: { name: roleName },
+      });
       if (role) {
         await this.prisma.$transaction(async (tx) => {
           await tx.userRole.deleteMany({ where: { userId: id } });

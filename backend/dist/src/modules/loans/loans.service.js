@@ -58,7 +58,9 @@ let LoansService = class LoansService {
                 throw new common_1.NotFoundException('Loan not found');
             if (loan.status !== 'APPROVED')
                 throw new common_1.BadRequestException('Loan must be APPROVED before disbursement');
-            const product = await tx.loanProduct.findUnique({ where: { id: loan.productId } });
+            const product = await tx.loanProduct.findUnique({
+                where: { id: loan.productId },
+            });
             if (!product)
                 throw new common_1.NotFoundException('Loan Product not found');
             const updatedLoan = await tx.loan.update({
@@ -102,7 +104,7 @@ let LoansService = class LoansService {
         return this.prisma.$transaction(async (tx) => {
             const loan = await tx.loan.update({
                 where: { id: loanId },
-                data: { status: 'APPROVED' }
+                data: { status: 'APPROVED' },
             });
             return loan;
         });
@@ -216,7 +218,7 @@ let LoansService = class LoansService {
     async calculateCreditScore(loanId) {
         const loan = await this.prisma.loan.findUnique({
             where: { id: loanId },
-            include: { customer: true }
+            include: { customer: true },
         });
         if (!loan)
             throw new common_1.NotFoundException('Loan not found');
@@ -263,7 +265,7 @@ let LoansService = class LoansService {
             data: {
                 internalCreditScore: score,
                 creditRiskBand: riskBand,
-            }
+            },
         });
     }
     async deleteProduct(id) {

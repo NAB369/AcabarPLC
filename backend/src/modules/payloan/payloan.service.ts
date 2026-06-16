@@ -20,7 +20,9 @@ export class PayloanService {
     const notification = await this.prisma.paymentNotification.create({
       data: {
         billNo: dto.bill_no || '',
-        transactionId: dto.transaction_id ? BigInt(dto.transaction_id) : BigInt(0),
+        transactionId: dto.transaction_id
+          ? BigInt(dto.transaction_id)
+          : BigInt(0),
         transactionDate: dto.transaction_date || '',
         transactionTime: dto.transaction_time || '',
         payerAccountNo: dto.payer_account_no || '',
@@ -56,7 +58,13 @@ export class PayloanService {
 
             await tx.repaymentSchedule.update({
               where: { id: dto.bill_no },
-              data: { status: isFullPayment ? 'PAID' : (isOverpaid ? 'OVERPAID' : 'PARTIALLY_PAID') },
+              data: {
+                status: isFullPayment
+                  ? 'PAID'
+                  : isOverpaid
+                    ? 'OVERPAID'
+                    : 'PARTIALLY_PAID',
+              },
             });
 
             const txReference = `API-REP-${randomUUID()}`;
@@ -75,7 +83,10 @@ export class PayloanService {
             const penaltyPaid = Math.min(amount, penaltyAmount);
             let remaining = amount - penaltyPaid;
 
-            const interestPaid = Math.min(remaining, schedule.interestComponent);
+            const interestPaid = Math.min(
+              remaining,
+              schedule.interestComponent,
+            );
             remaining -= interestPaid;
 
             const principalPaid = remaining;

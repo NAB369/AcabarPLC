@@ -61,7 +61,9 @@ export class LoansService {
           'Loan must be APPROVED before disbursement',
         );
 
-      const product = await tx.loanProduct.findUnique({ where: { id: loan.productId } });
+      const product = await tx.loanProduct.findUnique({
+        where: { id: loan.productId },
+      });
       if (!product) throw new NotFoundException('Loan Product not found');
 
       // Update loan status
@@ -123,7 +125,7 @@ export class LoansService {
     return this.prisma.$transaction(async (tx) => {
       const loan = await tx.loan.update({
         where: { id: loanId },
-        data: { status: 'APPROVED' }
+        data: { status: 'APPROVED' },
       });
 
       return loan;
@@ -258,7 +260,7 @@ export class LoansService {
   async calculateCreditScore(loanId: string) {
     const loan = await this.prisma.loan.findUnique({
       where: { id: loanId },
-      include: { customer: true }
+      include: { customer: true },
     });
 
     if (!loan) throw new NotFoundException('Loan not found');
@@ -303,7 +305,7 @@ export class LoansService {
       data: {
         internalCreditScore: score,
         creditRiskBand: riskBand,
-      }
+      },
     });
   }
 

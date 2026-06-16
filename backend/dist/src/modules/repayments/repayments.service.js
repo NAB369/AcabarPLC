@@ -32,7 +32,9 @@ let RepaymentsService = class RepaymentsService {
     async processRepayment(dto) {
         const loanId = dto.loanId;
         const amount = Number(dto.amount);
-        const state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+        const state = await this.prisma.systemState.findUnique({
+            where: { id: 'default' },
+        });
         if (state && !state.isOpen) {
             throw new common_1.BadRequestException('Repayment blocked: The business day is currently CLOSED. Please start a new day first.');
         }

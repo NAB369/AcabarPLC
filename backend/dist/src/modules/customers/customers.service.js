@@ -51,7 +51,9 @@ let CustomersService = class CustomersService {
         let isUnique = false;
         while (!isUnique) {
             newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-            const existing = await this.prisma.customer.findUnique({ where: { accountNumber: newAccountNumber } });
+            const existing = await this.prisma.customer.findUnique({
+                where: { accountNumber: newAccountNumber },
+            });
             if (!existing) {
                 isUnique = true;
             }

@@ -87,33 +87,36 @@ export class DashboardService {
       },
     });
 
-    const report = loans.reduce((acc, loan) => {
-      const officerId = loan.loanOfficerId as string;
-      if (!acc[officerId]) {
-        acc[officerId] = {
-          officerId,
-          officerName: `${loan.loanOfficer?.firstName} ${loan.loanOfficer?.lastName}`,
-          officerEmail: loan.loanOfficer?.email,
-          totalLoans: 0,
-          totalVolume: 0,
-          overdueCount: 0,
-          riskBands: { A: 0, B: 0, C: 0, D: 0, Unscored: 0 },
-        };
-      }
+    const report = loans.reduce(
+      (acc, loan) => {
+        const officerId = loan.loanOfficerId as string;
+        if (!acc[officerId]) {
+          acc[officerId] = {
+            officerId,
+            officerName: `${loan.loanOfficer?.firstName} ${loan.loanOfficer?.lastName}`,
+            officerEmail: loan.loanOfficer?.email,
+            totalLoans: 0,
+            totalVolume: 0,
+            overdueCount: 0,
+            riskBands: { A: 0, B: 0, C: 0, D: 0, Unscored: 0 },
+          };
+        }
 
-      acc[officerId].totalLoans++;
-      acc[officerId].totalVolume += loan.principalAmount;
-      if (loan.status === 'OVERDUE') acc[officerId].overdueCount++;
+        acc[officerId].totalLoans++;
+        acc[officerId].totalVolume += loan.principalAmount;
+        if (loan.status === 'OVERDUE') acc[officerId].overdueCount++;
 
-      const band = loan.creditRiskBand?.charAt(0) || 'Unscored';
-      if (acc[officerId].riskBands[band] !== undefined) {
-        acc[officerId].riskBands[band]++;
-      } else {
-        acc[officerId].riskBands['Unscored']++;
-      }
+        const band = loan.creditRiskBand?.charAt(0) || 'Unscored';
+        if (acc[officerId].riskBands[band] !== undefined) {
+          acc[officerId].riskBands[band]++;
+        } else {
+          acc[officerId].riskBands['Unscored']++;
+        }
 
-      return acc;
-    }, {} as Record<string, any>);
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
 
     return Object.values(report);
   }
@@ -128,37 +131,47 @@ export class DashboardService {
       take: 50,
       include: {
         loan: {
-          include: { customer: true }
-        }
-      }
+          include: { customer: true },
+        },
+      },
     });
 
-    const references = cashEntries.map(e => e.transactionReference);
+    const references = cashEntries.map((e) => e.transactionReference);
     if (references.length === 0) return [];
-    
+
     const relatedEntries = await this.prisma.ledgerEntry.findMany({
       where: {
-        transactionReference: { in: references }
-      }
+        transactionReference: { in: references },
+      },
     });
 
-    return cashEntries.map(cash => {
-      const related = relatedEntries.filter(e => e.transactionReference === cash.transactionReference);
-      const principalEntry = related.find(e => e.accountCode === '12100' && e.credit > 0);
-      const interestEntry = related.find(e => e.accountCode === '40100' && e.credit > 0);
-      const penaltyEntry = related.find(e => e.accountCode === '40200' && e.credit > 0);
+    return cashEntries.map((cash) => {
+      const related = relatedEntries.filter(
+        (e) => e.transactionReference === cash.transactionReference,
+      );
+      const principalEntry = related.find(
+        (e) => e.accountCode === '12100' && e.credit > 0,
+      );
+      const interestEntry = related.find(
+        (e) => e.accountCode === '40100' && e.credit > 0,
+      );
+      const penaltyEntry = related.find(
+        (e) => e.accountCode === '40200' && e.credit > 0,
+      );
 
       return {
         id: cash.id,
         date: cash.createdAt,
         reference: cash.transactionReference,
-        customerName: cash.loan?.customer ? `${cash.loan.customer.firstName} ${cash.loan.customer.lastName}` : 'External API',
+        customerName: cash.loan?.customer
+          ? `${cash.loan.customer.firstName} ${cash.loan.customer.lastName}`
+          : 'External API',
         loanId: cash.loan?.lid || cash.loanId || 'N/A',
         amount: cash.debit,
         principal: principalEntry?.credit || 0,
         interest: interestEntry?.credit || 0,
         penalty: penaltyEntry?.credit || 0,
-        description: cash.description
+        description: cash.description,
       };
     });
   }

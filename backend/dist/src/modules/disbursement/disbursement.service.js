@@ -24,7 +24,9 @@ let DisbursementService = class DisbursementService {
         this.ledger = ledger;
     }
     async disburse(loanId, method = 'BAKONG') {
-        const state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+        const state = await this.prisma.systemState.findUnique({
+            where: { id: 'default' },
+        });
         if (state && !state.isOpen) {
             throw new common_1.BadRequestException('Disbursement blocked: The business day is currently CLOSED. Please start a new day first.');
         }

@@ -12,14 +12,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -30,6 +28,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -45,6 +44,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     }>;
     findAll(): Promise<({
         branch: {
@@ -64,14 +64,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -82,6 +80,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -97,6 +96,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     })[]>;
     search(query: string): Promise<{
         id: string;
@@ -107,14 +107,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -125,6 +123,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -140,6 +139,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     }[]>;
     getNextCid(): Promise<{
         cid: string;
@@ -150,14 +150,17 @@ export declare class CustomersController {
             branchId: string | null;
             createdAt: Date;
             updatedAt: Date;
-            status: string;
+            currency: string;
             lid: string | null;
+            customerId: string;
+            productId: string;
+            status: string;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
             durationMonths: number;
-            currency: string;
             applicationChannel: string | null;
+            loanOfficerId: string | null;
             disbursementDate: Date | null;
             repaymentType: string | null;
             firstInstallmentDate: Date | null;
@@ -182,17 +185,14 @@ export declare class CustomersController {
             reasonOfCredit: string | null;
             loanNote: string | null;
             memoReasonOfCredit: string | null;
-            customerId: string;
-            productId: string;
-            loanOfficerId: string | null;
         }[];
         documents: {
+            type: string;
             id: string;
             createdAt: Date;
+            customerId: string;
             status: string;
             rejectionReason: string | null;
-            customerId: string;
-            type: string;
             fileName: string;
             filePath: string;
             mimeType: string;
@@ -209,14 +209,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -227,6 +225,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -242,6 +241,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     }>;
     update(id: string, updateCustomerDto: UpdateCustomerDto): Promise<{
         id: string;
@@ -252,14 +252,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -270,6 +268,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -285,6 +284,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -295,14 +295,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -313,6 +311,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -328,6 +327,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     }>;
     updateKyc(id: string, updateKycDto: UpdateKycStatusDto): Promise<{
         id: string;
@@ -338,14 +338,12 @@ export declare class CustomersController {
         createdAt: Date;
         updatedAt: Date;
         address: string | null;
-        currency: string;
-        phone: string;
         cid: string | null;
-        nationalId: string | null;
-        passport: string | null;
-        accountNumber: string | null;
         khmerFirstName: string | null;
         khmerLastName: string | null;
+        phone: string;
+        nationalId: string | null;
+        passport: string | null;
         familyBook: string | null;
         dob: Date | null;
         kycStatus: string;
@@ -356,6 +354,7 @@ export declare class CustomersController {
         monthlyIncome: number | null;
         monthlyIncomeKhr: number | null;
         monthlyExpenses: number | null;
+        currency: string;
         businessType: string | null;
         incomeBracket: string | null;
         dependentCount: string | null;
@@ -371,6 +370,7 @@ export declare class CustomersController {
         guarantorPhone: string | null;
         guarantorNationalId: string | null;
         guarantorRelationship: string | null;
+        accountNumber: string | null;
     }>;
     syncKycFromLoans(): Promise<{
         updated: number;

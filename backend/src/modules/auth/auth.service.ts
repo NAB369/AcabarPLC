@@ -8,7 +8,8 @@ import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-const { authenticator } = require('otplib');
+import * as otplib from 'otplib';
+const { authenticator } = otplib;
 
 import { AuditService } from './audit.service';
 
@@ -29,7 +30,9 @@ export class AuthService {
     if (!user) return null;
 
     if (!user.isApproved) {
-      throw new UnauthorizedException('Account pending administrator approval.');
+      throw new UnauthorizedException(
+        'Account pending administrator approval.',
+      );
     }
 
     // Check Account Lockout

@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { LedgerService } from '../ledger/ledger.service';
 import { randomUUID } from 'crypto';
@@ -11,7 +15,9 @@ export class PeriodService {
   ) {}
 
   async getState() {
-    let state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+    let state = await this.prisma.systemState.findUnique({
+      where: { id: 'default' },
+    });
     if (!state) {
       state = await this.prisma.systemState.create({
         data: { id: 'default', businessDate: new Date(), isOpen: true },
@@ -23,7 +29,9 @@ export class PeriodService {
   async startOfDay(userId: string) {
     const state = await this.getState();
     if (state.isOpen) {
-      throw new BadRequestException('Start of Day failed: The system is already OPEN.');
+      throw new BadRequestException(
+        'Start of Day failed: The system is already OPEN.',
+      );
     }
 
     const nextDate = new Date(state.businessDate);
@@ -56,7 +64,9 @@ export class PeriodService {
   async endOfDay(userId: string) {
     const state = await this.getState();
     if (!state.isOpen) {
-      throw new BadRequestException('End of Day failed: The system is already CLOSED.');
+      throw new BadRequestException(
+        'End of Day failed: The system is already CLOSED.',
+      );
     }
 
     const businessDate = state.businessDate;
@@ -71,7 +81,9 @@ export class PeriodService {
 
       let totalInterestAccrued = 0;
       for (const loan of activeLoans) {
-        const dailyInterest = Number((loan.principalAmount * (loan.interestRate / 100) / 365).toFixed(4));
+        const dailyInterest = Number(
+          ((loan.principalAmount * (loan.interestRate / 100)) / 365).toFixed(4),
+        );
         if (dailyInterest <= 0) continue;
 
         const txReference = `ACCR-${randomUUID()}`;
@@ -120,11 +132,15 @@ export class PeriodService {
       for (const schedule of overdueSchedules) {
         if (!schedule.loan.penaltyRate) continue;
 
-        const diffTime = Math.abs(businessDate.getTime() - schedule.dueDate.getTime());
+        const diffTime = Math.abs(
+          businessDate.getTime() - schedule.dueDate.getTime(),
+        );
         const lateDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        const dailyPenaltyRate = (schedule.loan.penaltyRate / 100) / 365;
-        const penaltyAmount = Number((schedule.amountDue * dailyPenaltyRate * lateDays).toFixed(2));
+        const dailyPenaltyRate = schedule.loan.penaltyRate / 100 / 365;
+        const penaltyAmount = Number(
+          (schedule.amountDue * dailyPenaltyRate * lateDays).toFixed(2),
+        );
 
         await tx.repaymentSchedule.update({
           where: { id: schedule.id },
@@ -158,7 +174,7 @@ export class PeriodService {
       let generatedAlertsCount = 0;
       for (const schedule of upcomingSchedules) {
         if (!schedule.loan.reminderPreference) continue;
-        
+
         const diffTime = schedule.dueDate.getTime() - businessDate.getTime();
         const daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -168,7 +184,7 @@ export class PeriodService {
               loanId: schedule.loan.id,
               targetDate: schedule.dueDate,
               type: 'DUE_REMINDER',
-            }
+            },
           });
 
           if (!existingAlert) {
@@ -180,7 +196,7 @@ export class PeriodService {
                 message: `Upcoming payment of $${schedule.amountDue} due in ${daysUntilDue} days on ${schedule.dueDate.toISOString().split('T')[0]}.`,
                 status: 'PENDING',
                 targetDate: schedule.dueDate,
-              }
+              },
             });
             generatedAlertsCount++;
           }
@@ -226,7 +242,7 @@ export class PeriodService {
   async getTrialBalance() {
     // Assets: Cash Vault Balance
     const cashVault = await this.ledger.getAccountBalance('CASH-VAULT');
-    
+
     // Assets: Outstanding Loan Balance
     // Sum of all LedgerEntries with accountType = 'LOAN'
     const loanEntries = await this.prisma.ledgerEntry.aggregate({
@@ -238,16 +254,18 @@ export class PeriodService {
     const outstandingLoans = loanDebits - loanCredits;
 
     // Revenues: Interest Income
-    const interestIncome = await this.ledger.getAccountBalance('INTEREST-INCOME');
-    
+    const interestIncome =
+      await this.ledger.getAccountBalance('INTEREST-INCOME');
+
     // Revenues: Penalty Income
     const penaltyIncome = await this.ledger.getAccountBalance('PENALTY-INCOME');
 
     // System Seed Capital / Equity (To balance Cash Vault and Outstanding Loans)
     // Starting Seed Capital is estimated or just computed to balance: Equity = Assets - Liabilities/Revenue
     const totalAssets = Math.abs(cashVault.netBalance) + outstandingLoans;
-    const totalRevenue = Math.abs(interestIncome.netBalance) + Math.abs(penaltyIncome.netBalance);
-    
+    const totalRevenue =
+      Math.abs(interestIncome.netBalance) + Math.abs(penaltyIncome.netBalance);
+
     // In our system, let's represent standard accounts:
     return {
       accounts: [

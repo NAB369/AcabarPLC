@@ -34,14 +34,12 @@ export declare class FeedbackController {
             createdAt: Date;
             updatedAt: Date;
             address: string | null;
-            currency: string;
-            phone: string;
             cid: string | null;
-            nationalId: string | null;
-            passport: string | null;
-            accountNumber: string | null;
             khmerFirstName: string | null;
             khmerLastName: string | null;
+            phone: string;
+            nationalId: string | null;
+            passport: string | null;
             familyBook: string | null;
             dob: Date | null;
             kycStatus: string;
@@ -52,6 +50,7 @@ export declare class FeedbackController {
             monthlyIncome: number | null;
             monthlyIncomeKhr: number | null;
             monthlyExpenses: number | null;
+            currency: string;
             businessType: string | null;
             incomeBracket: string | null;
             dependentCount: string | null;
@@ -67,6 +66,7 @@ export declare class FeedbackController {
             guarantorPhone: string | null;
             guarantorNationalId: string | null;
             guarantorRelationship: string | null;
+            accountNumber: string | null;
         };
     } & {
         id: string;

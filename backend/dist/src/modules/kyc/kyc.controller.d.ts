@@ -4,46 +4,46 @@ export declare class KycController {
     constructor(kycService: KycService);
     uploadDocument(file: Express.Multer.File, customerId: string, type: string, req: any): Promise<{
         id: string;
-        createdAt: Date;
-        status: string;
-        rejectionReason: string | null;
-        customerId: string;
         type: string;
         fileName: string;
         filePath: string;
         mimeType: string;
         sizeBytes: number;
+        status: string;
         verifiedBy: string | null;
         verifiedAt: Date | null;
+        rejectionReason: string | null;
+        createdAt: Date;
+        customerId: string;
     }>;
     verifyDocument(id: string, dto: VerifyDocumentDto, req: any): Promise<{
         id: string;
-        createdAt: Date;
-        status: string;
-        rejectionReason: string | null;
-        customerId: string;
         type: string;
         fileName: string;
         filePath: string;
         mimeType: string;
         sizeBytes: number;
+        status: string;
         verifiedBy: string | null;
         verifiedAt: Date | null;
+        rejectionReason: string | null;
+        createdAt: Date;
+        customerId: string;
     }>;
     downloadDocument(id: string, res: any): Promise<void>;
     getCustomerDocuments(customerId: string): Promise<{
         id: string;
-        createdAt: Date;
-        status: string;
-        rejectionReason: string | null;
-        customerId: string;
         type: string;
         fileName: string;
         filePath: string;
         mimeType: string;
         sizeBytes: number;
+        status: string;
         verifiedBy: string | null;
         verifiedAt: Date | null;
+        rejectionReason: string | null;
+        createdAt: Date;
+        customerId: string;
     }[]>;
     checkCompleteness(customerId: string, productName: string): Promise<{
         complete: boolean;

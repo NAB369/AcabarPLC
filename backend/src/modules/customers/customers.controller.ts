@@ -31,13 +31,27 @@ export class CustomersController {
   }
 
   @Get()
-  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT')
+  @Roles(
+    'CREDIT_OFFICER',
+    'BRANCH_MANAGER',
+    'SUPER_ADMIN',
+    'COLLECTION_OFFICER',
+    'CUSTOMER_SERVICE',
+    'ACCOUNTANT',
+  )
   findAll() {
     return this.customersService.findAll();
   }
 
   @Get('search')
-  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT')
+  @Roles(
+    'CREDIT_OFFICER',
+    'BRANCH_MANAGER',
+    'SUPER_ADMIN',
+    'COLLECTION_OFFICER',
+    'CUSTOMER_SERVICE',
+    'ACCOUNTANT',
+  )
   search(@Query('query') query: string) {
     return this.customersService.search(query);
   }
@@ -49,7 +63,14 @@ export class CustomersController {
   }
 
   @Get(':id')
-  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER', 'CUSTOMER_SERVICE', 'ACCOUNTANT')
+  @Roles(
+    'CREDIT_OFFICER',
+    'BRANCH_MANAGER',
+    'SUPER_ADMIN',
+    'COLLECTION_OFFICER',
+    'CUSTOMER_SERVICE',
+    'ACCOUNTANT',
+  )
   findOne(@Param('id') id: string) {
     return this.customersService.findOne(id);
   }

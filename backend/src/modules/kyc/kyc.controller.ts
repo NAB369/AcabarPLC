@@ -67,7 +67,12 @@ export class KycController {
   }
 
   @Get('documents/:id/download')
-  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER')
+  @Roles(
+    'CREDIT_OFFICER',
+    'BRANCH_MANAGER',
+    'SUPER_ADMIN',
+    'COLLECTION_OFFICER',
+  )
   async downloadDocument(@Param('id') id: string, @Res() res: any) {
     const fileInfo = await this.kycService.getDocumentFile(id);
     res.setHeader('Content-Type', fileInfo.mimeType);
@@ -79,7 +84,12 @@ export class KycController {
   }
 
   @Get('customers/:customerId/documents')
-  @Roles('CREDIT_OFFICER', 'BRANCH_MANAGER', 'SUPER_ADMIN', 'COLLECTION_OFFICER')
+  @Roles(
+    'CREDIT_OFFICER',
+    'BRANCH_MANAGER',
+    'SUPER_ADMIN',
+    'COLLECTION_OFFICER',
+  )
   getCustomerDocuments(@Param('customerId') customerId: string) {
     return this.kycService.getCustomerDocuments(customerId);
   }

@@ -14,10 +14,7 @@ export class AlertsController {
   }
 
   @Patch(':id/status')
-  async updateStatus(
-    @Param('id') id: string,
-    @Body('status') status: string,
-  ) {
+  async updateStatus(@Param('id') id: string, @Body('status') status: string) {
     return this.alertsService.updateAlertStatus(id, status);
   }
 }

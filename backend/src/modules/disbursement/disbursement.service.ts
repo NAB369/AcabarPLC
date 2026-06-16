@@ -28,9 +28,13 @@ export class DisbursementService {
     loanId: string,
     method: 'BAKONG' | 'CASH' | 'BANK_TRANSFER' = 'BAKONG',
   ) {
-    const state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+    const state = await this.prisma.systemState.findUnique({
+      where: { id: 'default' },
+    });
     if (state && !state.isOpen) {
-      throw new BadRequestException('Disbursement blocked: The business day is currently CLOSED. Please start a new day first.');
+      throw new BadRequestException(
+        'Disbursement blocked: The business day is currently CLOSED. Please start a new day first.',
+      );
     }
 
     return this.prisma.$transaction(async (tx) => {

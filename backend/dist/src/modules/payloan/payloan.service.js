@@ -28,7 +28,9 @@ let PayloanService = PayloanService_1 = class PayloanService {
         const notification = await this.prisma.paymentNotification.create({
             data: {
                 billNo: dto.bill_no || '',
-                transactionId: dto.transaction_id ? BigInt(dto.transaction_id) : BigInt(0),
+                transactionId: dto.transaction_id
+                    ? BigInt(dto.transaction_id)
+                    : BigInt(0),
                 transactionDate: dto.transaction_date || '',
                 transactionTime: dto.transaction_time || '',
                 payerAccountNo: dto.payer_account_no || '',
@@ -60,7 +62,13 @@ let PayloanService = PayloanService_1 = class PayloanService {
                         const isOverpaid = amount > totalDue;
                         await tx.repaymentSchedule.update({
                             where: { id: dto.bill_no },
-                            data: { status: isFullPayment ? 'PAID' : (isOverpaid ? 'OVERPAID' : 'PARTIALLY_PAID') },
+                            data: {
+                                status: isFullPayment
+                                    ? 'PAID'
+                                    : isOverpaid
+                                        ? 'OVERPAID'
+                                        : 'PARTIALLY_PAID',
+                            },
                         });
                         const txReference = `API-REP-${(0, crypto_1.randomUUID)()}`;
                         const ledgerEntries = [

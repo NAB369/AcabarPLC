@@ -58,11 +58,15 @@ export class CustomersService {
 
     let newAccountNumber = '';
     let isUnique = false;
-    
+
     while (!isUnique) {
       // Generate 10-digit random number
-      newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-      const existing = await this.prisma.customer.findUnique({ where: { accountNumber: newAccountNumber } });
+      newAccountNumber = Math.floor(
+        1000000000 + Math.random() * 9000000000,
+      ).toString();
+      const existing = await this.prisma.customer.findUnique({
+        where: { accountNumber: newAccountNumber },
+      });
       if (!existing) {
         isUnique = true;
       }

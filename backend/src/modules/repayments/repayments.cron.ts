@@ -34,11 +34,13 @@ export class RepaymentsCron {
         // Calculate days late
         const diffTime = Math.abs(now.getTime() - schedule.dueDate.getTime());
         const lateDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        
+
         // Simple penalty formula: (Amount Due * Penalty Rate / 365) * Days Late
         // Note: penaltyRate is assumed to be an annual percentage (e.g. 18 for 18%)
-        const dailyPenaltyRate = (schedule.loan.penaltyRate / 100) / 365;
-        const penaltyAmount = Number((schedule.amountDue * dailyPenaltyRate * lateDays).toFixed(2));
+        const dailyPenaltyRate = schedule.loan.penaltyRate / 100 / 365;
+        const penaltyAmount = Number(
+          (schedule.amountDue * dailyPenaltyRate * lateDays).toFixed(2),
+        );
 
         await this.prisma.repaymentSchedule.update({
           where: { id: schedule.id },
@@ -47,11 +49,13 @@ export class RepaymentsCron {
             penaltyAmount,
           },
         });
-        
+
         updatedCount++;
       }
 
-      this.logger.log(`Successfully calculated penalties for ${updatedCount} overdue schedules.`);
+      this.logger.log(
+        `Successfully calculated penalties for ${updatedCount} overdue schedules.`,
+      );
     } catch (error) {
       this.logger.error('Error calculating penalties', error);
     }

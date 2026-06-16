@@ -4,6 +4,8 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
+import * as nodePath from 'path';
+import * as nodeFs from 'fs';
 import { getChecklist } from './kyc-checklist';
 import { AuditService } from '../auth/audit.service';
 
@@ -132,10 +134,8 @@ export class KycService {
       throw new NotFoundException('Document not found');
     }
 
-    const { resolve } = require('path');
-    const { existsSync } = require('fs');
-    const absolutePath = resolve(process.cwd(), doc.filePath);
-    if (!existsSync(absolutePath)) {
+    const absolutePath = nodePath.resolve(process.cwd(), doc.filePath);
+    if (!nodeFs.existsSync(absolutePath)) {
       throw new NotFoundException('Physical file not found on disk');
     }
 

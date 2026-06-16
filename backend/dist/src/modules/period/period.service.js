@@ -22,7 +22,9 @@ let PeriodService = class PeriodService {
         this.ledger = ledger;
     }
     async getState() {
-        let state = await this.prisma.systemState.findUnique({ where: { id: 'default' } });
+        let state = await this.prisma.systemState.findUnique({
+            where: { id: 'default' },
+        });
         if (!state) {
             state = await this.prisma.systemState.create({
                 data: { id: 'default', businessDate: new Date(), isOpen: true },
@@ -71,7 +73,7 @@ let PeriodService = class PeriodService {
             });
             let totalInterestAccrued = 0;
             for (const loan of activeLoans) {
-                const dailyInterest = Number((loan.principalAmount * (loan.interestRate / 100) / 365).toFixed(4));
+                const dailyInterest = Number(((loan.principalAmount * (loan.interestRate / 100)) / 365).toFixed(4));
                 if (dailyInterest <= 0)
                     continue;
                 const txReference = `ACCR-${(0, crypto_1.randomUUID)()}`;
@@ -118,7 +120,7 @@ let PeriodService = class PeriodService {
                     continue;
                 const diffTime = Math.abs(businessDate.getTime() - schedule.dueDate.getTime());
                 const lateDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const dailyPenaltyRate = (schedule.loan.penaltyRate / 100) / 365;
+                const dailyPenaltyRate = schedule.loan.penaltyRate / 100 / 365;
                 const penaltyAmount = Number((schedule.amountDue * dailyPenaltyRate * lateDays).toFixed(2));
                 await tx.repaymentSchedule.update({
                     where: { id: schedule.id },
@@ -155,7 +157,7 @@ let PeriodService = class PeriodService {
                             loanId: schedule.loan.id,
                             targetDate: schedule.dueDate,
                             type: 'DUE_REMINDER',
-                        }
+                        },
                     });
                     if (!existingAlert) {
                         await tx.clientAlert.create({
@@ -166,7 +168,7 @@ let PeriodService = class PeriodService {
                                 message: `Upcoming payment of $${schedule.amountDue} due in ${daysUntilDue} days on ${schedule.dueDate.toISOString().split('T')[0]}.`,
                                 status: 'PENDING',
                                 targetDate: schedule.dueDate,
-                            }
+                            },
                         });
                         generatedAlertsCount++;
                     }
