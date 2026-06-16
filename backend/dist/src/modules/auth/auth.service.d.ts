@@ -59,6 +59,8 @@ export declare class AuthService {
         firstName: string;
         lastName: string;
         isActive: boolean;
+        isApproved: boolean;
+        requestedRole: string | null;
         branchId: string | null;
         passwordChangedAt: Date;
         failedLoginAttempts: number;

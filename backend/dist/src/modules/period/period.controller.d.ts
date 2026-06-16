@@ -26,6 +26,7 @@ export declare class PeriodController {
         };
         interestAccrued: number;
         penaltiesRecalculated: number;
+        remindersGenerated: number;
         success: boolean;
     }>;
     getLogs(): Promise<{

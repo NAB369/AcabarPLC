@@ -20,4 +20,10 @@ export class DashboardController {
   getCreditOfficerReport() {
     return this.dashboardService.getCreditOfficerReport();
   }
+
+  @Get('reports/recent-payments')
+  @Roles('SUPER_ADMIN', 'BRANCH_MANAGER', 'ACCOUNTANT', 'AUDITOR')
+  getRecentPaymentsReport() {
+    return this.dashboardService.getRecentPaymentsReport();
+  }
 }

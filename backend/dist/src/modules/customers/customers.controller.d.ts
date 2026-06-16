@@ -13,8 +13,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;
@@ -65,8 +65,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;
@@ -108,8 +108,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;
@@ -168,6 +168,7 @@ export declare class CustomersController {
             collectionFeeValue: number | null;
             gracePeriod: number | null;
             refinanceFeeAmt: number | null;
+            reminderPreference: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
             internalCreditScore: number | null;
@@ -209,8 +210,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;
@@ -252,8 +253,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;
@@ -295,8 +296,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;
@@ -338,8 +339,8 @@ export declare class CustomersController {
         updatedAt: Date;
         address: string | null;
         currency: string;
-        cid: string | null;
         phone: string;
+        cid: string | null;
         nationalId: string | null;
         passport: string | null;
         accountNumber: string | null;

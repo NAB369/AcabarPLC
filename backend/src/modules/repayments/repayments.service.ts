@@ -81,16 +81,33 @@ export class RepaymentsService {
       ];
 
       const penaltyPaid = Math.min(amount, penaltyAmount);
-      const loanPaid = amount - penaltyPaid;
+      let remaining = amount - penaltyPaid;
 
-      if (loanPaid > 0) {
+      const interestPaid = Math.min(remaining, nextSchedule.interestComponent);
+      remaining -= interestPaid;
+
+      const principalPaid = remaining;
+
+      if (principalPaid > 0) {
         ledgerEntries.push({
           accountId: loanId,
           accountCode: '12100', // Loan Portfolio
           accountType: 'LOAN',
-          credit: loanPaid,
+          credit: principalPaid,
           transactionReference: txReference,
-          description: `Repayment applied to Installment #${nextSchedule.installmentNumber}`,
+          description: `Repayment applied to Principal - Installment #${nextSchedule.installmentNumber}`,
+          loanId: loanId,
+        });
+      }
+
+      if (interestPaid > 0) {
+        ledgerEntries.push({
+          accountId: 'INTEREST-INCOME',
+          accountCode: '40100', // Interest Income
+          accountType: 'INTEREST_INCOME',
+          credit: interestPaid,
+          transactionReference: txReference,
+          description: `Repayment applied to Interest - Installment #${nextSchedule.installmentNumber}`,
           loanId: loanId,
         });
       }

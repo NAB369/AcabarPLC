@@ -11,12 +11,12 @@ import {
 } from 'lucide-react';
 
 const STAGES = [
-  { id: 'DRAFT', label: 'Draft', statuses: ['DRAFT', 'SUBMITTED'] },
-  { id: 'KYC', label: 'KYC Review', statuses: ['KYC_REVIEW', 'KYC_APPROVED', 'KYC_REJECTED'] },
-  { id: 'CREDIT', label: 'Credit Check', statuses: ['CREDIT_CHECK', 'UNDERWRITING'] },
-  { id: 'APPROVAL', label: 'Approval', statuses: ['TIER1_REVIEW', 'TIER2_REVIEW', 'TIER3_REVIEW'] },
-  { id: 'DISBURSE', label: 'Disbursement', statuses: ['APPROVED', 'PENDING_DISBURSEMENT', 'DISBURSED'] },
-  { id: 'ACTIVE', label: 'Active', statuses: ['ACTIVE', 'COMPLETED'] },
+  { id: 'DRAFT', label: 'Draft', role: 'Credit Officer', statuses: ['DRAFT', 'SUBMITTED'] },
+  { id: 'KYC', label: 'KYC Review', role: 'Compliance', statuses: ['KYC_REVIEW', 'KYC_APPROVED', 'KYC_REJECTED'] },
+  { id: 'CREDIT', label: 'Credit Check', role: 'Risk Officer', statuses: ['CREDIT_CHECK', 'UNDERWRITING'] },
+  { id: 'APPROVAL', label: 'Approval', role: 'BM / Admin', statuses: ['TIER1_REVIEW', 'TIER2_REVIEW', 'TIER3_REVIEW'] },
+  { id: 'DISBURSE', label: 'Disbursement', role: 'Accountant', statuses: ['APPROVED', 'PENDING_DISBURSEMENT', 'DISBURSED'] },
+  { id: 'ACTIVE', label: 'Active', role: 'System', statuses: ['ACTIVE', 'COMPLETED'] },
 ];
 
 export default function ApplicationDetailPage() {
@@ -294,9 +294,14 @@ export default function ApplicationDetailPage() {
                 }}>
                   {isCompleted ? <CheckCircle2 size={16} /> : idx + 1}
                 </div>
-                <span style={{ fontSize: '0.6875rem', fontWeight: isActive ? '700' : '600', color: isActive ? 'var(--foreground)' : 'var(--text-muted)' }}>
-                  {stage.label}
-                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '4px' }}>
+                  <span style={{ fontSize: '0.6875rem', fontWeight: isActive ? '700' : '600', color: isActive ? 'var(--foreground)' : 'var(--text-muted)' }}>
+                    {stage.label}
+                  </span>
+                  <span style={{ fontSize: '0.55rem', fontWeight: '700', color: 'var(--text-muted-dark)', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {stage.role}
+                  </span>
+                </div>
               </div>
             );
           })}

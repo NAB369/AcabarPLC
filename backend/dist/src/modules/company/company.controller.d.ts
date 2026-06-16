@@ -8,10 +8,10 @@ export declare class CompanyController {
         updatedAt: Date;
         name: string;
         address: string | null;
-        phone: string | null;
         industry: string | null;
         size: string | null;
         website: string | null;
+        phone: string | null;
         logoUrl: string | null;
         sidebarConfig: import("@prisma/client/runtime/library").JsonValue | null;
     }>;
@@ -21,10 +21,10 @@ export declare class CompanyController {
         updatedAt: Date;
         name: string;
         address: string | null;
-        phone: string | null;
         industry: string | null;
         size: string | null;
         website: string | null;
+        phone: string | null;
         logoUrl: string | null;
         sidebarConfig: import("@prisma/client/runtime/library").JsonValue | null;
     }>;

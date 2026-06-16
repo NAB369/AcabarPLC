@@ -49,9 +49,7 @@ let LoansService = class LoansService {
                 status: 'PENDING',
             },
         });
-        const schedules = this.generateRepaymentSchedule(loan.id, principalAmount, Number(product.baseInterestRate), durationMonths, product.interestType);
-        await this.prisma.repaymentSchedule.createMany({ data: schedules });
-        return { loan, schedules };
+        return { loan, schedules: [] };
     }
     async disburseLoan(loanId) {
         return this.prisma.$transaction(async (tx) => {
@@ -60,6 +58,9 @@ let LoansService = class LoansService {
                 throw new common_1.NotFoundException('Loan not found');
             if (loan.status !== 'APPROVED')
                 throw new common_1.BadRequestException('Loan must be APPROVED before disbursement');
+            const product = await tx.loanProduct.findUnique({ where: { id: loan.productId } });
+            if (!product)
+                throw new common_1.NotFoundException('Loan Product not found');
             const updatedLoan = await tx.loan.update({
                 where: { id: loanId },
                 data: {
@@ -67,6 +68,8 @@ let LoansService = class LoansService {
                     disbursedAt: new Date(),
                 },
             });
+            const schedules = this.generateRepaymentSchedule(loan.id, loan.principalAmount, loan.interestRate, loan.durationMonths, product.interestType);
+            await tx.repaymentSchedule.createMany({ data: schedules });
             const txReference = `DISB-${(0, crypto_1.randomUUID)()}`;
             await this.ledger.recordTransaction([
                 {
@@ -99,24 +102,8 @@ let LoansService = class LoansService {
         return this.prisma.$transaction(async (tx) => {
             const loan = await tx.loan.update({
                 where: { id: loanId },
-                data: { status: 'APPROVED' },
-                include: { customer: true }
+                data: { status: 'APPROVED' }
             });
-            if (!loan.customer.accountNumber) {
-                let newAccountNumber = '';
-                let isUnique = false;
-                while (!isUnique) {
-                    newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-                    const existing = await tx.customer.findUnique({ where: { accountNumber: newAccountNumber } });
-                    if (!existing) {
-                        isUnique = true;
-                    }
-                }
-                await tx.customer.update({
-                    where: { id: loan.customerId },
-                    data: { accountNumber: newAccountNumber }
-                });
-            }
             return loan;
         });
     }
@@ -256,7 +243,7 @@ let LoansService = class LoansService {
                 score -= 100;
         }
         const income = loan.customer.monthlyIncome || 0;
-        const incomeDollar = income / 100;
+        const incomeDollar = income;
         if (incomeDollar > 2000)
             score += 150;
         else if (incomeDollar >= 1000)

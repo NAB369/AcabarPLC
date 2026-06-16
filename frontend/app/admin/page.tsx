@@ -27,8 +27,8 @@ export default function AdminDashboardPage() {
       case 'UNDERWRITING': return <span className="badge badge-review">{statusText}</span>;
       case 'APPROVED': return <span className="badge badge-approved">{statusText}</span>;
       case 'REJECTED': return <span className="badge badge-rejected">{statusText}</span>;
-      case 'ACTIVE': return <span className="badge badge-disbursed">{statusText}</span>;
-      case 'COMPLETED': return <span className="badge badge-approved">{statusText}</span>;
+      case 'ACTIVE': return <span className="badge badge-active">{statusText}</span>;
+      case 'COMPLETED': return <span className="badge badge-completed">{statusText}</span>;
       case 'OVERDUE': return <span className="badge badge-rejected">{statusText}</span>;
       case 'TIER1_REVIEW': return <span className="badge badge-review">{statusText}</span>;
       case 'TIER2_REVIEW': return <span className="badge badge-review">{statusText}</span>;

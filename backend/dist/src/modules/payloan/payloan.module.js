@@ -10,11 +10,13 @@ exports.PayloanModule = void 0;
 const common_1 = require("@nestjs/common");
 const payloan_controller_1 = require("./payloan.controller");
 const payloan_service_1 = require("./payloan.service");
+const ledger_module_1 = require("../ledger/ledger.module");
 let PayloanModule = class PayloanModule {
 };
 exports.PayloanModule = PayloanModule;
 exports.PayloanModule = PayloanModule = __decorate([
     (0, common_1.Module)({
+        imports: [ledger_module_1.LedgerModule],
         controllers: [payloan_controller_1.PayloanController],
         providers: [payloan_service_1.PayloanService],
     })

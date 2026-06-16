@@ -9,7 +9,7 @@ import {
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
   Sun, Moon, Clock, BookOpen, LayoutList, TrendingUp, TrendingDown,
   ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight, ChevronLeft,
-  FileCheck, Landmark, CheckSquare, Briefcase, Menu, X
+  FileCheck, Landmark, CheckSquare, Briefcase, Menu, X, ShieldCheck
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
@@ -35,6 +35,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [user, setUser] = useState<any>({});
 
   const isAccountant = user?.roles?.includes('ACCOUNTANT') || user?.roles?.includes('SUPER_ADMIN');
+  const isLoanOfficer = user?.roles?.includes('LOAN_OFFICER') || user?.roles?.includes('CREDIT_OFFICER') || user?.roles?.includes('SUPER_ADMIN');
+  const isAdmin = user?.roles?.includes('ADMIN') || user?.roles?.includes('SUPER_ADMIN');
+  const isTeller = user?.roles?.includes('TELLER') || user?.roles?.includes('CASHIER') || isAccountant || isLoanOfficer;
   const profileRef = useRef<HTMLDivElement>(null);
 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -143,7 +146,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           display: 'flex', 
           alignItems: 'center', 
           gap: '0.75rem', 
-          background: '#ffffff',
+          backgroundColor: 'transparent',
           borderBottom: '1px solid var(--border-color)',
           boxSizing: 'border-box'
         }}>
@@ -167,11 +170,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontWeight: '800', fontSize: '1.15rem', letterSpacing: '-0.03em', color: '#1e3a8a', lineHeight: '1.2' }}>Acabar Plc</span>
-              <span style={{ fontWeight: '600', fontSize: '0.65rem', color: '#64748b', marginTop: '1px' }}>អាខាបារ ម.ក</span>
+              <span className="text-[#1e3a8a] dark:text-white" style={{ fontWeight: '800', fontSize: '1.15rem', letterSpacing: '-0.03em', lineHeight: '1.2' }}>Acabar Plc</span>
+              <span className="text-slate-500 dark:text-slate-400" style={{ fontWeight: '600', fontSize: '0.65rem', marginTop: '1px' }}>អាខាបារ ម.ក</span>
             </div>
           </div>
-          <button className="md:hidden text-slate-500 hover:text-slate-900" onClick={() => setIsMobileMenuOpen(false)}>
+          <button className="md:hidden text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>
             <X size={20} />
           </button>
         </div>
@@ -204,7 +207,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Link>
               )}
 
-              {sidebarConfig['CBC'] !== false && (
+              {sidebarConfig['CBC'] !== false && isAdmin && (
                 <Link href="/admin/cbc" className={`sidebar-link ${(pathname === '/admin/cbc') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/cbc')}>
                   <FileCheck size={18} />
                   {t('kycReview')}
@@ -227,7 +230,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Link>
               )}
 
-              {sidebarConfig['New Application'] !== false && (
+              {sidebarConfig['New Application'] !== false && isLoanOfficer && (
                 <Link href="/admin/loans/new" className={`sidebar-link ${(pathname === '/admin/loans/new') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/loans/new')}>
                   <FileText size={18} />
                   {t('applyForLoan')}
@@ -235,7 +238,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Link>
               )}
 
-              {sidebarConfig['Underwriting'] !== false && (
+              {sidebarConfig['Underwriting'] !== false && isAdmin && (
                 <Link href="/admin/underwriting" className={`sidebar-link ${(pathname === '/admin/underwriting') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/underwriting')}>
                   <CheckSquare size={18} />
                   {t('approvals')}
@@ -243,7 +246,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Link>
               )}
 
-              {sidebarConfig['Loan Product'] !== false && (
+              {sidebarConfig['Reminders'] !== false && isLoanOfficer && (
+                <Link href="/admin/alerts" className={`sidebar-link ${(pathname === '/admin/alerts') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/alerts')}>
+                  <Bell size={18} />
+                  Reminders
+                  <NavChevron isActive={pathname === '/admin/alerts'} />
+                </Link>
+              )}
+
+              {sidebarConfig['Loan Product'] !== false && isAdmin && (
                 <Link href="/admin/products" className={`sidebar-link ${(pathname === '/admin/products') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/products')}>
                   <Box size={18} />
                   {t('loanProduct')}
@@ -258,7 +269,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionOperations')}</div>
 
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              {sidebarConfig['Customer'] !== false && (
+              {sidebarConfig['Customer'] !== false && isTeller && (
                 <Link href="/admin/customers/repayments" className={`sidebar-link ${(pathname === '/admin/customers/repayments') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/customers/repayments')}>
                   <CreditCard size={18} />
                   {t('repaymentsNav')}
@@ -308,6 +319,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <Link href="/admin/period" className={`sidebar-link ${pathname === '/admin/period' ? 'active' : ''}`} style={{ ...navItemStyle(pathname === '/admin/period') }}>
                     <Clock size={18} /> {t('sodEodPanel')}
                     <NavChevron isActive={pathname === '/admin/period'} />
+                  </Link>
+                </div>
+              </>
+            )}
+
+            {isAdmin && (
+              <>
+                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>System Admin</div>
+
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Link href="/admin/users" className={`sidebar-link ${pathname === '/admin/users' ? 'active' : ''}`} style={{ ...navItemStyle(pathname === '/admin/users') }}>
+                    <ShieldCheck size={18} /> User Approvals
+                    <NavChevron isActive={pathname === '/admin/users'} />
                   </Link>
                 </div>
               </>

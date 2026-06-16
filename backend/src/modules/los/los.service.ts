@@ -87,6 +87,7 @@ export class LosService {
         collectionFeeValue: dto.collectionFeeValue ?? null,
         gracePeriod: dto.gracePeriod ?? null,
         refinanceFeeAmt: dto.refinanceFeeAmt ?? null,
+        reminderPreference: dto.reminderPreference ?? null,
         loanCycle: dto.loanCycle || null,
         recommenderType: dto.recommenderType || null,
         branchId: dto.branchId || null,

@@ -28,6 +28,10 @@ export class AuthService {
 
     if (!user) return null;
 
+    if (!user.isApproved) {
+      throw new UnauthorizedException('Account pending administrator approval.');
+    }
+
     // Check Account Lockout
     if (user.lockoutUntil && user.lockoutUntil > new Date()) {
       const remainingMinutes = Math.ceil(
@@ -191,7 +195,7 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
-    const { email, password, firstName, lastName } = registerDto;
+    const { email, password, firstName, lastName, requestedRole } = registerDto;
 
     const existingUser = await this.prisma.user.findUnique({
       where: { email },
@@ -209,22 +213,9 @@ export class AuthService {
         passwordHash,
         firstName,
         lastName,
+        requestedRole,
       },
     });
-
-    // Default role assignment
-    const defaultRole = await this.prisma.role.findUnique({
-      where: { name: 'CREDIT_OFFICER' },
-    });
-
-    if (defaultRole) {
-      await this.prisma.userRole.create({
-        data: {
-          userId: user.id,
-          roleId: defaultRole.id,
-        },
-      });
-    }
 
     await this.auditService.log({
       userId: user.id,

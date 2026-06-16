@@ -28,6 +28,7 @@ export declare class PeriodService {
         };
         interestAccrued: number;
         penaltiesRecalculated: number;
+        remindersGenerated: number;
         success: boolean;
     }>;
     getLogs(): Promise<{

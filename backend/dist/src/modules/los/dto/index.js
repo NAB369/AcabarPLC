@@ -21,6 +21,7 @@ class CreateDraftDto {
     collectionFeeValue;
     gracePeriod;
     refinanceFeeAmt;
+    reminderPreference;
     loanCycle;
     recommenderType;
     branchId;

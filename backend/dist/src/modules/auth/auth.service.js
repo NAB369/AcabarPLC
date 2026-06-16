@@ -65,6 +65,9 @@ let AuthService = class AuthService {
         });
         if (!user)
             return null;
+        if (!user.isApproved) {
+            throw new common_1.UnauthorizedException('Account pending administrator approval.');
+        }
         if (user.lockoutUntil && user.lockoutUntil > new Date()) {
             const remainingMinutes = Math.ceil((user.lockoutUntil.getTime() - new Date().getTime()) / 60000);
             throw new common_1.UnauthorizedException(`Account is locked. Try again in ${remainingMinutes} minutes.`);
@@ -183,7 +186,7 @@ let AuthService = class AuthService {
         return { message: 'Logged out successfully' };
     }
     async register(registerDto) {
-        const { email, password, firstName, lastName } = registerDto;
+        const { email, password, firstName, lastName, requestedRole } = registerDto;
         const existingUser = await this.prisma.user.findUnique({
             where: { email },
         });
@@ -197,19 +200,9 @@ let AuthService = class AuthService {
                 passwordHash,
                 firstName,
                 lastName,
+                requestedRole,
             },
         });
-        const defaultRole = await this.prisma.role.findUnique({
-            where: { name: 'CREDIT_OFFICER' },
-        });
-        if (defaultRole) {
-            await this.prisma.userRole.create({
-                data: {
-                    userId: user.id,
-                    roleId: defaultRole.id,
-                },
-            });
-        }
         await this.auditService.log({
             userId: user.id,
             action: 'REGISTRATION',

@@ -138,7 +138,7 @@ export default function DashboardPage() {
 
   return (
     <div className="py-[var(--spacing-xl)] animate-fade-in">
-      <div className="flex justify-between items-center mb-[var(--spacing-2xl)] flex-wrap gap-md">
+      <div className="flex justify-between items-center mb-[var(--spacing-2xl)] flex-wrap gap-4">
         <div>
           <h2 className="mb-[var(--spacing-xs)]">Hello, <span className="text-gradient">{user.firstName} {user.lastName}</span></h2>
           <p>Welcome back to your financial dashboard.</p>
@@ -149,10 +149,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="flex gap-xl flex-wrap">
+      <div className="flex gap-8 flex-wrap">
         <div className="flex-1 min-w-[300px]">
           <h3 className="mb-[var(--spacing-lg)]">Your Active Loans</h3>
-          <div className="flex flex-col gap-md">
+          <div className="flex flex-col gap-4">
             {loans.length === 0 ? (
               <div className="text-[rgba(255,255,255,0.5)]">No active loans. Apply for one to get started.</div>
             ) : loans.map((loan) => (
@@ -189,7 +189,7 @@ export default function DashboardPage() {
 
         <div className="flex-1 min-w-[300px]">
           <h3 className="mb-[var(--spacing-lg)]">Quick Actions</h3>
-          <div className="glass-panel flex flex-col gap-md">
+          <div className="glass-panel flex flex-col gap-4">
             <button onClick={handleApplyLoan} className="btn btn-secondary" style={{ width: '100%', justifyContent: 'flex-start' }}>
               <span className="text-[1.5rem] mr-[var(--spacing-sm)]">📄</span> Apply for a new loan ($5k)
             </button>
@@ -209,7 +209,7 @@ export default function DashboardPage() {
             </div>
             <p className="text-[0.875rem] opacity-70 mb-[var(--spacing-lg)]">Amount: ${qrData.amount}</p>
             
-            <div className="flex flex-col gap-sm">
+            <div className="flex flex-col gap-2">
               <button onClick={simulateBankWebhook} disabled={isSimulatingPayment} className="btn btn-primary">
                 {isSimulatingPayment ? 'Processing...' : 'Simulate Bank App Payment'}
               </button>

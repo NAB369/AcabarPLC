@@ -4,8 +4,8 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Acabar PLC | សេវាកម្មប្រឹក្សាយោបល់ឥណទាន និងហិរញ្ញវត្ថុជាន់ខ្ពស់",
-  description: "សេវាកម្មប្រឹក្សាយោបល់ឥណទាន និងហិរញ្ញវត្ថុជាន់ខ្ពស់ ជួយសម្រួលការរៀបចំកញ្ចប់ថវិកា និងយុទ្ធសាស្ត្រគ្រប់គ្រងហានិភ័យប្រកបដោយទំនួលខុសត្រូវ។",
+  title: "Acabar Plc | អាខាបារ ម.ក",
+  description: "ប្រព័ន្ធគ្រប់គ្រងស្នូលរបស់ អាខាបារ ម.ក",
   icons: {
     icon: '/acabar-logo.png',
   },

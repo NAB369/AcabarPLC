@@ -158,6 +158,33 @@ export class UsersController {
     });
   }
 
+  @Patch(':id/approve')
+  @Permissions('MANAGE_SYSTEM')
+  async approveUser(
+    @Param('id') id: string,
+    @Body('roleName') roleName?: string,
+  ) {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) throw new Error('User not found');
+
+    if (roleName) {
+      const role = await this.prisma.role.findUnique({ where: { name: roleName } });
+      if (role) {
+        await this.prisma.$transaction(async (tx) => {
+          await tx.userRole.deleteMany({ where: { userId: id } });
+          await tx.userRole.create({
+            data: { userId: id, roleId: role.id },
+          });
+        });
+      }
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: { isApproved: true },
+    });
+  }
+
   @Get('audit-logs')
   @Permissions('MANAGE_SYSTEM')
   async getAuditLogs() {

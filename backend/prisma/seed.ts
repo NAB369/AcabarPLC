@@ -145,6 +145,7 @@ async function main() {
       passwordHash,
       firstName: 'Super',
       lastName: 'Admin',
+      isApproved: true,
       branchId: branch1.id,
     },
   });
@@ -172,6 +173,7 @@ async function main() {
       passwordHash,
       firstName: 'Chamnab',
       lastName: 'Kol',
+      isApproved: true,
       branchId: branch1.id,
     },
   });
@@ -205,6 +207,7 @@ async function main() {
       passwordHash,
       firstName: 'Accountant',
       lastName: 'User',
+      isApproved: true,
       branchId: branch1.id,
     },
   });
@@ -251,90 +254,7 @@ async function main() {
     },
   });
 
-  // 5. Create Customers
-  const customer1 = await prisma.customer.upsert({
-    where: { phone: '+85512345678' },
-    update: {},
-    create: {
-      firstName: 'Sokha',
-      lastName: 'Chan',
-      phone: '+85512345678',
-      email: 'sokha.chan@example.com',
-      nationalId: '123456789',
-      branchId: branch1.id,
-      kycStatus: 'APPROVED',
-      employmentStatus: 'EMPLOYED',
-      employerName: 'Tech Co Ltd',
-      monthlyIncome: 1200,
-      monthlyExpenses: 400,
-      gender: 'MALE',
-    },
-  });
-
-  const customer2 = await prisma.customer.upsert({
-    where: { phone: '+85511223344' },
-    update: {},
-    create: {
-      firstName: 'Sophea',
-      lastName: 'Kim',
-      phone: '+85511223344',
-      email: 'sophea.kim@example.com',
-      nationalId: 'KH88776655',
-      branchId: branch1.id,
-      kycStatus: 'PENDING',
-      employmentStatus: 'EMPLOYED',
-      monthlyIncome: 1500,
-      monthlyExpenses: 600,
-      gender: 'FEMALE',
-    },
-  });
-
-  // 6. Create Loans
-  // Active Loan for Sokha
-  const activeLoan = await prisma.loan.create({
-    data: {
-      customerId: customer1.id,
-      productId: product1.id,
-      principalAmount: 5000,
-      interestRate: 12,
-      durationMonths: 12,
-      status: 'ACTIVE',
-      loanOfficerId: officer.id,
-      disbursementMethod: 'BAKONG',
-      disbursedAt: new Date(new Date().setMonth(new Date().getMonth() - 2)),
-    },
-  });
-
-  // Schedules for active loan
-  let startDate = new Date(activeLoan.disbursedAt!);
-  for (let i = 1; i <= 12; i++) {
-    startDate.setMonth(startDate.getMonth() + 1);
-    await prisma.repaymentSchedule.create({
-      data: {
-        loanId: activeLoan.id,
-        installmentNumber: i,
-        amountDue: 466.67,
-        principalComponent: 416.67,
-        interestComponent: 50.00,
-        dueDate: new Date(startDate),
-        status: i <= 2 ? 'PAID' : 'PENDING',
-      },
-    });
-  }
-
-  // Pending Loan for Sophea Kim (to show in queue)
-  await prisma.loan.create({
-    data: {
-      customerId: customer2.id,
-      productId: product1.id,
-      principalAmount: 2500,
-      interestRate: 12,
-      durationMonths: 12,
-      status: 'SUBMITTED', // This should show up in the queue
-      loanOfficerId: officer.id,
-      applicationChannel: 'MOBILE',
-    },
-  });
+  // Note: Test Customers and Loans have been removed for production usage
 
   // 7. Create Company Info
   await prisma.company.upsert({

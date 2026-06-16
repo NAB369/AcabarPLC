@@ -30,6 +30,7 @@ export declare class DisbursementService {
             collectionFeeValue: number | null;
             gracePeriod: number | null;
             refinanceFeeAmt: number | null;
+            reminderPreference: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
             internalCreditScore: number | null;
@@ -49,7 +50,7 @@ export declare class DisbursementService {
         };
         disbursementRef: string;
         transactionReference: string;
-        method: "BAKONG" | "CASH" | "BANK_TRANSFER";
+        method: "CASH" | "BAKONG" | "BANK_TRANSFER";
     }>;
     generateRepaymentKhqr(loanId: string, installmentNumber: number): Promise<import("./bakong.client").KhqrData>;
 }

@@ -127,6 +127,26 @@ let UsersController = class UsersController {
             },
         });
     }
+    async approveUser(id, roleName) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+        if (!user)
+            throw new Error('User not found');
+        if (roleName) {
+            const role = await this.prisma.role.findUnique({ where: { name: roleName } });
+            if (role) {
+                await this.prisma.$transaction(async (tx) => {
+                    await tx.userRole.deleteMany({ where: { userId: id } });
+                    await tx.userRole.create({
+                        data: { userId: id, roleId: role.id },
+                    });
+                });
+            }
+        }
+        return this.prisma.user.update({
+            where: { id },
+            data: { isApproved: true },
+        });
+    }
     async getAuditLogs() {
         return this.auditService.getLogs();
     }
@@ -213,6 +233,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.Patch)(':id/approve'),
+    (0, permissions_decorator_1.Permissions)('MANAGE_SYSTEM'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)('roleName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "approveUser", null);
 __decorate([
     (0, common_1.Get)('audit-logs'),
     (0, permissions_decorator_1.Permissions)('MANAGE_SYSTEM'),

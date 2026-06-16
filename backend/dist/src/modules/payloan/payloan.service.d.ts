@@ -1,9 +1,11 @@
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
+import { LedgerService } from '../ledger/ledger.service';
 import { PayloanCallbackDto } from './payloan.dto';
 export declare class PayloanService {
     private prisma;
+    private ledger;
     private readonly logger;
-    constructor(prisma: PrismaService);
+    constructor(prisma: PrismaService, ledger: LedgerService);
     processCallback(dto: PayloanCallbackDto): Promise<{
         status: string;
         notificationId: string;

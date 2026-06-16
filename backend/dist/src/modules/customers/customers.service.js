@@ -47,9 +47,19 @@ let CustomersService = class CustomersService {
                 throw new common_1.ConflictException(`National ID ${nationalId} is already registered`);
             }
         }
+        let newAccountNumber = '';
+        let isUnique = false;
+        while (!isUnique) {
+            newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+            const existing = await this.prisma.customer.findUnique({ where: { accountNumber: newAccountNumber } });
+            if (!existing) {
+                isUnique = true;
+            }
+        }
         return this.prisma.customer.create({
             data: {
                 ...cleanedData,
+                accountNumber: newAccountNumber,
                 kycStatus: 'PENDING',
             },
         });

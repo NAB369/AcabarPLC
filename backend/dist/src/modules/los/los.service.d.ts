@@ -20,8 +20,8 @@ export declare class LosService {
             updatedAt: Date;
             address: string | null;
             currency: string;
-            cid: string | null;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
             accountNumber: string | null;
@@ -91,6 +91,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -134,6 +135,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -174,6 +176,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -214,6 +217,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -259,6 +263,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -299,6 +304,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -339,6 +345,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -381,6 +388,7 @@ export declare class LosService {
             collectionFeeValue: number | null;
             gracePeriod: number | null;
             refinanceFeeAmt: number | null;
+            reminderPreference: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
             internalCreditScore: number | null;
@@ -400,7 +408,7 @@ export declare class LosService {
         };
         disbursementRef: string;
         transactionReference: string;
-        method: "BAKONG" | "CASH" | "BANK_TRANSFER";
+        method: "CASH" | "BAKONG" | "BANK_TRANSFER";
     }>;
     activateLoan(loanId: string, userId: string): Promise<{
         id: string;
@@ -425,6 +433,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -472,14 +481,14 @@ export declare class LosService {
         repaymentSchedules: {
             id: string;
             status: string;
+            loanId: string;
+            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
-            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
-            loanId: string;
         }[];
     } & {
         id: string;
@@ -504,6 +513,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -567,8 +577,8 @@ export declare class LosService {
             updatedAt: Date;
             address: string | null;
             currency: string;
-            cid: string | null;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
             accountNumber: string | null;
@@ -605,8 +615,8 @@ export declare class LosService {
             createdAt: Date;
             description: string;
             currency: string;
-            loanId: string;
             type: string;
+            loanId: string;
             estimatedValue: number;
             documentIds: string;
         }[];
@@ -638,14 +648,14 @@ export declare class LosService {
         repaymentSchedules: {
             id: string;
             status: string;
+            loanId: string;
+            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
-            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
-            loanId: string;
         }[];
         id: string;
         branchId: string | null;
@@ -669,6 +679,7 @@ export declare class LosService {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -705,6 +716,8 @@ export declare class LosService {
                 firstName: string;
                 lastName: string;
                 isActive: boolean;
+                isApproved: boolean;
+                requestedRole: string | null;
                 branchId: string | null;
                 passwordChangedAt: Date;
                 failedLoginAttempts: number;
@@ -732,8 +745,8 @@ export declare class LosService {
         createdAt: Date;
         description: string;
         currency: string;
-        loanId: string;
         type: string;
+        loanId: string;
         estimatedValue: number;
         documentIds: string;
     }>;

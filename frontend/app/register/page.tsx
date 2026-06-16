@@ -12,6 +12,7 @@ export default function RegisterPage() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [requestedRole, setRequestedRole] = useState('CUSTOMER');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -26,14 +27,12 @@ export default function RegisterPage() {
         firstName, 
         lastName, 
         email, 
-        password 
+        password,
+        requestedRole
       });
       
       setSuccess(true);
-      // Optional: Auto login or redirect to login after a delay
-      setTimeout(() => {
-        router.push('/login');
-      }, 2000);
+      // Removed auto-login redirect because account requires admin approval.
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
@@ -97,7 +96,7 @@ export default function RegisterPage() {
               border: '1px solid var(--success-border)'
             }}>
               <ShieldCheck size={18} />
-              Registration successful! Redirecting to login...
+              Registration successful! Your account is pending administrator approval.
             </div>
           )}
 
@@ -166,6 +165,24 @@ export default function RegisterPage() {
                 />
               </div>
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Minimum 8 characters with letters and numbers</p>
+            </div>
+
+            <div className="input-group" style={{ marginBottom: 0 }}>
+              <label className="input-label">Requested Role</label>
+              <div style={{ position: 'relative' }}>
+                <select 
+                  className="input-field" 
+                  style={{ width: '100%' }}
+                  value={requestedRole}
+                  onChange={(e) => setRequestedRole(e.target.value)}
+                  required
+                >
+                  <option value="CUSTOMER">Customer</option>
+                  <option value="CREDIT_OFFICER">Credit Officer</option>
+                  <option value="ACCOUNTANT">Accountant</option>
+                  <option value="BRANCH_MANAGER">Branch Manager</option>
+                </select>
+              </div>
             </div>
 
             <button 

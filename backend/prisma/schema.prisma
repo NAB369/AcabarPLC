@@ -14,6 +14,8 @@ model User {
   firstName           String
   lastName            String
   isActive            Boolean        @default(true)
+  isApproved          Boolean        @default(false)
+  requestedRole       String?
   branchId            String?
   passwordChangedAt   DateTime       @default(now())
   failedLoginAttempts Int            @default(0)
@@ -141,6 +143,7 @@ model Customer {
   documents        Document[]
   feedback         Feedback[]
   loans            Loan[]
+  clientAlerts     ClientAlert[]
 }
 
 model Document {
@@ -195,6 +198,7 @@ model Loan {
   collectionFeeValue Int?
   gracePeriod        Int?
   refinanceFeeAmt    Int?
+  reminderPreference Int?
   // Existing fields
   dtiRatio           Float?
   cbcScore           Int?
@@ -225,6 +229,7 @@ model Loan {
   loanOfficer        User?               @relation("LoanOfficer", fields: [loanOfficerId], references: [id])
   repaymentSchedules RepaymentSchedule[]
   ledgerEntries      LedgerEntry[]
+  clientAlerts       ClientAlert[]
 }
 
 model CreditReport {
@@ -430,4 +435,17 @@ model PaymentNotification {
   remark                  String?
   bankTransactionId       String?
   createdAt               DateTime @default(now())
+}
+
+model ClientAlert {
+  id         String   @id @default(uuid())
+  loanId     String
+  customerId String
+  type       String   @default("DUE_REMINDER")
+  message    String
+  status     String   @default("PENDING") // PENDING, CONTACTED
+  targetDate DateTime
+  createdAt  DateTime @default(now())
+  loan       Loan     @relation(fields: [loanId], references: [id])
+  customer   Customer @relation(fields: [customerId], references: [id])
 }

@@ -76,6 +76,7 @@ export declare class LoansController {
             collectionFeeValue: number | null;
             gracePeriod: number | null;
             refinanceFeeAmt: number | null;
+            reminderPreference: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
             internalCreditScore: number | null;
@@ -93,28 +94,20 @@ export declare class LoansController {
             productId: string;
             loanOfficerId: string | null;
         };
-        schedules: {
-            loanId: string;
-            installmentNumber: number;
-            amountDue: number;
-            principalComponent: number;
-            interestComponent: number;
-            dueDate: Date;
-            status: string;
-        }[];
+        schedules: never[];
     }>;
     getMyActiveLoan(req: any): Promise<{
         repaymentSchedules: {
             id: string;
             status: string;
+            loanId: string;
+            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
-            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
-            loanId: string;
         }[];
     } & {
         id: string;
@@ -139,6 +132,7 @@ export declare class LoansController {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -157,50 +151,6 @@ export declare class LoansController {
         loanOfficerId: string | null;
     }>;
     approveLoan(id: string): Promise<{
-        customer: {
-            id: string;
-            email: string | null;
-            firstName: string;
-            lastName: string;
-            branchId: string;
-            createdAt: Date;
-            updatedAt: Date;
-            address: string | null;
-            currency: string;
-            cid: string | null;
-            phone: string;
-            nationalId: string | null;
-            passport: string | null;
-            accountNumber: string | null;
-            khmerFirstName: string | null;
-            khmerLastName: string | null;
-            familyBook: string | null;
-            dob: Date | null;
-            kycStatus: string;
-            employmentStatus: string | null;
-            occupation: string | null;
-            employerName: string | null;
-            businessInfo: string | null;
-            monthlyIncome: number | null;
-            monthlyIncomeKhr: number | null;
-            monthlyExpenses: number | null;
-            businessType: string | null;
-            incomeBracket: string | null;
-            dependentCount: string | null;
-            incomeMaker: string | null;
-            gender: string | null;
-            maritalStatus: string | null;
-            coBorrowerName: string | null;
-            coBorrowerKhmerName: string | null;
-            coBorrowerPhone: string | null;
-            coBorrowerNationalId: string | null;
-            guarantorName: string | null;
-            guarantorKhmerName: string | null;
-            guarantorPhone: string | null;
-            guarantorNationalId: string | null;
-            guarantorRelationship: string | null;
-        };
-    } & {
         id: string;
         branchId: string | null;
         createdAt: Date;
@@ -223,6 +173,7 @@ export declare class LoansController {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;
@@ -265,6 +216,7 @@ export declare class LoansController {
             collectionFeeValue: number | null;
             gracePeriod: number | null;
             refinanceFeeAmt: number | null;
+            reminderPreference: number | null;
             dtiRatio: number | null;
             cbcScore: number | null;
             internalCreditScore: number | null;
@@ -307,6 +259,7 @@ export declare class LoansController {
         collectionFeeValue: number | null;
         gracePeriod: number | null;
         refinanceFeeAmt: number | null;
+        reminderPreference: number | null;
         dtiRatio: number | null;
         cbcScore: number | null;
         internalCreditScore: number | null;

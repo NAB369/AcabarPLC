@@ -135,6 +135,43 @@ let PeriodService = class PeriodService {
                 }
                 updatedPenaltiesCount++;
             }
+            const upcomingSchedules = await tx.repaymentSchedule.findMany({
+                where: {
+                    status: 'PENDING',
+                    loan: { reminderPreference: { not: null } },
+                    dueDate: { gt: businessDate },
+                },
+                include: { loan: true },
+            });
+            let generatedAlertsCount = 0;
+            for (const schedule of upcomingSchedules) {
+                if (!schedule.loan.reminderPreference)
+                    continue;
+                const diffTime = schedule.dueDate.getTime() - businessDate.getTime();
+                const daysUntilDue = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (daysUntilDue === schedule.loan.reminderPreference) {
+                    const existingAlert = await tx.clientAlert.findFirst({
+                        where: {
+                            loanId: schedule.loan.id,
+                            targetDate: schedule.dueDate,
+                            type: 'DUE_REMINDER',
+                        }
+                    });
+                    if (!existingAlert) {
+                        await tx.clientAlert.create({
+                            data: {
+                                loanId: schedule.loan.id,
+                                customerId: schedule.loan.customerId,
+                                type: 'DUE_REMINDER',
+                                message: `Upcoming payment of $${schedule.amountDue} due in ${daysUntilDue} days on ${schedule.dueDate.toISOString().split('T')[0]}.`,
+                                status: 'PENDING',
+                                targetDate: schedule.dueDate,
+                            }
+                        });
+                        generatedAlertsCount++;
+                    }
+                }
+            }
             const updatedState = await tx.systemState.update({
                 where: { id: 'default' },
                 data: {
@@ -146,13 +183,14 @@ let PeriodService = class PeriodService {
                     action: 'EOD',
                     businessDate: businessDate,
                     performedBy: userId,
-                    details: `Closed business day: ${businessDate.toISOString().split('T')[0]}. Accrued $${totalInterestAccrued.toFixed(2)} interest on ${activeLoans.length} loans. Recalculated penalties for ${updatedPenaltiesCount} schedules.`,
+                    details: `Closed business day: ${businessDate.toISOString().split('T')[0]}. Accrued $${totalInterestAccrued.toFixed(2)} interest on ${activeLoans.length} loans. Recalculated penalties for ${updatedPenaltiesCount} schedules. Generated ${generatedAlertsCount} client reminders.`,
                 },
             });
             return {
                 state: updatedState,
                 interestAccrued: totalInterestAccrued,
                 penaltiesRecalculated: updatedPenaltiesCount,
+                remindersGenerated: generatedAlertsCount,
             };
         });
         return { success: true, ...result };

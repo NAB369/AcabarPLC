@@ -36,8 +36,8 @@ export declare class ConsultationsController {
             updatedAt: Date;
             address: string | null;
             currency: string;
-            cid: string | null;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
             accountNumber: string | null;
@@ -92,8 +92,8 @@ export declare class ConsultationsController {
             updatedAt: Date;
             address: string | null;
             currency: string;
-            cid: string | null;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
             accountNumber: string | null;

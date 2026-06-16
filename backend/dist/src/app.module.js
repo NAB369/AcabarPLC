@@ -26,6 +26,7 @@ const company_module_1 = require("./modules/company/company.module");
 const payloan_module_1 = require("./modules/payloan/payloan.module");
 const period_module_1 = require("./modules/period/period.module");
 const accounting_module_1 = require("./modules/accounting/accounting.module");
+const alerts_module_1 = require("./modules/alerts/alerts.module");
 const schedule_1 = require("@nestjs/schedule");
 let AppModule = class AppModule {
 };
@@ -50,6 +51,7 @@ exports.AppModule = AppModule = __decorate([
             payloan_module_1.PayloanModule,
             period_module_1.PeriodModule,
             accounting_module_1.AccountingModule,
+            alerts_module_1.AlertsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

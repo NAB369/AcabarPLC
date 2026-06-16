@@ -45,6 +45,8 @@ export declare class UsersController {
         firstName: string;
         lastName: string;
         isActive: boolean;
+        isApproved: boolean;
+        requestedRole: string | null;
         branchId: string | null;
         passwordChangedAt: Date;
         failedLoginAttempts: number;
@@ -110,6 +112,29 @@ export declare class UsersController {
         firstName: string;
         lastName: string;
         isActive: boolean;
+        isApproved: boolean;
+        requestedRole: string | null;
+        branchId: string | null;
+        passwordChangedAt: Date;
+        failedLoginAttempts: number;
+        lockoutUntil: Date | null;
+        mfaSecret: string | null;
+        mfaEnabled: boolean;
+        lastLoginIp: string | null;
+        lastLoginAt: Date | null;
+        refreshToken: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+    approveUser(id: string, roleName?: string): Promise<{
+        id: string;
+        email: string;
+        passwordHash: string;
+        firstName: string;
+        lastName: string;
+        isActive: boolean;
+        isApproved: boolean;
+        requestedRole: string | null;
         branchId: string | null;
         passwordChangedAt: Date;
         failedLoginAttempts: number;
@@ -144,6 +169,8 @@ export declare class UsersController {
         firstName: string;
         lastName: string;
         isActive: boolean;
+        isApproved: boolean;
+        requestedRole: string | null;
         branchId: string | null;
         passwordChangedAt: Date;
         failedLoginAttempts: number;
@@ -166,6 +193,8 @@ export declare class UsersController {
         firstName: string;
         lastName: string;
         isActive: boolean;
+        isApproved: boolean;
+        requestedRole: string | null;
         branchId: string | null;
         passwordChangedAt: Date;
         failedLoginAttempts: number;

@@ -140,6 +140,20 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
     }
   };
 
+  const handleApproveUser = async (userId: string, requestedRole: string) => {
+    setLoading(true);
+    try {
+      await api.patch(`/users/${userId}/approve`, { roleName: requestedRole });
+      fetchUsersAndRoles();
+      setSuccess('User approved successfully');
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError('Failed to approve user');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDeleteUser = async (userId: string) => {
     if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
       setLoading(true);
@@ -734,8 +748,8 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                             <div>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                 <span style={{ fontWeight: '700', fontSize: '1.125rem' }}>{user.firstName} {user.lastName}</span>
-                                <span style={{ padding: '0.125rem 0.625rem', backgroundColor: isAdmin ? 'var(--warning-bg)' : 'var(--bg-muted)', color: isAdmin ? 'var(--warning-text)' : 'var(--text-muted-dark)', borderRadius: '9999px', fontSize: '0.6875rem', fontWeight: '800', border: isAdmin ? '1px solid #fef08a' : 'none' }}>
-                                  {user.roles[0]?.role.name}
+                                <span style={{ padding: '0.125rem 0.625rem', backgroundColor: isAdmin ? 'var(--warning-bg)' : user.isApproved ? 'var(--success-bg)' : 'var(--warning-bg)', color: isAdmin ? 'var(--warning-text)' : user.isApproved ? 'var(--success-text)' : '#ca8a04', borderRadius: '9999px', fontSize: '0.6875rem', fontWeight: '800', border: isAdmin ? '1px solid #fef08a' : 'none' }}>
+                                  {user.roles[0]?.role.name || (user.requestedRole ? `Requested: ${user.requestedRole}` : 'Pending')}
                                 </span>
                               </div>
                               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{user.email}</div>
@@ -744,9 +758,18 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                           <div style={{ display: 'flex', gap: '0.75rem' }}>
                             {!isAdmin && (
                               <>
+                                {!user.isApproved && (
+                                  <button 
+                                    className="btn btn-primary" 
+                                    onClick={() => handleApproveUser(user.id, user.requestedRole)}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer', padding: '0.375rem 0.75rem' }}
+                                  >
+                                    <ShieldCheck size={16} /> Approve
+                                  </button>
+                                )}
                                 <button 
                                   className="btn btn-secondary" 
-                                  onClick={() => { setEditingUser(user); setSelectedRole(user.roles[0]?.roleId); }}
+                                  onClick={() => { setEditingUser(user); setSelectedRole(user.roles[0]?.roleId || ''); }}
                                   style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer' }}
                                 >
                                   <Edit size={16} /> Role

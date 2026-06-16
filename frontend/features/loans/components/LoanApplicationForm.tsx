@@ -84,6 +84,7 @@ export default function LoanApplicationForm() {
   const [collectionFeeValue, setCollectionFeeValue] = useState<number>(0);
   const [gracePeriod, setGracePeriod] = useState<number>(0);
   const [refinanceFeeAmt, setRefinanceFeeAmt] = useState<number>(0);
+  const [reminderPreference, setReminderPreference] = useState<number | null>(null);
 
   // Additional Fields
   const [loanCycle, setLoanCycle] = useState('New');
@@ -289,6 +290,7 @@ export default function LoanApplicationForm() {
         collectionFeeValue,
         gracePeriod,
         refinanceFeeAmt,
+        reminderPreference,
         loanCycle,
         recommenderType,
         branchId: selectedBranch || undefined,
@@ -957,6 +959,26 @@ export default function LoanApplicationForm() {
                         placeholder="0.00" value={refinanceFeeAmt || ''}
                         onChange={(e) => setRefinanceFeeAmt(Number(e.target.value))} />
                     </div>
+                  </div>
+                </div>
+
+                <div style={{ borderTop: '1px dashed #e2e8f0', margin: '0.25rem 0' }} />
+
+                {/* Row 6: Reminder Preference */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                  <div className="input-group" style={{ marginBottom: 0 }}>
+                    <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
+                      <Calendar size={13} color="var(--primary)" /> Repayment Reminder
+                    </label>
+                    <select className="input-field"
+                      style={{ height: '42px', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2394a3b8%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.875rem center', backgroundSize: '0.9em' }}
+                      value={reminderPreference || ''} 
+                      onChange={(e) => setReminderPreference(e.target.value ? Number(e.target.value) : null)}>
+                      <option value="">No Reminder</option>
+                      <option value="1">1 Day Before</option>
+                      <option value="3">3 Days Before</option>
+                      <option value="7">7 Days Before</option>
+                    </select>
                   </div>
                 </div>
               </div>

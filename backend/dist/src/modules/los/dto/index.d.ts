@@ -18,6 +18,7 @@ export declare class CreateDraftDto {
     collectionFeeValue?: number;
     gracePeriod?: number;
     refinanceFeeAmt?: number;
+    reminderPreference?: number;
     loanCycle?: string;
     recommenderType?: string;
     branchId?: string;

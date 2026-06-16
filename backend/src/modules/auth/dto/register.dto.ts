@@ -13,4 +13,7 @@ export class RegisterDto {
 
   @IsString()
   lastName: string;
+
+  @IsString()
+  requestedRole?: string;
 }

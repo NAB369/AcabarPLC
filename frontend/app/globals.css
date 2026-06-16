@@ -220,8 +220,10 @@ p {
 }
 
 .badge-pending { background-color: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border); }
-.badge-disbursed { background-color: var(--purple-bg); color: var(--purple-text); border-color: var(--purple-border); }
-.badge-review { background-color: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
+.badge-disbursed { background-color: var(--info-bg); color: var(--info-text); border-color: var(--info-border); }
+.badge-active { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+.badge-completed { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+.badge-review { background-color: var(--purple-bg); color: var(--purple-text); border-color: var(--purple-border); }
 .badge-approved { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
 .badge-rejected { background-color: var(--error-bg); color: var(--error-text); border-color: var(--error-border); }
 

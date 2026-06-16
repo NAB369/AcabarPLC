@@ -35,8 +35,8 @@ export declare class FeedbackService {
             updatedAt: Date;
             address: string | null;
             currency: string;
-            cid: string | null;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
             accountNumber: string | null;
