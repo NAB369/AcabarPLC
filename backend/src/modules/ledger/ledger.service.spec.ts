@@ -82,7 +82,7 @@ describe('LedgerService', () => {
       ).rejects.toThrow(InternalServerErrorException);
       await expect(
         service.recordTransaction(disbursementEntries),
-      ).rejects.toThrow('Failed to record ledger entry.');
+      ).rejects.toThrow('Failed to record ledger entry:');
     });
 
     it('should handle multiple entries in a single transaction reference', async () => {

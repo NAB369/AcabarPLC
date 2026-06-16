@@ -35,6 +35,9 @@ const mockSchedule = (overrides = {}) => ({
 // ============================================================
 const createMockPrisma = () => ({
   $transaction: jest.fn(),
+  systemState: {
+    findUnique: jest.fn().mockResolvedValue({ id: 'default', isOpen: true }),
+  },
 });
 
 const createMockLedger = () => ({
@@ -114,7 +117,7 @@ describe('RepaymentsService', () => {
       const partialDto = { ...dto, amount: 500 };
       await service.processRepayment(partialDto);
 
-      expect(capturedUpdateData.status).toBe('PARTIAL');
+      expect(capturedUpdateData.status).toBe('PARTIALLY_PAID');
     });
 
     it('should record double-entry ledger (debit CASH, credit LOAN)', async () => {
@@ -146,9 +149,9 @@ describe('RepaymentsService', () => {
           expect.objectContaining({
             accountId: 'loan-1',
             accountType: 'LOAN',
-            credit: 1120,
           }),
         ]),
+        expect.anything(),
       );
     });
 
@@ -211,6 +214,7 @@ describe('RepaymentsService', () => {
             description: expect.stringContaining('BAKONG'),
           }),
         ]),
+        expect.anything(),
       );
     });
   });

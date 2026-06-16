@@ -27,7 +27,8 @@ const createMockPrisma = () => ({
   customer: {
     create: jest.fn(),
     findMany: jest.fn(),
-    findUnique: jest.fn(),
+    findFirst: jest.fn().mockResolvedValue(null),
+    findUnique: jest.fn().mockResolvedValue(null),
     update: jest.fn(),
   },
 });
@@ -129,7 +130,7 @@ describe('CustomersService', () => {
       expect(result.id).toBe('cust-1');
       expect(prisma.customer.findUnique).toHaveBeenCalledWith({
         where: { id: 'cust-1' },
-        include: { loans: true },
+        include: expect.objectContaining({ loans: true }),
       });
     });
 

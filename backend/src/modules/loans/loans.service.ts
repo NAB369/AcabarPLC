@@ -49,7 +49,19 @@ export class LoansService {
       },
     });
 
-    return { loan, schedules: [] };
+    // Generate repayment schedules at application time (pre-computed, can be saved on disburse)
+    const schedules = this.generateRepaymentSchedule(
+      loan.id,
+      principalAmount,
+      Number(product.baseInterestRate),
+      durationMonths,
+      product.interestType,
+    );
+
+    // Persist schedules
+    await this.prisma.repaymentSchedule.createMany({ data: schedules });
+
+    return { loan, schedules };
   }
 
   async disburseLoan(loanId: string) {

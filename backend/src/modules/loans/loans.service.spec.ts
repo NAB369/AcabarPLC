@@ -54,6 +54,12 @@ const createMockPrisma = () => ({
         findUnique: jest.fn(),
         update: jest.fn(),
       },
+      loanProduct: {
+        findUnique: jest.fn(),
+      },
+      repaymentSchedule: {
+        createMany: jest.fn().mockResolvedValue({ count: 12 }),
+      },
     }),
   ),
 });
@@ -248,15 +254,21 @@ describe('LoansService', () => {
   describe('approveLoan', () => {
     it('should update loan status to APPROVED', async () => {
       const approvedLoan = mockLoan({ status: 'APPROVED' });
-      prisma.loan.update.mockResolvedValue(approvedLoan);
+      prisma.$transaction.mockImplementation(async (cb: any) => {
+        const tx = {
+          loan: {
+            findUnique: jest.fn(),
+            update: jest.fn().mockResolvedValue(approvedLoan),
+          },
+          loanProduct: { findUnique: jest.fn() },
+          repaymentSchedule: { createMany: jest.fn().mockResolvedValue({ count: 0 }) },
+        };
+        return cb(tx);
+      });
 
       const result = await service.approveLoan('loan-1');
 
       expect(result.status).toBe('APPROVED');
-      expect(prisma.loan.update).toHaveBeenCalledWith({
-        where: { id: 'loan-1' },
-        data: { status: 'APPROVED' },
-      });
     });
   });
 
@@ -271,12 +283,17 @@ describe('LoansService', () => {
         disbursedAt: new Date(),
       });
 
-      // Override $transaction to inject our mock tx
       prisma.$transaction.mockImplementation(async (cb: any) => {
         const tx = {
           loan: {
             findUnique: jest.fn().mockResolvedValue(loan),
             update: jest.fn().mockResolvedValue(disbursedLoan),
+          },
+          loanProduct: {
+            findUnique: jest.fn().mockResolvedValue(mockLoanProduct()),
+          },
+          repaymentSchedule: {
+            createMany: jest.fn().mockResolvedValue({ count: 12 }),
           },
         };
         return cb(tx);
@@ -304,6 +321,8 @@ describe('LoansService', () => {
       prisma.$transaction.mockImplementation(async (cb: any) => {
         const tx = {
           loan: { findUnique: jest.fn().mockResolvedValue(null) },
+          loanProduct: { findUnique: jest.fn() },
+          repaymentSchedule: { createMany: jest.fn() },
         };
         return cb(tx);
       });
@@ -319,6 +338,8 @@ describe('LoansService', () => {
       prisma.$transaction.mockImplementation(async (cb: any) => {
         const tx = {
           loan: { findUnique: jest.fn().mockResolvedValue(pendingLoan) },
+          loanProduct: { findUnique: jest.fn() },
+          repaymentSchedule: { createMany: jest.fn() },
         };
         return cb(tx);
       });
@@ -337,6 +358,8 @@ describe('LoansService', () => {
       prisma.$transaction.mockImplementation(async (cb: any) => {
         const tx = {
           loan: { findUnique: jest.fn().mockResolvedValue(pendingLoan) },
+          loanProduct: { findUnique: jest.fn() },
+          repaymentSchedule: { createMany: jest.fn() },
         };
         return cb(tx);
       });

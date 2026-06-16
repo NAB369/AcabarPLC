@@ -49,7 +49,9 @@ let LoansService = class LoansService {
                 status: 'PENDING',
             },
         });
-        return { loan, schedules: [] };
+        const schedules = this.generateRepaymentSchedule(loan.id, principalAmount, Number(product.baseInterestRate), durationMonths, product.interestType);
+        await this.prisma.repaymentSchedule.createMany({ data: schedules });
+        return { loan, schedules };
     }
     async disburseLoan(loanId) {
         return this.prisma.$transaction(async (tx) => {
