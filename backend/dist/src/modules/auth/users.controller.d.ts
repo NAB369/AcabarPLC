@@ -156,11 +156,11 @@ export declare class UsersController {
     } & {
         id: string;
         createdAt: Date;
+        userId: string | null;
         action: string;
         entity: string;
         entityId: string;
         details: import("@prisma/client/runtime/library").JsonValue | null;
-        userId: string | null;
     })[]>;
     getMe(req: any): Promise<any>;
     updateMe(req: any, data: any): Promise<{

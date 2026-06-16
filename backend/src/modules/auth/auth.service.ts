@@ -8,8 +8,7 @@ import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import * as otplib from 'otplib';
-const { authenticator } = otplib;
+import { authenticator } from 'otplib';
 
 import { AuditService } from './audit.service';
 

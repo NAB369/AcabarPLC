@@ -47,8 +47,7 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const prisma_service_1 = require("../../infrastructure/prisma/prisma.service");
 const bcrypt = __importStar(require("bcrypt"));
-const otplib = __importStar(require("otplib"));
-const { authenticator } = otplib;
+const otplib_1 = require("otplib");
 const audit_service_1 = require("./audit.service");
 let AuthService = class AuthService {
     prisma;
@@ -134,7 +133,7 @@ let AuthService = class AuthService {
         if (!user || !user.mfaSecret) {
             throw new common_1.UnauthorizedException('MFA not configured');
         }
-        const isValid = authenticator.verify({
+        const isValid = otplib_1.authenticator.verify({
             token: code,
             secret: user.mfaSecret,
         });

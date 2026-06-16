@@ -9,27 +9,27 @@ export declare class AlertsController {
             phone: string;
         };
         loan: {
-            currency: string;
             lid: string | null;
             principalAmount: number;
+            currency: string;
         };
     } & {
-        type: string;
         id: string;
         createdAt: Date;
-        message: string;
-        customerId: string;
         status: string;
+        customerId: string;
+        type: string;
+        message: string;
         loanId: string;
         targetDate: Date;
     })[]>;
     updateStatus(id: string, status: string): Promise<{
-        type: string;
         id: string;
         createdAt: Date;
-        message: string;
-        customerId: string;
         status: string;
+        customerId: string;
+        type: string;
+        message: string;
         loanId: string;
         targetDate: Date;
     }>;

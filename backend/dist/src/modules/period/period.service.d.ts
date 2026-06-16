@@ -34,9 +34,9 @@ export declare class PeriodService {
     getLogs(): Promise<{
         id: string;
         createdAt: Date;
+        businessDate: Date;
         action: string;
         details: string | null;
-        businessDate: Date;
         performedBy: string;
     }[]>;
     getTrialBalance(): Promise<{
@@ -55,11 +55,11 @@ export declare class PeriodService {
     }>;
     getJournal(dateStr?: string): Promise<({
         loan: {
+            lid: string | null;
             customer: {
                 firstName: string;
                 lastName: string;
             };
-            lid: string | null;
         } | null;
     } & {
         id: string;
@@ -67,13 +67,13 @@ export declare class PeriodService {
         description: string | null;
         currency: string;
         loanId: string | null;
-        transactionReference: string;
         accountId: string;
-        accountCode: string | null;
-        accountType: string;
         debit: number;
         credit: number;
         exchangeRate: number;
+        accountCode: string | null;
+        accountType: string;
+        transactionReference: string;
         journalEntryId: string | null;
     })[]>;
 }
