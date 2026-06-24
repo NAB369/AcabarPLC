@@ -9,7 +9,7 @@ export declare class CreateCustomerDto {
     nationalId?: string;
     passport?: string;
     familyBook?: string;
-    dob?: Date;
+    dob?: string;
     address?: string;
     gender?: string;
     maritalStatus?: string;
@@ -47,7 +47,7 @@ export declare class UpdateCustomerDto {
     nationalId?: string;
     passport?: string;
     familyBook?: string;
-    dob?: Date;
+    dob?: string;
     address?: string;
     gender?: string;
     maritalStatus?: string;

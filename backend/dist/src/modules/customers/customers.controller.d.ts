@@ -167,6 +167,7 @@ export declare class CustomersController {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -177,6 +178,7 @@ export declare class CustomersController {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;

@@ -5,9 +5,15 @@ import { api } from '@/services/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, User, ArrowRight, ShieldCheck, CreditCard, ChevronLeft, AlertCircle } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { pageTranslations } from '../pageTranslations';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { language } = useLanguage();
+  const t = (key: keyof typeof pageTranslations.en) => {
+    return pageTranslations[language as keyof typeof pageTranslations]?.[key] || pageTranslations.en[key] || key;
+  };
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -55,13 +61,13 @@ export default function RegisterPage() {
       }}>
         <Link href="/login" style={{ position: 'absolute', top: '2rem', left: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: '500' }} className="hover-primary">
           <ChevronLeft size={16} />
-          Back to login
+          {t('backToLogin')}
         </Link>
 
         <div style={{ width: '100%', maxWidth: '420px' }} className="animate-slide-up">
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' }}>Create Account</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Join the Acabar Plc professional network</p>
+            <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' }}>{t('createAccount')}</h1>
+            <p style={{ color: 'var(--text-muted)' }}>{t('joinNetwork')}</p>
           </div>
 
           {error && (
@@ -96,14 +102,14 @@ export default function RegisterPage() {
               border: '1px solid var(--success-border)'
             }}>
               <ShieldCheck size={18} />
-              Registration successful! Your account is pending administrator approval.
+              {t('regSuccess')}
             </div>
           )}
 
           <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <div className="input-group" style={{ marginBottom: 0, flex: 1 }}>
-                <label className="input-label">First Name</label>
+                <label className="input-label">{t('firstName')}</label>
                 <div style={{ position: 'relative' }}>
                   <User style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
                   <input 
@@ -118,7 +124,7 @@ export default function RegisterPage() {
                 </div>
               </div>
               <div className="input-group" style={{ marginBottom: 0, flex: 1 }}>
-                <label className="input-label">Last Name</label>
+                <label className="input-label">{t('lastName')}</label>
                 <div style={{ position: 'relative' }}>
                   <User style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
                   <input 
@@ -135,7 +141,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Email Address</label>
+              <label className="input-label">{t('emailAddress')}</label>
               <div style={{ position: 'relative' }}>
                 <Mail style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
                 <input 
@@ -151,7 +157,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Password</label>
+              <label className="input-label">{t('password')}</label>
               <div style={{ position: 'relative' }}>
                 <Lock style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
                 <input 
@@ -164,11 +170,11 @@ export default function RegisterPage() {
                   required 
                 />
               </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Minimum 8 characters with letters and numbers</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>{t('min8Chars')}</p>
             </div>
 
             <div className="input-group" style={{ marginBottom: 0 }}>
-              <label className="input-label">Requested Role</label>
+              <label className="input-label">{t('requestedRole')}</label>
               <div style={{ position: 'relative' }}>
                 <select 
                   className="input-field" 
@@ -177,10 +183,10 @@ export default function RegisterPage() {
                   onChange={(e) => setRequestedRole(e.target.value)}
                   required
                 >
-                  <option value="CUSTOMER">Customer</option>
-                  <option value="CREDIT_OFFICER">Credit Officer</option>
-                  <option value="ACCOUNTANT">Accountant</option>
-                  <option value="BRANCH_MANAGER">Branch Manager</option>
+                  <option value="CUSTOMER">{t('roleCustomer')}</option>
+                  <option value="CREDIT_OFFICER">{t('roleCreditOfficer')}</option>
+                  <option value="ACCOUNTANT">{t('roleAccountant')}</option>
+                  <option value="BRANCH_MANAGER">{t('roleBranchManager')}</option>
                 </select>
               </div>
             </div>
@@ -191,9 +197,9 @@ export default function RegisterPage() {
               style={{ width: '100%', padding: '0.875rem', fontSize: '1rem', marginTop: '1rem', height: '52px' }}
               disabled={isLoading || success}
             >
-              {isLoading ? 'Creating Account...' : (
+              {isLoading ? t('creatingAccount') : (
                 <>
-                  Create Account
+                  {t('createAccount')}
                   <ArrowRight size={18} />
                 </>
               )}
@@ -201,7 +207,7 @@ export default function RegisterPage() {
           </form>
 
           <div style={{ marginTop: '2.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-            Already have an account? <Link href="/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '600' }}>Sign in instead</Link>
+            {t('alreadyHaveAccount')} <Link href="/login" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '600' }}>{t('signInInstead')}</Link>
           </div>
         </div>
       </div>

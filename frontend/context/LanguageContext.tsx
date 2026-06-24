@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Language = 'en' | 'km' | 'ko';
+type Language = 'en' | 'kh' | 'ko';
 
 interface LanguageContextType {
   language: Language;
@@ -136,7 +136,7 @@ const translations: Record<Language, Record<string, string>> = {
     balanceSheet: "Balance Sheet",
     accountLedger: "Account Ledger"
   },
-  km: {
+  kh: {
     // Sidebar & Menus
     overview: "ទិដ្ឋភាពទូទៅ",
     dashboard: "ផ្ទាំងគ្រប់គ្រង",
@@ -389,7 +389,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('preferred_language') as Language;
-      if (stored && (stored === 'en' || stored === 'km' || stored === 'ko')) {
+      if (stored && (stored === 'en' || stored === 'kh' || stored === 'ko')) {
         setLanguageState(stored);
       }
       setIsLoaded(true);

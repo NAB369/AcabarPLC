@@ -3,6 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { IsString, IsOptional, IsIn } from 'class-validator';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import * as nodePath from 'path';
 import * as nodeFs from 'fs';
@@ -19,7 +20,12 @@ export class UploadDocumentDto {
 }
 
 export class VerifyDocumentDto {
+  @IsString()
+  @IsIn(['VERIFIED', 'REJECTED'])
   status: 'VERIFIED' | 'REJECTED';
+
+  @IsString()
+  @IsOptional()
   rejectionReason?: string;
 }
 

@@ -10,8 +10,6 @@ import {
   Eye, Printer, Download, QrCode, Upload
 } from 'lucide-react';
 import Link from 'next/link';
-import ReactCrop, { type Crop } from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 export default function LoanRepaymentDetailPage() {
   const { id } = useParams();
   const router = useRouter();
@@ -25,80 +23,8 @@ export default function LoanRepaymentDetailPage() {
   const [inputAmount, setInputAmount] = useState<string>('');
   const [bankAccount, setBankAccount] = useState<string>('');
   const [showPreview, setShowPreview] = useState(false);
-  const [khqrImage, setKhqrImage] = useState<string | null>(null);
 
-  const [showCropModal, setShowCropModal] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
-  const [tempImageSrc, setTempImageSrc] = useState<string | null>(null);
-  const [crop, setCrop] = useState<Crop>({ unit: '%', width: 50, height: 50, x: 25, y: 25 });
-  const [completedCrop, setCompletedCrop] = useState<any>(null);
-  const imgRef = React.useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('company_khqr');
-    if (saved) setKhqrImage(saved);
-  }, []);
-
-  const handleKhqrUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setTempImageSrc(event.target?.result as string);
-        setShowCropModal(true);
-        setCrop({ unit: '%', width: 50, height: 50, x: 25, y: 25 });
-        setCompletedCrop(null);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-      e.target.value = '';
-    }
-  };
-
-  const getCroppedImg = async (): Promise<string> => {
-    if (!completedCrop || !imgRef.current) return '';
-    const image = imgRef.current;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return '';
-
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    
-    canvas.width = completedCrop.width * scaleX;
-    canvas.height = completedCrop.height * scaleY;
-
-    ctx.drawImage(
-      image,
-      completedCrop.x * scaleX,
-      completedCrop.y * scaleY,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-      0,
-      0,
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY
-    );
-
-    return canvas.toDataURL('image/jpeg');
-  };
-
-  const handleSaveCrop = async () => {
-    if (!tempImageSrc || !completedCrop) return;
-    try {
-      const croppedImageBase64 = await getCroppedImg();
-      setKhqrImage(croppedImageBase64);
-      localStorage.setItem('company_khqr', croppedImageBase64);
-      setShowCropModal(false);
-      setTempImageSrc(null);
-    } catch (e) {
-      console.error(e);
-      alert('Failed to crop image');
-    }
-  };
-
-  const handleRemoveKhqr = () => {
-    setKhqrImage(null);
-    localStorage.removeItem('company_khqr');
-  };
 
   const handleExportXLS = () => {
     if (!loan?.repaymentSchedules) return;
@@ -158,7 +84,7 @@ export default function LoanRepaymentDetailPage() {
               <font size="5"><b>តារាងកាលវិភាគសងប្រាក់</b></font>
             </td>
             <td width="150" align="right" valign="middle">
-              ${khqrImage ? `<img src="${khqrImage}" width="200" height="180" />` : ''}
+              
             </td>
           </tr>
         </table>
@@ -269,7 +195,7 @@ export default function LoanRepaymentDetailPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `Loan_${loan.id.substring(0, 8)}_Schedule.xls`);
+    link.setAttribute('download', `Loan_${loan.lid || loan.id.substring(0, 8)}_Schedule.xls`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -412,7 +338,7 @@ export default function LoanRepaymentDetailPage() {
           </button>
           <div>
             <h1 style={{ fontSize: '2rem', fontWeight: '800', letterSpacing: '-0.02em', margin: 0 }}>Repayment <span className="text-gradient">Schedule</span></h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Full repayment trail for loan #{loan.id.substring(0, 8).toUpperCase()}</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Full repayment trail for loan #{loan.lid || loan.id.substring(0, 8).toUpperCase()}</p>
           </div>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -540,34 +466,15 @@ export default function LoanRepaymentDetailPage() {
                   <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Total Tenure</span>
                   <span style={{ fontSize: '0.8125rem', fontWeight: '700' }}>{loan.durationMonths} Months</span>
                 </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>Credit Officer</span>
+                  <span style={{ fontSize: '0.8125rem', fontWeight: '700' }}>
+                    {loan.loanOfficer ? `${loan.loanOfficer.firstName} ${loan.loanOfficer.lastName}` : 'N/A'}
+                  </span>
+                </div>
              </div>
           </div>
           
-          {/* KHQR Setup Card */}
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: '800', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <QrCode size={18} color="var(--primary)" /> KHQR Setup
-              </h3>
-              {khqrImage && (
-                <button onClick={handleRemoveKhqr} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--error-text)', fontSize: '0.75rem', fontWeight: '600' }}>Remove</button>
-              )}
-            </div>
-            
-            {khqrImage ? (
-              <div style={{ textAlign: 'center' }}>
-                <img src={khqrImage} alt="KHQR" style={{ maxWidth: '100%', maxHeight: '180px', borderRadius: '8px', objectFit: 'contain' }} />
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.75rem' }}>This QR will be displayed on the printed statement.</p>
-              </div>
-            ) : (
-              <div style={{ border: '2px dashed var(--border-color)', borderRadius: '8px', padding: '1.5rem', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => document.getElementById('khqr-upload')?.click()} onMouseOver={(e) => e.currentTarget.style.borderColor = 'var(--primary)'} onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}>
-                <Upload size={24} color="var(--text-muted)" style={{ margin: '0 auto 0.5rem' }} />
-                <div style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--foreground)' }}>Upload KHQR</div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>For statement preview & print</div>
-                <input id="khqr-upload" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleKhqrUpload} />
-              </div>
-            )}
-          </div>
 
           <div className="card" style={{ padding: '1.5rem' }}>
             <h3 style={{ fontSize: '1rem', fontWeight: '800', marginBottom: '1.25rem' }}>Repayment Progress</h3>
@@ -710,7 +617,7 @@ export default function LoanRepaymentDetailPage() {
                   <div style={{ fontFamily: '"Khmer OS Muol Light", "Khmer OS Battambang", serif', fontSize: '1.20rem', fontWeight: 'bold' }}>តារាងកាលវិភាគសងប្រាក់</div>
                 </div>
                 <div style={{ width: '220px', display: 'flex', justifyContent: 'flex-end' }}>
-                  {khqrImage && <img src={khqrImage} alt="KHQR" style={{ width: '200px', height: '180px', objectFit: 'contain' }} />}
+                  
                 </div>
               </div>
             </div>
@@ -920,41 +827,7 @@ export default function LoanRepaymentDetailPage() {
             </div>
           </div>
         </div>
-      {/* Crop Modal */}
-      {showCropModal && tempImageSrc && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.2s' }}>
-          <div className="card" style={{ width: '800px', maxWidth: '90vw', padding: '2rem', backgroundColor: 'var(--card-bg)', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h3 style={{ margin: 0, fontWeight: '800' }}>Crop Payment QR (Free Size)</h3>
-              <button onClick={() => { setShowCropModal(false); setTempImageSrc(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer' }}><X size={20} color="var(--text-muted)" /></button>
-            </div>
-            
-            <div style={{ position: 'relative', width: '100%', maxHeight: '60vh', overflow: 'auto', backgroundColor: 'var(--bg-muted)', borderRadius: '8px', display: 'flex', justifyContent: 'center' }}>
-              <ReactCrop 
-                crop={crop} 
-                onChange={c => setCrop(c)} 
-                onComplete={c => setCompletedCrop(c)}
-              >
-                <img 
-                  ref={imgRef} 
-                  src={tempImageSrc} 
-                  style={{ maxHeight: '60vh', objectFit: 'contain' }} 
-                  alt="Upload preview" 
-                />
-              </ReactCrop>
-            </div>
-            
-            <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-              <button onClick={() => { setShowCropModal(false); setTempImageSrc(null); }} className="btn btn-secondary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px' }}>
-                Cancel
-              </button>
-              <button onClick={handleSaveCrop} className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px' }}>
-                Apply Crop
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

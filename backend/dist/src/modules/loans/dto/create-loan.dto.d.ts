@@ -1,0 +1,29 @@
+export declare class CreateLoanDto {
+    customerId: string;
+    productId: string;
+    principalAmount: number;
+    durationMonths: number;
+    lid?: string;
+    currency?: string;
+    applicationChannel?: string;
+    loanOfficerId?: string;
+    disbursementDate?: string;
+    repaymentType?: string;
+    firstInstallmentDate?: string;
+    numberOfInstallments?: number;
+    interestRate?: number;
+    penaltyRate?: number;
+    adminFeeRate?: number;
+    collectionFeeType?: string;
+    collectionFeeValue?: number;
+    gracePeriod?: number;
+    refinanceFeeAmt?: number;
+    reminderPreference?: number;
+    loanCycle?: string;
+    recommenderType?: string;
+    branchId?: string;
+    reasonOfCredit?: string;
+    loanNote?: string;
+    memoReasonOfCredit?: string;
+    collaterals?: any;
+}

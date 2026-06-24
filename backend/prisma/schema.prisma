@@ -197,6 +197,7 @@ model Loan {
   collectionFeeType  String?             @default("RATE")
   collectionFeeValue Int?
   gracePeriod        Int?
+  excludeWeekends    Boolean             @default(false)
   refinanceFeeAmt    Int?
   reminderPreference Int?
   // Existing fields
@@ -208,6 +209,7 @@ model Loan {
   disbursementRef    String?
   rejectionReason    String?
   disbursedAt        DateTime?
+  exchangeRate       Float               @default(1.0)
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   
@@ -411,6 +413,7 @@ model Company {
   email         String?
   logoUrl       String?
   sidebarConfig Json?
+  approvalLineConfig Json?
   updatedAt     DateTime @updatedAt
 }
 

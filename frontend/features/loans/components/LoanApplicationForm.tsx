@@ -73,9 +73,12 @@ export default function LoanApplicationForm() {
 
   // New extended loan term fields
   const [currency, setCurrency] = useState<'USD' | 'KHR'>('USD');
+  const [exchangeRateType, setExchangeRateType] = useState<'DEFAULT' | 'MANUAL'>('DEFAULT');
+  const [exchangeRate, setExchangeRate] = useState<number>(4000);
   const [disbursementDate, setDisbursementDate] = useState('');
   const [repaymentType, setRepaymentType] = useState<'DAILY' | 'WEEKLY' | 'TWO_WEEKLY' | 'MONTHLY'>('MONTHLY');
   const [firstInstallmentDate, setFirstInstallmentDate] = useState('');
+  const [excludeWeekends, setExcludeWeekends] = useState(false);
   const [numberOfInstallments, setNumberOfInstallments] = useState<number>(12);
   const [interestRate, setInterestRate] = useState<number>(0);
   const [penaltyRate, setPenaltyRate] = useState<number>(0);
@@ -103,6 +106,29 @@ export default function LoanApplicationForm() {
     { id: 3, label: 'Details & Collaterals' }
   ];
 
+  const [amountError, setAmountError] = useState<string | null>(null);
+
+
+  const EXCHANGE_RATE = 4000;
+
+  // Validate amount when it or currency/product changes
+  useEffect(() => {
+    if (selectedProduct && amount > 0) {
+      const activeExchangeRate = exchangeRateType === 'DEFAULT' ? 4000 : exchangeRate;
+      const minAmount = currency === 'KHR' ? selectedProduct.minAmount * activeExchangeRate : selectedProduct.minAmount;
+      const maxAmount = currency === 'KHR' ? selectedProduct.maxAmount * activeExchangeRate : selectedProduct.maxAmount;
+      if (amount < minAmount) {
+        setAmountError(`Amount cannot be less than ${currency === 'USD' ? '$' : '៛'}${minAmount.toLocaleString()}`);
+      } else if (amount > maxAmount) {
+        setAmountError(`Amount cannot exceed ${currency === 'USD' ? '$' : '៛'}${maxAmount.toLocaleString()}`);
+      } else {
+        setAmountError(null);
+      }
+    } else {
+      setAmountError(null);
+    }
+  }, [amount, selectedProduct, currency, exchangeRate, exchangeRateType]);
+
   const handleNextStep1 = () => {
     if (!selectedCustomer) {
       setError('Please select a customer before proceeding.');
@@ -119,6 +145,10 @@ export default function LoanApplicationForm() {
     }
     if (amount <= 0) {
       setError('Please enter a valid loan amount before proceeding.');
+      return;
+    }
+    if (amountError) {
+      setError(amountError);
       return;
     }
     setError(null);
@@ -256,6 +286,10 @@ export default function LoanApplicationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (amountError) {
+      setError(amountError);
+      return;
+    }
     if (!selectedCustomer || !selectedProduct) {
       setError('Please select a customer and a product.');
       return;
@@ -275,6 +309,7 @@ export default function LoanApplicationForm() {
         productId: selectedProduct.id,
         principalAmount: amount,
         durationMonths: duration,
+        exchangeRate: currency === 'KHR' ? (exchangeRateType === 'DEFAULT' ? 4000 : exchangeRate) : undefined,
         applicationChannel: 'WEB',
         lid: lid || undefined,
         loanOfficerId: selectedOfficer?.id || undefined,
@@ -283,6 +318,7 @@ export default function LoanApplicationForm() {
         repaymentType,
         firstInstallmentDate: firstInstallmentDate || undefined,
         numberOfInstallments,
+        excludeWeekends,
         interestRate,
         penaltyRate,
         adminFeeRate,
@@ -344,10 +380,24 @@ export default function LoanApplicationForm() {
     );
   }
   return (
-    <div className="card animate-slide-up" style={{ padding: '1.5rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)', maxWidth: '760px', width: '100%' }}>
-      <div style={{ marginBottom: '1.25rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: selectedProduct && currentStep === 2 ? '1fr 280px' : '1fr', gap: '1.5rem', alignItems: 'start', transition: 'grid-template-columns 0.3s ease' }}>
+      <div className="card animate-slide-up" style={{ padding: '1.5rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)', width: '100%' }}>
+        <div style={{ marginBottom: '1.25rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--foreground)', marginBottom: '0.25rem' }}>Create Loan Application</h2>
         <p style={{ color: 'var(--text-muted)', fontSize: '0.8125rem' }}>Complete the steps below to initiate the loan origination process.</p>
+        
+        {/* Tips Section */}
+        <div style={{ marginTop: '1rem', padding: '0.75rem 1rem', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', borderLeft: '4px solid #22c55e', borderRadius: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+            <Info size={15} color="#166534" />
+            <span style={{ fontSize: '0.8125rem', fontWeight: '700', color: '#166534' }}>Tips for a Smooth Application</span>
+          </div>
+          <ul style={{ margin: 0, paddingLeft: '1.5rem', fontSize: '0.75rem', color: '#14532d', lineHeight: '1.5' }}>
+            <li>Ensure the customer's CBC score and KYC documents are fully up-to-date before submitting.</li>
+            <li>Double-check collateral valuations to prevent unnecessary delays during the underwriting phase.</li>
+            <li>Check the <strong>"Business Days Only"</strong> option if the customer prefers weekday installments.</li>
+          </ul>
+        </div>
       </div>
 
       {/* Stepper Progress Indicator */}
@@ -780,8 +830,9 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Briefcase size={13} color="var(--primary)" /> Loan Product <span style={{ color: 'var(--error-text)' }}>*</span>
+                      <div title="The type of loan being applied for. This determines the interest rate and repayment logic." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
-                    <select required className="input-field"
+                      <select required className="input-field"
                       style={{ height: '42px', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2394a3b8%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.875rem center', backgroundSize: '0.9em' }}
                       value={selectedProduct?.id || ''}
                       onChange={(e) => { const p = products.find(x => x.id === e.target.value); setSelectedProduct(p || null); if (p) setInterestRate(p.baseInterestRate); }}>
@@ -794,27 +845,32 @@ export default function LoanApplicationForm() {
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <DollarSign size={13} color="var(--primary)" /> Currency Type
                     </label>
-                    <div style={{ display: 'flex', height: '42px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-                      {(['USD', 'KHR'] as const).map((c, i) => (
-                        <button key={c} type="button" onClick={() => setCurrency(c)} style={{
-                          flex: 1, border: 'none', borderLeft: i > 0 ? '1px solid var(--border-color)' : 'none',
-                          cursor: 'pointer', fontWeight: '600', fontSize: '0.8125rem',
-                          backgroundColor: currency === c ? '#dbeafe' : 'var(--background)',
-                          color: currency === c ? '#1d4ed8' : 'var(--text-muted)',
-                          transition: 'all 0.18s',
-                        }}>
-                          {c === 'USD' ? '$ USD' : '៛ KHR'}
-                        </button>
-                      ))}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', height: '42px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+                        {(['USD', 'KHR'] as const).map((c, i) => (
+                          <button key={c} type="button" onClick={() => setCurrency(c)} style={{
+                            flex: 1, border: 'none', borderLeft: i > 0 ? '1px solid var(--border-color)' : 'none',
+                            cursor: 'pointer', fontWeight: '600', fontSize: '0.8125rem',
+                            backgroundColor: currency === c ? '#dbeafe' : 'var(--background)',
+                            color: currency === c ? '#1d4ed8' : 'var(--text-muted)',
+                            transition: 'all 0.18s',
+                          }}>
+                            {c === 'USD' ? '$ USD' : '៛ KHR'}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
+
+
 
                 {/* Row 2: Loan Amount | Disbursement Date */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <DollarSign size={13} color="var(--primary)" /> Loan Amount <span style={{ color: 'var(--error-text)' }}>*</span>
+                      <div title="The total principal amount requested. Must be within the product's allowed limits." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <div style={{ position: 'relative' }}>
                       <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontWeight: '700', color: 'var(--text-muted)', fontSize: '0.8125rem', userSelect: 'none', pointerEvents: 'none' }}>
@@ -825,10 +881,18 @@ export default function LoanApplicationForm() {
                         placeholder="0.00" value={amount || ''}
                         onChange={(e) => setAmount(Number(e.target.value))} />
                     </div>
-                    {selectedProduct && (
-                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Min: {currency === 'USD' ? '$' : '៛'}{selectedProduct.minAmount.toLocaleString()}</span>
-                        <span>Max: {currency === 'USD' ? '$' : '៛'}{selectedProduct.maxAmount.toLocaleString()}</span>
+                    {selectedProduct && (() => {
+                      const activeExchangeRate = exchangeRateType === 'DEFAULT' ? 4000 : exchangeRate;
+                      return (
+                        <div style={{ fontSize: '0.7rem', color: amountError ? 'var(--error-text)' : 'var(--text-muted)', marginTop: '0.2rem', display: 'flex', justifyContent: 'space-between', fontWeight: amountError ? '600' : 'normal' }}>
+                          <span>Min: {currency === 'USD' ? '$' : '៛'}{(currency === 'KHR' ? selectedProduct.minAmount * activeExchangeRate : selectedProduct.minAmount).toLocaleString()}</span>
+                          <span>Max: {currency === 'USD' ? '$' : '៛'}{(currency === 'KHR' ? selectedProduct.maxAmount * activeExchangeRate : selectedProduct.maxAmount).toLocaleString()}</span>
+                        </div>
+                      );
+                    })()}
+                    {amountError && (
+                      <div style={{ fontSize: '0.75rem', color: 'var(--error-text)', marginTop: '0.25rem', fontWeight: '500' }}>
+                        {amountError}
                       </div>
                     )}
                   </div>
@@ -836,6 +900,7 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Calendar size={13} color="var(--primary)" /> Disbursement Date
+                      <div title="The expected date when the loan funds will be transferred to the customer." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <input type="date" className="input-field" style={{ height: '42px' }}
                       value={disbursementDate} onChange={(e) => setDisbursementDate(e.target.value)} />
@@ -849,6 +914,7 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <RefreshCw size={13} color="var(--primary)" /> Repayment Type
+                      <div title="How often the customer will make repayments (e.g., Monthly, Weekly)." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <select className="input-field"
                       style={{ height: '42px', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2394a3b8%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.875rem center', backgroundSize: '0.9em' }}
@@ -863,14 +929,23 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Calendar size={13} color="var(--primary)" /> First Installment
+                      <div title="The date of the very first repayment. Usually exactly one month after disbursement." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <input type="date" className="input-field" style={{ height: '42px' }}
                       value={firstInstallmentDate} onChange={(e) => setFirstInstallmentDate(e.target.value)} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+                      <input type="checkbox" id="excludeWeekends" checked={excludeWeekends} onChange={(e) => setExcludeWeekends(e.target.checked)} />
+                      <label htmlFor="excludeWeekends" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', cursor: 'pointer', margin: 0, userSelect: 'none', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        Business Days Only
+                        <div title="If checked, any installment falling on a Saturday or Sunday will automatically be moved to the next Monday." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={12} color="#94a3b8" /></div>
+                      </label>
+                    </div>
                   </div>
 
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <FileText size={13} color="var(--primary)" /> Installments <span style={{ color: 'var(--error-text)' }}>*</span>
+                      <div title="The total number of repayments required to pay off the loan." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <input required type="number" min={1} className="input-field" style={{ height: '42px' }}
                       placeholder="12" value={numberOfInstallments || ''}
@@ -883,13 +958,14 @@ export default function LoanApplicationForm() {
                 {/* Row 4: Interest Rate | Penalty Rate | Admin Fee Rate */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
                   {[
-                    { label: 'Interest Rate', icon: <Percent size={13} color="var(--primary)" />, val: interestRate, set: setInterestRate },
-                    { label: 'Penalty Rate', icon: <AlertCircle size={13} color="var(--primary)" />, val: penaltyRate, set: setPenaltyRate },
-                    { label: 'Admin Fee Rate', icon: <Percent size={13} color="var(--primary)" />, val: adminFeeRate, set: setAdminFeeRate },
-                  ].map(({ label, icon, val, set }) => (
+                    { label: 'Interest Rate', icon: <Percent size={13} color="var(--primary)" />, val: interestRate, set: setInterestRate, tip: 'The annual interest rate applied to the loan.' },
+                    { label: 'Penalty Rate', icon: <AlertCircle size={13} color="var(--primary)" />, val: penaltyRate, set: setPenaltyRate, tip: 'The late fee rate applied to overdue payments.' },
+                    { label: 'Admin Fee Rate', icon: <Percent size={13} color="var(--primary)" />, val: adminFeeRate, set: setAdminFeeRate, tip: 'The one-time administrative fee rate charged upfront.' },
+                  ].map(({ label, icon, val, set, tip }) => (
                     <div key={label} className="input-group" style={{ marginBottom: 0 }}>
                       <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                         {icon} {label}
+                        <div title={tip} style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                       </label>
                       <div style={{ position: 'relative' }}>
                         <input type="number" step="0.01" min={0} className="input-field"
@@ -910,6 +986,7 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Banknote size={13} color="var(--primary)" /> Collection Fee
+                      <div title="Fee charged for field collection activities or special cash pickups." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <div style={{ display: 'flex', height: '42px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', backgroundColor: 'var(--card-bg)' }}>
                       <input type="number" step="0.01" min={0}
@@ -935,6 +1012,7 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Clock size={13} color="var(--primary)" /> Grace Period
+                      <div title="Number of days before the first principal repayment is due (interest may still apply)." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <div style={{ position: 'relative' }}>
                       <input type="number" min={0} className="input-field"
@@ -949,6 +1027,7 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <RefreshCw size={13} color="var(--primary)" /> Refinance Fee
+                      <div title="Fee applied if this loan is being used to refinance an existing loan." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <div style={{ position: 'relative' }}>
                       <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', fontWeight: '700', color: 'var(--text-muted)', fontSize: '0.8125rem', userSelect: 'none', pointerEvents: 'none' }}>
@@ -969,6 +1048,7 @@ export default function LoanApplicationForm() {
                   <div className="input-group" style={{ marginBottom: 0 }}>
                     <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', fontSize: '0.8125rem', marginBottom: '0.25rem' }}>
                       <Calendar size={13} color="var(--primary)" /> Repayment Reminder
+                      <div title="When to send automated SMS/Email reminders before the due date." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
                     </label>
                     <select className="input-field"
                       style={{ height: '42px', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2394a3b8%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.875rem center', backgroundSize: '0.9em' }}
@@ -1043,7 +1123,10 @@ export default function LoanApplicationForm() {
               <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                   <div className="input-group" style={{ marginBottom: 0 }}>
-                    <label className="input-label" style={{ fontSize: '0.8125rem', marginBottom: '0.25rem' }}>Loan Cycle</label>
+                    <label className="input-label" style={{ fontSize: '0.8125rem', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                      Loan Cycle
+                      <div title="Indicates whether this is the customer's first loan or a subsequent loan." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
+                    </label>
                     <select className="input-field" value={loanCycle} onChange={(e) => setLoanCycle(e.target.value)} style={{ height: '42px', appearance: 'none', backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%2394a3b8%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.875rem center', backgroundSize: '0.9em' }}>
                       <option value="New">New</option>
                       <option value="Old">Old</option>
@@ -1068,7 +1151,10 @@ export default function LoanApplicationForm() {
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div className="input-group" style={{ marginBottom: 0 }}>
-                    <label className="input-label" style={{ fontSize: '0.8125rem', marginBottom: '0.25rem' }}>Reason of Credit</label>
+                    <label className="input-label" style={{ fontSize: '0.8125rem', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+                      Reason of Credit
+                      <div title="The primary purpose for which the loan funds will be used (e.g., Business Expansion)." style={{ cursor: 'help', display: 'flex', alignItems: 'center' }}><Info size={14} color="#94a3b8" /></div>
+                    </label>
                     <input type="text" className="input-field" value={reasonOfCredit} onChange={(e) => setReasonOfCredit(e.target.value)} placeholder="e.g. Business Expansion" style={{ height: '42px' }} />
                   </div>
                   <div className="input-group" style={{ marginBottom: 0 }}>
@@ -1198,6 +1284,41 @@ export default function LoanApplicationForm() {
           </div>
         </div>
       </form>
+    </div>
+
+      {selectedProduct && currentStep === 2 && (
+        <div className="card animate-fade-in" style={{ padding: '1.25rem', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)', boxShadow: 'var(--shadow-md)', position: 'sticky', top: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border-color)' }}>
+            <Info size={16} color="var(--primary)" />
+            <h3 style={{ fontSize: '0.875rem', fontWeight: '700', color: 'var(--foreground)', margin: 0 }}>Product Info</h3>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
+            <div>
+              <div style={{ fontSize: '0.7rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.125rem' }}>Product Name</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--foreground)' }}>{selectedProduct.name}</div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+              <div>
+                <div style={{ fontSize: '0.7rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.125rem' }}>Min Amount</div>
+                <div style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--foreground)' }}>${selectedProduct.minAmount.toLocaleString()}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '0.7rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.125rem' }}>Max Amount</div>
+                <div style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--foreground)' }}>${selectedProduct.maxAmount.toLocaleString()}</div>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: '0.7rem', fontWeight: '600', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.125rem' }}>Base Interest Rate</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: '600', color: 'var(--primary)' }}>{selectedProduct.baseInterestRate}% <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontWeight: '500' }}>({selectedProduct.interestType})</span></div>
+            </div>
+            <div style={{ marginTop: '0.5rem', padding: '0.75rem', backgroundColor: 'var(--primary-light)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(37, 99, 235, 0.1)' }}>
+              <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--primary)', lineHeight: 1.4 }}>
+                This loan product dictates the minimum and maximum principal amounts allowed, and provides a baseline interest rate.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

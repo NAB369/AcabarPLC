@@ -9,7 +9,8 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { LoansService, CreateLoanDto } from './loans.service';
+import { LoansService } from './loans.service';
+import { CreateLoanDto } from './dto/create-loan.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';

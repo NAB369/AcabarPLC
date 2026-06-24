@@ -1,4 +1,5 @@
-import { LoansService, CreateLoanDto } from './loans.service';
+import { LoansService } from './loans.service';
+import { CreateLoanDto } from './dto/create-loan.dto';
 export declare class LoansController {
     private readonly loansService;
     constructor(loansService: LoansService);
@@ -75,6 +76,7 @@ export declare class LoansController {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -85,6 +87,7 @@ export declare class LoansController {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -139,6 +142,7 @@ export declare class LoansController {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -149,6 +153,7 @@ export declare class LoansController {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -180,6 +185,7 @@ export declare class LoansController {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -190,6 +196,7 @@ export declare class LoansController {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -223,6 +230,7 @@ export declare class LoansController {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -233,6 +241,7 @@ export declare class LoansController {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -266,6 +275,7 @@ export declare class LoansController {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -276,6 +286,7 @@ export declare class LoansController {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;

@@ -33,9 +33,12 @@ let LosService = class LosService {
         });
         if (!product)
             throw new common_1.NotFoundException('Loan product not found');
-        if (dto.principalAmount < Number(product.minAmount) ||
-            dto.principalAmount > Number(product.maxAmount)) {
-            throw new common_1.BadRequestException(`Amount must be between ${product.minAmount} and ${product.maxAmount}`);
+        const exchangeRate = dto.exchangeRate ?? (dto.currency === 'KHR' ? 4000 : 1.0);
+        const minAmount = dto.currency === 'KHR' ? product.minAmount * exchangeRate : product.minAmount;
+        const maxAmount = dto.currency === 'KHR' ? product.maxAmount * exchangeRate : product.maxAmount;
+        if (dto.principalAmount < minAmount ||
+            dto.principalAmount > maxAmount) {
+            throw new common_1.BadRequestException(`Amount must be between ${minAmount} and ${maxAmount} ${dto.currency || 'USD'}`);
         }
         if (Number(product.baseInterestRate) > 18) {
             throw new common_1.BadRequestException('Interest rate exceeds NBC cap of 18% per annum');
@@ -54,6 +57,7 @@ let LosService = class LosService {
                 interestRate: dto.interestRate ?? product.baseInterestRate,
                 durationMonths: dto.numberOfInstallments ?? dto.durationMonths,
                 currency: dto.currency || 'USD',
+                exchangeRate: exchangeRate,
                 applicationChannel: dto.applicationChannel || 'WEB',
                 status: 'DRAFT',
                 loanOfficerId: dto.loanOfficerId || null,
@@ -65,6 +69,7 @@ let LosService = class LosService {
                     ? new Date(dto.firstInstallmentDate)
                     : null,
                 numberOfInstallments: dto.numberOfInstallments || null,
+                excludeWeekends: dto.excludeWeekends || false,
                 penaltyRate: dto.penaltyRate ?? null,
                 adminFeeRate: dto.adminFeeRate ?? null,
                 collectionFeeType: dto.collectionFeeType || 'RATE',
@@ -232,12 +237,12 @@ let LosService = class LosService {
     async prepareDisbursement(loanId, userId) {
         const loan = await this.getLoan(loanId);
         this.assertTransition(loan.status, 'PENDING_DISBURSEMENT');
-        const schedules = this.generateRepaymentSchedule(loanId, Number(loan.principalAmount), Number(loan.interestRate), loan.durationMonths, loan.product.interestType);
+        const schedules = this.generateRepaymentSchedule(loanId, Number(loan.principalAmount), Number(loan.interestRate), loan.durationMonths, loan.product.interestType, loan.firstInstallmentDate, loan.excludeWeekends);
         await this.prisma.repaymentSchedule.createMany({ data: schedules });
         return this.transitionLoan(loanId, loan.status, 'PENDING_DISBURSEMENT', userId);
     }
-    async disburseLoan(loanId, method = 'BAKONG') {
-        return this.disbursement.disburse(loanId, method);
+    async disburseLoan(loanId, method = 'BAKONG', accountId) {
+        return this.disbursement.disburse(loanId, method, accountId);
     }
     async activateLoan(loanId, userId) {
         const loan = await this.getLoan(loanId);
@@ -368,34 +373,52 @@ let LosService = class LosService {
         });
         return updated;
     }
-    generateRepaymentSchedule(loanId, principal, annualRate, months, type) {
+    generateRepaymentSchedule(loanId, principal, annualRate, months, type, firstInstallmentDate, excludeWeekends) {
         const schedules = [];
         const monthlyRate = annualRate / 100 / 12;
         let balance = principal;
-        const startDate = new Date();
+        const startDate = firstInstallmentDate ? new Date(firstInstallmentDate) : new Date();
+        let currentDate = new Date(startDate);
+        if (!firstInstallmentDate) {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }
+        const getNextBusinessDay = (date) => {
+            const newDate = new Date(date);
+            while (newDate.getDay() === 0 || newDate.getDay() === 6) {
+                newDate.setDate(newDate.getDate() + 1);
+            }
+            return newDate;
+        };
         if (type === 'FLAT') {
             const totalInterest = principal * (annualRate / 100) * (months / 12);
             const monthlyInterest = totalInterest / months;
             const monthlyPrincipal = principal / months;
             const amountDue = Math.round(monthlyPrincipal + monthlyInterest);
             for (let i = 1; i <= months; i++) {
-                startDate.setMonth(startDate.getMonth() + 1);
+                let dueDate = new Date(currentDate);
+                if (excludeWeekends) {
+                    dueDate = getNextBusinessDay(dueDate);
+                }
                 schedules.push({
                     loanId,
                     installmentNumber: i,
                     amountDue,
                     principalComponent: Math.round(monthlyPrincipal),
                     interestComponent: Math.round(monthlyInterest),
-                    dueDate: new Date(startDate),
+                    dueDate,
                     status: 'PENDING',
                 });
+                currentDate.setMonth(currentDate.getMonth() + 1);
             }
         }
         else {
             const emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
                 (Math.pow(1 + monthlyRate, months) - 1);
             for (let i = 1; i <= months; i++) {
-                startDate.setMonth(startDate.getMonth() + 1);
+                let dueDate = new Date(currentDate);
+                if (excludeWeekends) {
+                    dueDate = getNextBusinessDay(dueDate);
+                }
                 const interestForMonth = balance * monthlyRate;
                 const principalForMonth = emi - interestForMonth;
                 balance -= principalForMonth;
@@ -405,9 +428,10 @@ let LosService = class LosService {
                     amountDue: Math.round(emi),
                     principalComponent: Math.round(principalForMonth),
                     interestComponent: Math.round(interestForMonth),
-                    dueDate: new Date(startDate),
+                    dueDate,
                     status: 'PENDING',
                 });
+                currentDate.setMonth(currentDate.getMonth() + 1);
             }
         }
         return schedules;

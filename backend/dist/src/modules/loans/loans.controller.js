@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoansController = void 0;
 const common_1 = require("@nestjs/common");
 const loans_service_1 = require("./loans.service");
+const create_loan_dto_1 = require("./dto/create-loan.dto");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
 const permissions_guard_1 = require("../auth/guards/permissions.guard");
 const permissions_decorator_1 = require("../auth/decorators/permissions.decorator");
@@ -104,7 +105,7 @@ __decorate([
     (0, permissions_decorator_1.Permissions)('CREATE_LOAN'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [loans_service_1.CreateLoanDto]),
+    __metadata("design:paramtypes", [create_loan_dto_1.CreateLoanDto]),
     __metadata("design:returntype", void 0)
 ], LoansController.prototype, "applyForLoan", null);
 __decorate([

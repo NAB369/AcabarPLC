@@ -9,18 +9,19 @@ import {
   GitPullRequest, Shield, LogOut, MapPin, Webhook, FileSpreadsheet, BarChart2,
   Sun, Moon, Clock, BookOpen, LayoutList, TrendingUp, TrendingDown,
   ArrowLeftRight, PenLine, BarChart3, Scale, BookMarked, ChevronRight, ChevronLeft,
-  FileCheck, Landmark, CheckSquare, Briefcase, Menu, X, ShieldCheck
+  FileCheck, Landmark, CheckSquare, Briefcase, Menu, X, ShieldCheck, Globe
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SettingsModal from '@/components/SettingsModal';
 import UserProfileModal from '@/components/UserProfileModal';
 import { api } from '@/services/api';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from 'next-themes';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -38,24 +39,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isLoanOfficer = user?.roles?.includes('LOAN_OFFICER') || user?.roles?.includes('CREDIT_OFFICER') || user?.roles?.includes('SUPER_ADMIN');
   const isAdmin = user?.roles?.includes('ADMIN') || user?.roles?.includes('SUPER_ADMIN');
   const isTeller = user?.roles?.includes('TELLER') || user?.roles?.includes('CASHIER') || isAccountant || isLoanOfficer;
+  const canViewReports = user?.roles?.includes('SUPER_ADMIN') || user?.roles?.includes('BRANCH_MANAGER') || user?.roles?.includes('ACCOUNTANT') || user?.roles?.includes('AUDITOR');
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setIsDarkMode(document.documentElement.classList.contains('dark'));
+    setMounted(true);
   }, []);
 
+  const isDarkMode = mounted && (theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches));
+
   const toggleTheme = () => {
-    const nextDark = !isDarkMode;
-    setIsDarkMode(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    setTheme(isDarkMode ? 'light' : 'dark');
   };
 
   useEffect(() => {
@@ -282,27 +279,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
 
           {/* REPORTS Section */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionReports')}</div>
+          {canViewReports && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('sectionReports')}</div>
 
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
 
-              {sidebarConfig['Report'] !== false && (
-                <>
-                  <Link href="/admin/report" className={`sidebar-link ${(pathname === '/admin/report') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/report')}>
-                    <BarChart2 size={18} />
-                    {t('analyticsMenu')}
-                    <NavChevron isActive={pathname === '/admin/report'} />
-                  </Link>
-                  <Link href="/admin/report/credit-officer" className={`sidebar-link ${(pathname === '/admin/report/credit-officer') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/report/credit-officer')}>
-                    <Users size={18} />
-                    {t('creditOfficerPortfolio')}
-                    <NavChevron isActive={pathname === '/admin/report/credit-officer'} />
-                  </Link>
-                </>
-              )}
+                {sidebarConfig['Report'] !== false && (
+                  <>
+                    <Link href="/admin/report" className={`sidebar-link ${(pathname === '/admin/report') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/report')}>
+                      <BarChart2 size={18} />
+                      {t('analyticsMenu')}
+                      <NavChevron isActive={pathname === '/admin/report'} />
+                    </Link>
+                    <Link href="/admin/report/credit-officer" className={`sidebar-link ${(pathname === '/admin/report/credit-officer') ? "active" : ""}`} style={navItemStyle(pathname === '/admin/report/credit-officer')}>
+                      <Users size={18} />
+                      {t('creditOfficerPortfolio')}
+                      <NavChevron isActive={pathname === '/admin/report/credit-officer'} />
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
             {isAccountant && (
               <>
@@ -324,18 +323,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </>
             )}
 
-            {isAdmin && (
-              <>
-                <div style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '0.5rem', marginTop: '1.5rem', paddingLeft: '0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>System Admin</div>
-
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <Link href="/admin/users" className={`sidebar-link ${pathname === '/admin/users' ? 'active' : ''}`} style={{ ...navItemStyle(pathname === '/admin/users') }}>
-                    <ShieldCheck size={18} /> User Approvals
-                    <NavChevron isActive={pathname === '/admin/users'} />
-                  </Link>
-                </div>
-              </>
-            )}
 
         </nav>
 
@@ -357,6 +344,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'kh' : language === 'kh' ? 'ko' : 'en')}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '40px', padding: '0 0.5rem', borderRadius: '8px', transition: 'background-color var(--transition-fast)', gap: '0.375rem' }} 
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted)'} 
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              title="Switch language"
+            >
+              <Globe size={20} color="var(--text-muted-dark)" />
+              <span style={{ color: 'var(--text-muted-dark)', fontSize: '0.875rem', fontWeight: '700', textTransform: 'uppercase' }}>{language}</span>
+            </button>
 
             <button 
               onClick={toggleTheme}

@@ -35,6 +35,9 @@ export default function ApplicationDetailPage() {
   const [uploadingDocType, setUploadingDocType] = useState<string | null>(null);
   const [rejectingDocId, setRejectingDocId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState<string>('');
+  const [isDisburseModalOpen, setIsDisburseModalOpen] = useState(false);
+  const [disburseMethod, setDisburseMethod] = useState<'BAKONG' | 'CASH' | 'BANK_TRANSFER'>('BAKONG');
+  const [disburseAccountId, setDisburseAccountId] = useState('');
   const [auditLogs, setAuditLogs] = useState<any[]>([]);
 
   useEffect(() => {
@@ -106,6 +109,11 @@ export default function ApplicationDetailPage() {
     } finally {
       setIsActionLoading(false);
     }
+  };
+
+  const handleConfirmDisbursement = async () => {
+    setIsDisburseModalOpen(false);
+    await handleAction('disburse', 'POST', { method: disburseMethod, accountId: disburseAccountId });
   };
 
   const openReviewModal = (decision: 'APPROVED' | 'REJECTED' | 'ESCALATED') => {
@@ -243,6 +251,15 @@ export default function ApplicationDetailPage() {
   }
 
   const currentStageIndex = STAGES.findIndex(s => s.statuses.includes(application.status));
+  const userRoles = user?.roles || [];
+  const isSuperAdmin = userRoles.includes('SUPER_ADMIN');
+  const isBranchManager = userRoles.includes('BRANCH_MANAGER');
+  
+  const canSubmit = isSuperAdmin || isBranchManager || userRoles.includes('CREDIT_OFFICER');
+  const canApproveKyc = isSuperAdmin || isBranchManager;
+  const canCreditEvaluate = isSuperAdmin || isBranchManager;
+  const canUnderwriteLoan = isSuperAdmin || isBranchManager;
+  const canManageDisbursement = isSuperAdmin || isBranchManager || userRoles.includes('TELLER') || userRoles.includes('ACCOUNTANT');
 
   const getStatusStyle = (status: string) => {
     const map: Record<string, { color: string; bg: string }> = {
@@ -330,7 +347,7 @@ export default function ApplicationDetailPage() {
           </Link>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0, fontFamily: 'monospace' }} title={application.id}>#{application.id.substring(0, 6).toUpperCase()}</h2>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0, fontFamily: 'monospace' }} title={application.lid || application.id}>#{application.lid || application.id.substring(0, 6).toUpperCase()}</h2>
               <span style={{ padding: '0.3rem 1rem', borderRadius: 'var(--radius-full)', backgroundColor: statusStyle.bg, color: statusStyle.color, fontSize: '0.75rem', fontWeight: '800', letterSpacing: '0.02em' }}>
                 {application.status.replace(/_/g, ' ')}
               </span>
@@ -346,48 +363,131 @@ export default function ApplicationDetailPage() {
 
         <div style={{ display: 'flex', gap: '0.75rem' }}>
           {application.status === 'DRAFT' && (
-            <button onClick={() => handleAction('submit')} disabled={isActionLoading} className="btn btn-primary">
+            <button 
+              onClick={() => handleAction('submit')} 
+              disabled={isActionLoading || !canSubmit} 
+              className={!canSubmit ? "btn btn-secondary" : "btn btn-primary"}
+              title={!canSubmit ? "You do not have permission to submit loans" : ""}
+              style={!canSubmit ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+            >
               {isActionLoading ? <Loader2 className="animate-spin" size={16} /> : 'Submit Application'}
             </button>
           )}
           {application.status === 'SUBMITTED' && (
-            <button onClick={() => handleAction('kyc-review')} disabled={isActionLoading} className="btn btn-primary">
+            <button 
+              onClick={() => handleAction('kyc-review')} 
+              disabled={isActionLoading || !canApproveKyc} 
+              className={!canApproveKyc ? "btn btn-secondary" : "btn btn-primary"}
+              title={!canApproveKyc ? "You do not have permission to start KYC review" : ""}
+              style={!canApproveKyc ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+            >
               Start KYC Review
             </button>
           )}
           {application.status === 'KYC_REVIEW' && (
             <>
-              <button onClick={() => handleAction('kyc-decision', 'PATCH', { approved: false })} disabled={isActionLoading} className="btn btn-secondary" style={{ color: 'var(--error-text)' }}>Reject KYC</button>
-              <button onClick={() => handleAction('kyc-decision', 'PATCH', { approved: true })} disabled={isActionLoading} className="btn btn-primary">Approve KYC</button>
+              <button 
+                onClick={() => handleAction('kyc-decision', 'PATCH', { approved: false })} 
+                disabled={isActionLoading || !canApproveKyc} 
+                className="btn btn-secondary" 
+                title={!canApproveKyc ? "You do not have permission to reject KYC" : ""}
+                style={!canApproveKyc ? { cursor: 'not-allowed', opacity: 0.6 } : { color: 'var(--error-text)' }}
+              >
+                Reject KYC
+              </button>
+              <button 
+                onClick={() => handleAction('kyc-decision', 'PATCH', { approved: true })} 
+                disabled={isActionLoading || !canApproveKyc} 
+                className={!canApproveKyc ? "btn btn-secondary" : "btn btn-primary"}
+                title={!canApproveKyc ? "You do not have permission to approve KYC" : ""}
+                style={!canApproveKyc ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+              >
+                Approve KYC
+              </button>
             </>
           )}
           {application.status === 'KYC_APPROVED' && (
-            <button onClick={() => handleAction('credit-check', 'POST')} disabled={isActionLoading} className="btn btn-primary">Run Credit Check</button>
+            <button 
+              onClick={() => handleAction('credit-check', 'POST')} 
+              disabled={isActionLoading || !canCreditEvaluate} 
+              className={!canCreditEvaluate ? "btn btn-secondary" : "btn btn-primary"}
+              title={!canCreditEvaluate ? "You do not have permission to run credit check" : ""}
+              style={!canCreditEvaluate ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+            >
+              Run Credit Check
+            </button>
           )}
           {application.status === 'UNDERWRITING' && (
-             <button onClick={() => handleAction('review', 'PATCH', { decision: 'APPROVED' })} disabled={isActionLoading} className="btn btn-primary">Approve Loan</button>
+             <button 
+               onClick={() => handleAction('review', 'PATCH', { decision: 'APPROVED' })} 
+               disabled={isActionLoading || !canUnderwriteLoan} 
+               className={!canUnderwriteLoan ? "btn btn-secondary" : "btn btn-primary"}
+               title={!canUnderwriteLoan ? "You do not have permission to approve loans" : ""}
+               style={!canUnderwriteLoan ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+             >
+               Approve Loan
+             </button>
           )}
           
           {/* Review Tiers - Super Admin and Branch Manager */}
           {['TIER1_REVIEW', 'TIER2_REVIEW', 'TIER3_REVIEW'].includes(application.status) && (
             <>
-              {(user?.roles?.includes('SUPER_ADMIN') || user?.roles?.includes('BRANCH_MANAGER')) && (
-                <>
-                  <button onClick={() => openReviewModal('REJECTED')} disabled={isActionLoading} className="btn btn-secondary" style={{ color: 'var(--error-text)' }}>Reject</button>
-                  {application.status !== 'TIER3_REVIEW' && (
-                    <button onClick={() => openReviewModal('ESCALATED')} disabled={isActionLoading} className="btn btn-secondary">Escalate</button>
-                  )}
-                  <button onClick={() => openReviewModal('APPROVED')} disabled={isActionLoading} className="btn btn-primary">Approve Application</button>
-                </>
+              <button 
+                onClick={() => openReviewModal('REJECTED')} 
+                disabled={isActionLoading || !canUnderwriteLoan} 
+                className="btn btn-secondary" 
+                title={!canUnderwriteLoan ? "You do not have permission to reject applications" : ""}
+                style={!canUnderwriteLoan ? { cursor: 'not-allowed', opacity: 0.6 } : { color: 'var(--error-text)' }}
+              >
+                Reject
+              </button>
+              {application.status !== 'TIER3_REVIEW' && (
+                <button 
+                  onClick={() => openReviewModal('ESCALATED')} 
+                  disabled={isActionLoading || !canUnderwriteLoan} 
+                  className="btn btn-secondary"
+                  title={!canUnderwriteLoan ? "You do not have permission to escalate applications" : ""}
+                  style={!canUnderwriteLoan ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+                >
+                  Escalate
+                </button>
               )}
+              <button 
+                onClick={() => openReviewModal('APPROVED')} 
+                disabled={isActionLoading || !canUnderwriteLoan} 
+                className={!canUnderwriteLoan ? "btn btn-secondary" : "btn btn-primary"}
+                title={!canUnderwriteLoan ? "You do not have permission to approve applications" : ""}
+                style={!canUnderwriteLoan ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+              >
+                Approve Application
+              </button>
             </>
           )}
 
           {application.status === 'APPROVED' && (
-            <button onClick={() => handleAction('prepare-disbursement')} disabled={isActionLoading} className="btn btn-primary">Prepare Disbursement</button>
+            <button 
+              onClick={() => handleAction('prepare-disbursement')} 
+              disabled={isActionLoading || !canManageDisbursement} 
+              className={!canManageDisbursement ? "btn btn-secondary" : "btn btn-primary"}
+              title={!canManageDisbursement ? "You do not have permission to prepare disbursement" : ""}
+              style={!canManageDisbursement ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+            >
+              Prepare Disbursement
+            </button>
           )}
           {application.status === 'PENDING_DISBURSEMENT' && (
-            <button onClick={() => handleAction('disburse', 'POST')} disabled={isActionLoading} className="btn btn-primary">Disburse Funds</button>
+            <button 
+              onClick={() => {
+                setDisburseAccountId(application.customer?.cid || application.customer?.accountNumber || application.customer?.phone || '');
+                setIsDisburseModalOpen(true);
+              }}
+              disabled={isActionLoading || !canManageDisbursement} 
+              className={!canManageDisbursement ? "btn btn-secondary" : "btn btn-primary"}
+              title={!canManageDisbursement ? "You do not have permission to disburse funds" : ""}
+              style={!canManageDisbursement ? { cursor: 'not-allowed', opacity: 0.6 } : {}}
+            >
+              Disburse Funds
+            </button>
           )}
           {(application.status === 'DISBURSED' || application.status === 'ACTIVE' || application.status === 'COMPLETED' || application.status === 'OVERDUE') && (
             <Link href={`/admin/customers/repayments/${application.id}`} style={{ textDecoration: 'none' }}>
@@ -431,6 +531,31 @@ export default function ApplicationDetailPage() {
               >
                 {isActionLoading ? <Loader2 className="animate-spin" size={18} /> : `Confirm ${reviewDecision === 'ESCALATED' ? 'Escalation' : reviewDecision.charAt(0) + reviewDecision.slice(1).toLowerCase()}`}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Disbursement Modal */}
+      {isDisburseModalOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.2s' }}>
+          <div className="card" style={{ width: '400px', padding: '2rem', animation: 'slideUp 0.3s' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '800', marginBottom: '1.5rem' }}>Disburse Loan</h3>
+            <div className="input-group" style={{ marginBottom: '1rem' }}>
+              <label className="input-label">Payment Method</label>
+              <select value={disburseMethod} onChange={(e) => setDisburseMethod(e.target.value as any)} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
+                <option value="BAKONG">Bakong</option>
+                <option value="CASH">Cash</option>
+                <option value="BANK_TRANSFER">Bank Transfer</option>
+              </select>
+            </div>
+            <div className="input-group" style={{ marginBottom: '1.5rem' }}>
+              <label className="input-label">Account/Wallet ID</label>
+              <input type="text" value={disburseAccountId} onChange={(e) => setDisburseAccountId(e.target.value)} style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border-color)' }} />
+            </div>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button onClick={() => setIsDisburseModalOpen(false)} className="btn btn-secondary" style={{ flex: 1 }}>Cancel</button>
+              <button onClick={handleConfirmDisbursement} className="btn btn-primary" style={{ flex: 1 }}>Confirm Disbursement</button>
             </div>
           </div>
         </div>

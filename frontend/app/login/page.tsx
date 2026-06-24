@@ -5,9 +5,15 @@ import { api } from '@/services/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, CreditCard, ChevronLeft } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
+import { pageTranslations } from '../pageTranslations';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { language } = useLanguage();
+  const t = (key: keyof typeof pageTranslations.en) => {
+    return pageTranslations[language as keyof typeof pageTranslations]?.[key] || pageTranslations.en[key] || key;
+  };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -86,13 +92,13 @@ export default function LoginPage() {
       }}>
         <Link href="/" style={{ position: 'absolute', top: '2rem', left: '2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem', fontWeight: '500' }} className="hover-primary">
           <ChevronLeft size={16} />
-          Back to home
+          {t('backToHome')}
         </Link>
 
         <div style={{ width: '100%', maxWidth: '420px' }} className="animate-slide-up">
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <h1 style={{ fontSize: '2rem', fontWeight: '700', marginBottom: '0.5rem' }}>Acabar Plc</h1>
-            <p style={{ color: 'var(--text-muted)' }}>Enter your credentials to access your account</p>
+            <p style={{ color: 'var(--text-muted)' }}>{t('enterCredentials')}</p>
           </div>
 
           {error && (
@@ -116,7 +122,7 @@ export default function LoginPage() {
           {!mfaRequired ? (
             <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label">Email Address</label>
+                <label className="input-label">{t('emailAddress')}</label>
                 <div style={{ position: 'relative' }}>
                   <Mail style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
                   <input 
@@ -132,7 +138,7 @@ export default function LoginPage() {
               </div>
 
               <div className="input-group" style={{ marginBottom: 0 }}>
-                <label className="input-label">Password</label>
+                <label className="input-label">{t('password')}</label>
                 <div style={{ position: 'relative' }}>
                   <Lock style={{ position: 'absolute', left: '0.875rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={18} />
                   <input 
@@ -157,10 +163,10 @@ export default function LoginPage() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: 'var(--text-muted)', cursor: 'pointer' }}>
                   <input type="checkbox" style={{ accentColor: 'var(--primary)' }} />
-                  Keep me signed in
+                  {t('keepSignedIn')}
                 </label>
                 <Link href="#" style={{ fontSize: '0.875rem', color: 'var(--primary)', textDecoration: 'none', fontWeight: '500' }}>
-                  Forgot password?
+                  {t('forgotPassword')}
                 </Link>
               </div>
 
@@ -170,9 +176,9 @@ export default function LoginPage() {
                 style={{ width: '100%', padding: '0.875rem', fontSize: '1rem', marginTop: '1rem', height: '52px' }}
                 disabled={isLoading}
               >
-                {isLoading ? 'Authenticating...' : (
+                {isLoading ? t('authenticating') : (
                   <>
-                    Login
+                    {t('login')}
                     <ArrowRight size={18} />
                   </>
                 )}
@@ -184,8 +190,8 @@ export default function LoginPage() {
                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                    <ShieldCheck size={32} />
                 </div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>Two-Step Verification</h2>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Enter the 6-digit code from your authenticator app.</p>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '0.5rem' }}>{t('twoStepVerif')}</h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{t('enterCode')}</p>
               </div>
 
               <div className="input-group">
@@ -208,7 +214,7 @@ export default function LoginPage() {
                 style={{ width: '100%', padding: '0.875rem', fontSize: '1rem', height: '52px' }}
                 disabled={isLoading}
               >
-                {isLoading ? 'Verifying...' : 'Verify & Continue'}
+                {isLoading ? t('verifying') : t('verifyContinue')}
               </button>
 
               <button 
@@ -217,13 +223,13 @@ export default function LoginPage() {
                 style={{ width: '100%' }}
                 onClick={() => setMfaRequired(false)}
               >
-                Cancel
+                {t('cancel')}
               </button>
             </form>
           )}
 
           <div style={{ marginTop: '2.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-            Need an employee account? <Link href="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '600' }}>Request Access</Link>
+            {t('needAccount')} <Link href="/register" style={{ color: 'var(--primary)', textDecoration: 'none', fontWeight: '600' }}>{t('requestAccess')}</Link>
           </div>
         </div>
       </div>

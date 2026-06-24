@@ -21,6 +21,9 @@ export class CustomersService {
         cleanedData[key] = null;
       }
     }
+    if (cleanedData.dob && typeof cleanedData.dob === 'string') {
+      cleanedData.dob = new Date(cleanedData.dob);
+    }
 
     const { phone, email, nationalId } = cleanedData;
 
@@ -56,19 +59,20 @@ export class CustomersService {
       }
     }
 
-    let newAccountNumber = '';
-    let isUnique = false;
-
-    while (!isUnique) {
-      // Generate 10-digit random number
-      newAccountNumber = Math.floor(
-        1000000000 + Math.random() * 9000000000,
-      ).toString();
-      const existing = await this.prisma.customer.findUnique({
-        where: { accountNumber: newAccountNumber },
-      });
-      if (!existing) {
-        isUnique = true;
+    let newAccountNumber = cleanedData.cid;
+    if (!newAccountNumber) {
+      let isUnique = false;
+      while (!isUnique) {
+        // Generate 10-digit random number as fallback
+        newAccountNumber = Math.floor(
+          1000000000 + Math.random() * 9000000000,
+        ).toString();
+        const existing = await this.prisma.customer.findUnique({
+          where: { accountNumber: newAccountNumber },
+        });
+        if (!existing) {
+          isUnique = true;
+        }
       }
     }
 
@@ -187,6 +191,9 @@ export class CustomersService {
       if (cleanedData[key] === '') {
         cleanedData[key] = null;
       }
+    }
+    if (cleanedData.dob && typeof cleanedData.dob === 'string') {
+      cleanedData.dob = new Date(cleanedData.dob);
     }
 
     const { phone, email, nationalId } = cleanedData;

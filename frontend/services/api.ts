@@ -25,6 +25,7 @@ const FINANCIAL_KEYS = new Set([
 
 const convertToDollars = (obj: any): any => {
   if (Array.isArray(obj)) return obj.map(convertToDollars);
+  if (obj instanceof Date) return obj;
   if (obj !== null && typeof obj === 'object') {
     const newObj: any = {};
     for (const key in obj) {
@@ -41,6 +42,7 @@ const convertToDollars = (obj: any): any => {
 
 const convertToCents = (obj: any): any => {
   if (Array.isArray(obj)) return obj.map(convertToCents);
+  if (obj instanceof Date) return obj;
   if (obj !== null && typeof obj === 'object') {
     const newObj: any = {};
     for (const key in obj) {

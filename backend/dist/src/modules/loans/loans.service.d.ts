@@ -1,11 +1,6 @@
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { LedgerService } from '../ledger/ledger.service';
-export declare class CreateLoanDto {
-    customerId: string;
-    productId: string;
-    principalAmount: number;
-    durationMonths: number;
-}
+import { CreateLoanDto } from './dto/create-loan.dto';
 export declare class LoansService {
     private prisma;
     private ledger;
@@ -33,6 +28,7 @@ export declare class LoansService {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -43,6 +39,7 @@ export declare class LoansService {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -86,6 +83,7 @@ export declare class LoansService {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -96,6 +94,7 @@ export declare class LoansService {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -129,6 +128,7 @@ export declare class LoansService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -139,6 +139,7 @@ export declare class LoansService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -227,6 +228,7 @@ export declare class LoansService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -237,6 +239,7 @@ export declare class LoansService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -308,6 +311,7 @@ export declare class LoansService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -318,6 +322,7 @@ export declare class LoansService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;

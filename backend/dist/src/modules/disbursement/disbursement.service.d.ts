@@ -5,7 +5,7 @@ export declare class DisbursementService {
     private ledger;
     private bakong;
     constructor(prisma: PrismaService, ledger: LedgerService);
-    disburse(loanId: string, method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER'): Promise<{
+    disburse(loanId: string, method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER', accountId?: string): Promise<{
         success: boolean;
         loan: {
             id: string;
@@ -29,6 +29,7 @@ export declare class DisbursementService {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -39,6 +40,7 @@ export declare class DisbursementService {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;

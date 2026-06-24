@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LoansService, CreateLoanDto } from './loans.service';
+import { LoansService } from './loans.service';
+import { CreateLoanDto } from './dto/create-loan.dto';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { LedgerService } from '../ledger/ledger.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';

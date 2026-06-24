@@ -27,6 +27,7 @@ export class DisbursementService {
   async disburse(
     loanId: string,
     method: 'BAKONG' | 'CASH' | 'BANK_TRANSFER' = 'BAKONG',
+    accountId?: string,
   ) {
     const state = await this.prisma.systemState.findUnique({
       where: { id: 'default' },
@@ -52,10 +53,24 @@ export class DisbursementService {
 
       let disbursementRef = `DISB-${randomUUID()}`;
 
+      // Save account number if provided
+      if (accountId && accountId !== loan.customer.accountNumber) {
+        await tx.customer.update({
+          where: { id: loan.customer.id },
+          data: { accountNumber: accountId },
+        });
+      }
+
       // Initiate transfer based on method
-      if (method === 'BAKONG') {
+      if (method === 'BAKONG' || method === 'BANK_TRANSFER') {
+        const transferAccountId = accountId || loan.customer.accountNumber || loan.customer.phone;
+        
+        if (!transferAccountId) {
+          throw new BadRequestException(`Account number or phone is required for ${method} transfer.`);
+        }
+
         const transferResult = await this.bakong.transfer({
-          accountId: loan.customer.phone,
+          accountId: transferAccountId,
           amount: Number(loan.principalAmount),
           currency: (loan.currency as 'USD' | 'KHR') || 'USD',
           description: `Loan disbursement ${loanId}`,
@@ -86,14 +101,20 @@ export class DisbursementService {
         });
       }
 
-      // Double-entry ledger: Credit CASH, Debit LOAN (creating asset)
+      // Determine the credit account based on disbursement method
+      const isCash = method === 'CASH';
+      const creditAccountId = isCash ? 'CASH-VAULT' : 'BANK-CLEARING';
+      const creditAccountCode = isCash ? '10100' : '10200';
+      const creditAccountType = isCash ? 'CASH' : 'BANK';
+
+      // Double-entry ledger: Credit CASH/Bank, Debit LOAN (creating asset)
       const txReference = `DISB-${randomUUID()}`;
       await this.ledger.recordTransaction(
         [
           {
-            accountId: 'CASH-VAULT',
-            accountCode: '10100', // Cash Vault (USD)
-            accountType: 'CASH',
+            accountId: creditAccountId,
+            accountCode: creditAccountCode,
+            accountType: creditAccountType as any,
             credit: Number(loan.principalAmount),
             transactionReference: txReference,
             description: `Loan disbursement for ${loanId} via ${method}`,

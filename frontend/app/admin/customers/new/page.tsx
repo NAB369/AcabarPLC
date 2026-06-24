@@ -26,7 +26,7 @@ export default function NewCustomerPage() {
     lastName: '',
     khmerFirstName: '',
     khmerLastName: '',
-    cid: '',
+    cid: 'CID-',
     phone: '',
     email: '',
     nationalId: '',
@@ -167,7 +167,15 @@ export default function NewCustomerPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    if (name === 'cid') {
+      const numbersOnly = value.replace(/\D/g, '');
+      setFormData({ ...formData, [name]: `CID-${numbersOnly}` });
+      return;
+    }
+    
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleAddFile = () => {

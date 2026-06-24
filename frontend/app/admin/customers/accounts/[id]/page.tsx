@@ -224,7 +224,7 @@ export default function CustomerProfilePage() {
                       </div>
                       <div>
                         <div style={{ fontWeight: '700', fontSize: '1rem', color: 'var(--foreground)' }}>${Number(loan.principalAmount).toLocaleString()}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {loan.id.substring(0, 8).toUpperCase()} • {loan.durationMonths} Months</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {loan.lid || loan.id.substring(0, 8).toUpperCase()} • {loan.durationMonths} Months</div>
                       </div>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

@@ -121,7 +121,7 @@ export default function CreditOfficerDetailPage({ params }: { params: Promise<{ 
               ) : (
                 loans.map((app) => (
                   <tr key={app.id}>
-                    <td style={{ fontFamily: 'monospace', fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '600' }}>#{app.id.substring(0, 6).toUpperCase()}</td>
+                    <td style={{ fontFamily: 'monospace', fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: '600' }}>#{app.lid || app.id.substring(0, 6).toUpperCase()}</td>
                     <td style={{ fontWeight: '700', fontSize: '0.875rem' }}>{app.customer?.firstName} {app.customer?.lastName}</td>
                     <td style={{ fontWeight: '700', color: 'var(--primary)' }}>${Number(app.principalAmount).toLocaleString()}</td>
                     <td>

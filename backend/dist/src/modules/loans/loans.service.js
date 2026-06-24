@@ -9,18 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoansService = exports.CreateLoanDto = void 0;
+exports.LoansService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../infrastructure/prisma/prisma.service");
 const ledger_service_1 = require("../ledger/ledger.service");
 const crypto_1 = require("crypto");
-class CreateLoanDto {
-    customerId;
-    productId;
-    principalAmount;
-    durationMonths;
-}
-exports.CreateLoanDto = CreateLoanDto;
 let LoansService = class LoansService {
     prisma;
     ledger;

@@ -90,9 +90,9 @@ export class LosController {
   @Permissions('MANAGE_DISBURSEMENT')
   disburseLoan(
     @Param('id') id: string,
-    @Body() body: { method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER' },
+    @Body() body: { method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER'; accountId?: string },
   ) {
-    return this.losService.disburseLoan(id, body?.method);
+    return this.losService.disburseLoan(id, body?.method, body?.accountId);
   }
 
   @Patch(':id/activate')

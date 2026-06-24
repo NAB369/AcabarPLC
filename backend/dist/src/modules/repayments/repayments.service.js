@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../infrastructure/prisma/prisma.service");
 const ledger_service_1 = require("../ledger/ledger.service");
 const crypto_1 = require("crypto");
+const class_validator_1 = require("class-validator");
 class ProcessRepaymentDto {
     loanId;
     amount;
@@ -22,6 +23,30 @@ class ProcessRepaymentDto {
     bankAccount;
 }
 exports.ProcessRepaymentDto = ProcessRepaymentDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], ProcessRepaymentDto.prototype, "loanId", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Object)
+], ProcessRepaymentDto.prototype, "amount", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], ProcessRepaymentDto.prototype, "paymentMethod", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], ProcessRepaymentDto.prototype, "paymentProof", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], ProcessRepaymentDto.prototype, "bankAccount", void 0);
 let RepaymentsService = class RepaymentsService {
     prisma;
     ledger;

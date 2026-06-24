@@ -10,25 +10,34 @@ export declare class LosService {
     private disbursement;
     constructor(prisma: PrismaService, underwriting: UnderwritingService, kyc: KycService, disbursement: DisbursementService);
     createDraft(dto: CreateDraftDto): Promise<{
+        product: {
+            id: string;
+            createdAt: Date;
+            name: string;
+            description: string | null;
+            minAmount: number;
+            maxAmount: number;
+            baseInterestRate: number;
+            interestType: string;
+        };
         customer: {
             id: string;
+            currency: string;
+            createdAt: Date;
+            updatedAt: Date;
+            branchId: string;
             email: string | null;
             firstName: string;
             lastName: string;
-            branchId: string;
-            createdAt: Date;
-            updatedAt: Date;
-            address: string | null;
-            currency: string;
-            phone: string;
             cid: string | null;
-            nationalId: string | null;
-            passport: string | null;
-            accountNumber: string | null;
             khmerFirstName: string | null;
             khmerLastName: string | null;
+            phone: string;
+            nationalId: string | null;
+            passport: string | null;
             familyBook: string | null;
             dob: Date | null;
+            address: string | null;
             kycStatus: string;
             employmentStatus: string | null;
             occupation: string | null;
@@ -52,16 +61,7 @@ export declare class LosService {
             guarantorPhone: string | null;
             guarantorNationalId: string | null;
             guarantorRelationship: string | null;
-        };
-        product: {
-            id: string;
-            createdAt: Date;
-            name: string;
-            description: string | null;
-            minAmount: number;
-            maxAmount: number;
-            baseInterestRate: number;
-            interestType: string;
+            accountNumber: string | null;
         };
         loanOfficer: {
             id: string;
@@ -70,11 +70,8 @@ export declare class LosService {
         } | null;
     } & {
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -90,6 +87,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -100,6 +98,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -108,17 +109,15 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     getNextLid(): Promise<{
         lid: string;
     }>;
     submitApplication(loanId: string, userId: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -134,6 +133,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -144,6 +144,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -152,14 +155,12 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     startKycReview(loanId: string, userId: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -175,6 +176,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -185,6 +187,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -193,14 +198,12 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     completeKycReview(loanId: string, approved: boolean, userId: string, reason?: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -216,6 +219,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -226,6 +230,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -234,6 +241,7 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     runCreditCheck(loanId: string, userId: string): Promise<{
         underwritingResult: {
@@ -242,11 +250,8 @@ export declare class LosService {
             cbcScore: number | null;
         };
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -262,6 +267,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -272,6 +278,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -280,14 +289,12 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     reviewApplication(loanId: string, dto: ReviewDecisionDto, reviewerId: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -303,6 +310,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -313,6 +321,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -321,14 +332,12 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     prepareDisbursement(loanId: string, userId: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -344,6 +353,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -354,6 +364,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -362,16 +375,14 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
-    disburseLoan(loanId: string, method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER'): Promise<{
+    disburseLoan(loanId: string, method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER', accountId?: string): Promise<{
         success: boolean;
         loan: {
             id: string;
-            branchId: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            status: string;
             lid: string | null;
+            status: string;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
@@ -387,6 +398,7 @@ export declare class LosService {
             collectionFeeType: string | null;
             collectionFeeValue: number | null;
             gracePeriod: number | null;
+            excludeWeekends: boolean;
             refinanceFeeAmt: number | null;
             reminderPreference: number | null;
             dtiRatio: number | null;
@@ -397,6 +409,9 @@ export declare class LosService {
             disbursementRef: string | null;
             rejectionReason: string | null;
             disbursedAt: Date | null;
+            exchangeRate: number;
+            createdAt: Date;
+            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -405,18 +420,16 @@ export declare class LosService {
             customerId: string;
             productId: string;
             loanOfficerId: string | null;
+            branchId: string | null;
         };
         disbursementRef: string;
         transactionReference: string;
-        method: "CASH" | "BAKONG" | "BANK_TRANSFER";
+        method: "BAKONG" | "CASH" | "BANK_TRANSFER";
     }>;
     activateLoan(loanId: string, userId: string): Promise<{
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -432,6 +445,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -442,6 +456,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -450,6 +467,7 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     getQueue(filters?: {
         status?: string;
@@ -461,42 +479,39 @@ export declare class LosService {
             createdAt: Date;
             loanId: string;
             tier: number;
+            assignedTo: string | null;
             decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
-            assignedTo: string | null;
         }[];
-        customer: {
-            firstName: string;
-            lastName: string;
-            branchId: string;
-            phone: string;
-            khmerFirstName: string | null;
-            khmerLastName: string | null;
-        };
         product: {
             name: string;
             interestType: string;
+        };
+        customer: {
+            branchId: string;
+            firstName: string;
+            lastName: string;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
+            phone: string;
         };
         repaymentSchedules: {
             id: string;
             status: string;
             loanId: string;
-            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
+            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
         }[];
     } & {
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -512,6 +527,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -522,6 +538,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -530,13 +549,14 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     })[]>;
     getApplicationDetail(loanId: string): Promise<{
         documents: {
             id: string;
-            createdAt: Date;
             status: string;
             rejectionReason: string | null;
+            createdAt: Date;
             customerId: string;
             type: string;
             fileName: string;
@@ -551,41 +571,70 @@ export declare class LosService {
             createdAt: Date;
             loanId: string;
             tier: number;
+            assignedTo: string | null;
             decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
-            assignedTo: string | null;
+        }[];
+        collaterals: {
+            id: string;
+            currency: string;
+            createdAt: Date;
+            description: string;
+            type: string;
+            estimatedValue: number;
+            documentIds: string;
+            loanId: string;
         }[];
         creditReports: {
             id: string;
             cbcScore: number | null;
             customerId: string;
             loanId: string | null;
+            queriedAt: Date;
             totalExposure: number | null;
             activeLoans: number | null;
             delinquencyFlag: boolean;
             reportData: import("@prisma/client/runtime/library").JsonValue | null;
-            queriedAt: Date;
         }[];
+        guarantors: {
+            id: string;
+            createdAt: Date;
+            firstName: string;
+            lastName: string;
+            phone: string;
+            nationalId: string | null;
+            loanId: string;
+            relationship: string;
+        }[];
+        product: {
+            id: string;
+            createdAt: Date;
+            name: string;
+            description: string | null;
+            minAmount: number;
+            maxAmount: number;
+            baseInterestRate: number;
+            interestType: string;
+        };
         customer: {
             id: string;
+            currency: string;
+            createdAt: Date;
+            updatedAt: Date;
+            branchId: string;
             email: string | null;
             firstName: string;
             lastName: string;
-            branchId: string;
-            createdAt: Date;
-            updatedAt: Date;
-            address: string | null;
-            currency: string;
-            phone: string;
             cid: string | null;
-            nationalId: string | null;
-            passport: string | null;
-            accountNumber: string | null;
             khmerFirstName: string | null;
             khmerLastName: string | null;
+            phone: string;
+            nationalId: string | null;
+            passport: string | null;
             familyBook: string | null;
             dob: Date | null;
+            address: string | null;
             kycStatus: string;
             employmentStatus: string | null;
             occupation: string | null;
@@ -609,36 +658,7 @@ export declare class LosService {
             guarantorPhone: string | null;
             guarantorNationalId: string | null;
             guarantorRelationship: string | null;
-        };
-        collaterals: {
-            id: string;
-            createdAt: Date;
-            description: string;
-            currency: string;
-            type: string;
-            loanId: string;
-            estimatedValue: number;
-            documentIds: string;
-        }[];
-        guarantors: {
-            id: string;
-            firstName: string;
-            lastName: string;
-            createdAt: Date;
-            phone: string;
-            nationalId: string | null;
-            loanId: string;
-            relationship: string;
-        }[];
-        product: {
-            id: string;
-            createdAt: Date;
-            name: string;
-            description: string | null;
-            minAmount: number;
-            maxAmount: number;
-            baseInterestRate: number;
-            interestType: string;
+            accountNumber: string | null;
         };
         loanOfficer: {
             id: string;
@@ -649,20 +669,17 @@ export declare class LosService {
             id: string;
             status: string;
             loanId: string;
-            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
+            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
         }[];
         id: string;
-        branchId: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        status: string;
         lid: string | null;
+        status: string;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -678,6 +695,7 @@ export declare class LosService {
         collectionFeeType: string | null;
         collectionFeeValue: number | null;
         gracePeriod: number | null;
+        excludeWeekends: boolean;
         refinanceFeeAmt: number | null;
         reminderPreference: number | null;
         dtiRatio: number | null;
@@ -688,6 +706,9 @@ export declare class LosService {
         disbursementRef: string | null;
         rejectionReason: string | null;
         disbursedAt: Date | null;
+        exchangeRate: number;
+        createdAt: Date;
+        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -696,6 +717,7 @@ export declare class LosService {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
+        branchId: string | null;
     }>;
     getTimeline(loanId: string): Promise<{
         approvalSteps: {
@@ -703,14 +725,17 @@ export declare class LosService {
             createdAt: Date;
             loanId: string;
             tier: number;
+            assignedTo: string | null;
             decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
-            assignedTo: string | null;
         }[];
         auditLogs: ({
             user: {
                 id: string;
+                createdAt: Date;
+                updatedAt: Date;
+                branchId: string | null;
                 email: string;
                 passwordHash: string;
                 firstName: string;
@@ -718,7 +743,6 @@ export declare class LosService {
                 isActive: boolean;
                 isApproved: boolean;
                 requestedRole: string | null;
-                branchId: string | null;
                 passwordChangedAt: Date;
                 failedLoginAttempts: number;
                 lockoutUntil: Date | null;
@@ -727,8 +751,6 @@ export declare class LosService {
                 lastLoginIp: string | null;
                 lastLoginAt: Date | null;
                 refreshToken: string | null;
-                createdAt: Date;
-                updatedAt: Date;
             } | null;
         } & {
             id: string;
@@ -742,19 +764,19 @@ export declare class LosService {
     }>;
     addCollateral(loanId: string, dto: AddCollateralDto): Promise<{
         id: string;
+        currency: string;
         createdAt: Date;
         description: string;
-        currency: string;
         type: string;
-        loanId: string;
         estimatedValue: number;
         documentIds: string;
+        loanId: string;
     }>;
     addGuarantor(loanId: string, dto: AddGuarantorDto): Promise<{
         id: string;
+        createdAt: Date;
         firstName: string;
         lastName: string;
-        createdAt: Date;
         phone: string;
         nationalId: string | null;
         loanId: string;

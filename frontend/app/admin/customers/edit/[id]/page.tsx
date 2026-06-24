@@ -56,7 +56,7 @@ export default function EditCustomerPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', khmerFirstName: '', khmerLastName: '', cid: '', phone: '', email: '',
+    firstName: '', lastName: '', khmerFirstName: '', khmerLastName: '', cid: 'CID-', phone: '', email: '',
     nationalId: '', passport: '', familyBook: '', dob: '', gender: '', maritalStatus: '',
     province: '',
     district: '',
@@ -95,7 +95,7 @@ export default function EditCustomerPage() {
           lastName:             customerData.lastName  || '',
           khmerFirstName:       customerData.khmerFirstName || '',
           khmerLastName:        customerData.khmerLastName || '',
-          cid:                  customerData.cid || '',
+          cid:                  customerData.cid || 'CID-',
           phone:                customerData.phone     || '',
           email:                customerData.email     || '',
           nationalId:           customerData.nationalId || '',
@@ -217,7 +217,15 @@ export default function EditCustomerPage() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === 'cid') {
+      const numbersOnly = value.replace(/\D/g, '');
+      setFormData({ ...formData, [name]: `CID-${numbersOnly}` });
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleUpload = async () => {

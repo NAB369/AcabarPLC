@@ -44,6 +44,7 @@ export default function UnderwritingDashboardPage() {
     if (app.cbcScore && app.cbcScore < 500) riskFlags.push('CBC score below recommended (500)');
     return {
       id: app.id,
+      lid: app.lid,
       name: `${app.customer.firstName} ${app.customer.lastName}`,
       amount: Number(app.principalAmount),
       dtiRatio: app.dtiRatio || 0,
@@ -67,6 +68,7 @@ export default function UnderwritingDashboardPage() {
     if (reasons.length === 0) reasons.push('Standard approval criteria met');
     return {
       id: app.id,
+      lid: app.lid,
       name: `${app.customer.firstName} ${app.customer.lastName}`,
       decision: app.status,
       reasons,
@@ -223,7 +225,7 @@ export default function UnderwritingDashboardPage() {
                   <tr key={review.id}>
                     <td>
                       <div style={{ fontWeight: '600', fontSize: '0.875rem' }}>{review.name}</div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>#{review.id.substring(0, 8).toUpperCase()}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>#{review.lid || review.id.substring(0, 8).toUpperCase()}</div>
                     </td>
                     <td style={{ fontSize: '0.8125rem', color: 'var(--text-muted-dark)' }}>{review.product}</td>
                     <td style={{ fontWeight: '600', fontSize: '0.875rem' }}>${review.amount.toLocaleString()}</td>
@@ -330,7 +332,7 @@ export default function UnderwritingDashboardPage() {
                     </div>
                     <div>
                       <div style={{ fontSize: '0.875rem', fontWeight: '600' }}>
-                        {d.name} <span style={{ color: 'var(--text-muted)', fontWeight: '400', fontFamily: 'monospace', fontSize: '0.75rem' }}>(#{d.id.substring(0, 8).toUpperCase()})</span>
+                        {d.name} <span style={{ color: 'var(--text-muted)', fontWeight: '400', fontFamily: 'monospace', fontSize: '0.75rem' }}>(#{d.lid || d.id.substring(0, 8).toUpperCase()})</span>
                       </div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{d.reasons.join(' • ')}</div>
                     </div>

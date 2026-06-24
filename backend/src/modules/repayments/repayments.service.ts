@@ -7,11 +7,26 @@ import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { LedgerService } from '../ledger/ledger.service';
 import { randomUUID } from 'crypto';
 
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+
 export class ProcessRepaymentDto {
+  @IsString()
+  @IsNotEmpty()
   loanId: string;
+
+  @IsNotEmpty()
   amount: number | string;
+
+  @IsString()
+  @IsNotEmpty()
   paymentMethod: string;
+
+  @IsOptional()
+  @IsString()
   paymentProof?: string;
+
+  @IsOptional()
+  @IsString()
   bankAccount?: string;
 }
 

@@ -12,6 +12,7 @@ export declare class PayloanController {
         id: string;
         createdAt: Date;
         amount: number;
+        paymentMethod: string;
         remark: string | null;
         billNo: string;
         transactionDate: string;
@@ -19,7 +20,6 @@ export declare class PayloanController {
         payerAccountNo: string;
         payerName: string;
         currencyCode: string;
-        paymentMethod: string;
         senderBankName: string;
         senderAccountName: string;
         settlementDate: string;

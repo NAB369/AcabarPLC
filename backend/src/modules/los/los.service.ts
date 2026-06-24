@@ -41,12 +41,16 @@ export class LosService {
     });
     if (!product) throw new NotFoundException('Loan product not found');
 
+    const exchangeRate = dto.exchangeRate ?? (dto.currency === 'KHR' ? 4000 : 1.0);
+    const minAmount = dto.currency === 'KHR' ? product.minAmount * exchangeRate : product.minAmount;
+    const maxAmount = dto.currency === 'KHR' ? product.maxAmount * exchangeRate : product.maxAmount;
+
     if (
-      dto.principalAmount < Number(product.minAmount) ||
-      dto.principalAmount > Number(product.maxAmount)
+      dto.principalAmount < minAmount ||
+      dto.principalAmount > maxAmount
     ) {
       throw new BadRequestException(
-        `Amount must be between ${product.minAmount} and ${product.maxAmount}`,
+        `Amount must be between ${minAmount} and ${maxAmount} ${dto.currency || 'USD'}`,
       );
     }
 
@@ -73,6 +77,7 @@ export class LosService {
         interestRate: dto.interestRate ?? product.baseInterestRate,
         durationMonths: dto.numberOfInstallments ?? dto.durationMonths,
         currency: dto.currency || 'USD',
+        exchangeRate: exchangeRate,
         applicationChannel: dto.applicationChannel || 'WEB',
         status: 'DRAFT',
         loanOfficerId: dto.loanOfficerId || null,
@@ -85,6 +90,7 @@ export class LosService {
           ? new Date(dto.firstInstallmentDate)
           : null,
         numberOfInstallments: dto.numberOfInstallments || null,
+        excludeWeekends: dto.excludeWeekends || false,
         penaltyRate: dto.penaltyRate ?? null,
         adminFeeRate: dto.adminFeeRate ?? null,
         collectionFeeType: dto.collectionFeeType || 'RATE',
@@ -345,6 +351,8 @@ export class LosService {
       Number(loan.interestRate),
       loan.durationMonths,
       loan.product.interestType,
+      loan.firstInstallmentDate,
+      loan.excludeWeekends
     );
 
     await this.prisma.repaymentSchedule.createMany({ data: schedules });
@@ -363,8 +371,9 @@ export class LosService {
   async disburseLoan(
     loanId: string,
     method: 'BAKONG' | 'CASH' | 'BANK_TRANSFER' = 'BAKONG',
+    accountId?: string,
   ) {
-    return this.disbursement.disburse(loanId, method);
+    return this.disbursement.disburse(loanId, method, accountId);
   }
 
   /**
@@ -550,6 +559,8 @@ export class LosService {
     annualRate: number,
     months: number,
     type: string,
+    firstInstallmentDate?: Date | null,
+    excludeWeekends?: boolean | null,
   ) {
     const schedules: Array<{
       loanId: string;
@@ -562,7 +573,20 @@ export class LosService {
     }> = [];
     const monthlyRate = annualRate / 100 / 12;
     let balance = principal;
-    const startDate = new Date();
+    const startDate = firstInstallmentDate ? new Date(firstInstallmentDate) : new Date();
+
+    let currentDate = new Date(startDate);
+    if (!firstInstallmentDate) {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+    }
+
+    const getNextBusinessDay = (date: Date): Date => {
+      const newDate = new Date(date);
+      while (newDate.getDay() === 0 || newDate.getDay() === 6) {
+        newDate.setDate(newDate.getDate() + 1);
+      }
+      return newDate;
+    };
 
     if (type === 'FLAT') {
       const totalInterest = principal * (annualRate / 100) * (months / 12);
@@ -571,16 +595,21 @@ export class LosService {
       const amountDue = Math.round(monthlyPrincipal + monthlyInterest);
 
       for (let i = 1; i <= months; i++) {
-        startDate.setMonth(startDate.getMonth() + 1);
+        let dueDate = new Date(currentDate);
+        if (excludeWeekends) {
+          dueDate = getNextBusinessDay(dueDate);
+        }
+
         schedules.push({
           loanId,
           installmentNumber: i,
           amountDue,
           principalComponent: Math.round(monthlyPrincipal),
           interestComponent: Math.round(monthlyInterest),
-          dueDate: new Date(startDate),
+          dueDate,
           status: 'PENDING',
         });
+        currentDate.setMonth(currentDate.getMonth() + 1);
       }
     } else {
       // REDUCING balance
@@ -589,7 +618,11 @@ export class LosService {
         (Math.pow(1 + monthlyRate, months) - 1);
 
       for (let i = 1; i <= months; i++) {
-        startDate.setMonth(startDate.getMonth() + 1);
+        let dueDate = new Date(currentDate);
+        if (excludeWeekends) {
+          dueDate = getNextBusinessDay(dueDate);
+        }
+
         const interestForMonth = balance * monthlyRate;
         const principalForMonth = emi - interestForMonth;
         balance -= principalForMonth;
@@ -600,9 +633,10 @@ export class LosService {
           amountDue: Math.round(emi),
           principalComponent: Math.round(principalForMonth),
           interestComponent: Math.round(interestForMonth),
-          dueDate: new Date(startDate),
+          dueDate,
           status: 'PENDING',
         });
+        currentDate.setMonth(currentDate.getMonth() + 1);
       }
     }
 

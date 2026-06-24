@@ -14,6 +14,7 @@ export declare class CompanyController {
         phone: string | null;
         logoUrl: string | null;
         sidebarConfig: import("@prisma/client/runtime/library").JsonValue | null;
+        approvalLineConfig: import("@prisma/client/runtime/library").JsonValue | null;
     }>;
     updateCompany(data: any): Promise<{
         id: string;
@@ -27,5 +28,6 @@ export declare class CompanyController {
         phone: string | null;
         logoUrl: string | null;
         sidebarConfig: import("@prisma/client/runtime/library").JsonValue | null;
+        approvalLineConfig: import("@prisma/client/runtime/library").JsonValue | null;
     }>;
 }

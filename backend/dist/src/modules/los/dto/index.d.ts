@@ -1,3 +1,10 @@
+export declare class AddCollateralDto {
+    type: string;
+    description: string;
+    estimatedValue: number;
+    currency?: string;
+    documentIds?: string[];
+}
 export declare class CreateDraftDto {
     lid?: string;
     customerId: string;
@@ -20,6 +27,8 @@ export declare class CreateDraftDto {
     refinanceFeeAmt?: number;
     reminderPreference?: number;
     loanCycle?: string;
+    excludeWeekends?: boolean;
+    exchangeRate?: number;
     recommenderType?: string;
     branchId?: string;
     reasonOfCredit?: string;
@@ -32,13 +41,6 @@ export declare class SubmitApplicationDto {
 export declare class ReviewDecisionDto {
     decision: 'APPROVED' | 'REJECTED' | 'ESCALATED';
     comments?: string;
-}
-export declare class AddCollateralDto {
-    type: string;
-    description: string;
-    estimatedValue: number;
-    currency?: string;
-    documentIds?: string[];
 }
 export declare class AddGuarantorDto {
     firstName: string;

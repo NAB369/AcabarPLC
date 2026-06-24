@@ -44,6 +44,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KycService = exports.VerifyDocumentDto = exports.UploadDocumentDto = void 0;
 const common_1 = require("@nestjs/common");
+const class_validator_1 = require("class-validator");
 const prisma_service_1 = require("../../infrastructure/prisma/prisma.service");
 const nodePath = __importStar(require("path"));
 const nodeFs = __importStar(require("fs"));
@@ -63,6 +64,16 @@ class VerifyDocumentDto {
     rejectionReason;
 }
 exports.VerifyDocumentDto = VerifyDocumentDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsIn)(['VERIFIED', 'REJECTED']),
+    __metadata("design:type", String)
+], VerifyDocumentDto.prototype, "status", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], VerifyDocumentDto.prototype, "rejectionReason", void 0);
 let KycService = class KycService {
     prisma;
     auditService;

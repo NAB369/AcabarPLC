@@ -39,6 +39,20 @@ export default function UserManagementPage() {
     }
   };
 
+  const handleReject = async (userId: string) => {
+    if (!window.confirm(`Are you sure you want to reject this user registration?`)) return;
+    
+    setActionLoading(userId);
+    try {
+      await api.delete(`/users/${userId}`);
+      await fetchUsers(); // refresh list
+    } catch (err: any) {
+      alert(err.message || 'Failed to reject user');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   if (loading) {
     return <div className="p-8 text-center text-[var(--text-muted)]">Loading users...</div>;
   }
@@ -115,17 +129,30 @@ export default function UserManagementPage() {
                   </td>
                   <td className="p-4 text-right">
                     {!user.isApproved && (
-                      <button 
-                        onClick={() => handleApprove(user.id, user.requestedRole)}
-                        disabled={actionLoading === user.id}
-                        className="btn btn-primary inline-flex items-center gap-1.5 py-1.5 px-3 text-sm h-auto"
-                      >
-                        {actionLoading === user.id ? 'Approving...' : (
-                          <>
-                            <UserCheck size={16} /> Approve
-                          </>
-                        )}
-                      </button>
+                      <div className="flex justify-end gap-2">
+                        <button 
+                          onClick={() => handleApprove(user.id, user.requestedRole)}
+                          disabled={actionLoading === user.id}
+                          className="btn btn-primary inline-flex items-center gap-1.5 py-1.5 px-3 text-sm h-auto"
+                        >
+                          {actionLoading === user.id ? 'Approving...' : (
+                            <>
+                              <UserCheck size={16} /> Approve
+                            </>
+                          )}
+                        </button>
+                        <button 
+                          onClick={() => handleReject(user.id)}
+                          disabled={actionLoading === user.id}
+                          className="btn btn-secondary inline-flex items-center gap-1.5 py-1.5 px-3 text-sm h-auto text-[var(--error-text)] border-[var(--error-border)]"
+                        >
+                          {actionLoading === user.id ? '...' : (
+                            <>
+                              <XCircle size={16} /> Reject
+                            </>
+                          )}
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>

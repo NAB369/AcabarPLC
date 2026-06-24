@@ -26,11 +26,11 @@ export declare class LedgerService {
         createdAt: Date;
         description: string | null;
         currency: string;
+        exchangeRate: number;
         loanId: string | null;
         accountId: string;
         debit: number;
         credit: number;
-        exchangeRate: number;
         accountCode: string | null;
         accountType: string;
         transactionReference: string;

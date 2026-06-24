@@ -306,7 +306,7 @@ export default function AdminDashboardPage() {
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--background)'}
                   onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
-                  <td style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontWeight: '600' }}>#{app.id.substring(0, 6).toUpperCase()}</td>
+                  <td style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'monospace', fontWeight: '600' }}>#{app.lid || app.id.substring(0, 6).toUpperCase()}</td>
                   <td style={{ fontWeight: '700', fontSize: '0.875rem', color: 'var(--foreground)' }}>{app.customer?.firstName} {app.customer?.lastName}</td>
                   <td style={{ fontSize: '0.8125rem', color: 'var(--text-muted-dark)', fontWeight: '500' }}>{app.product?.name || 'Standard Loan'}</td>
                   <td style={{ fontSize: '0.875rem', fontWeight: '700', color: 'var(--primary)' }}>${Number(app.principalAmount).toLocaleString()}</td>

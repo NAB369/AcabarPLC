@@ -49,7 +49,7 @@ let LosController = class LosController {
         return this.losService.prepareDisbursement(id, req.user.sub);
     }
     disburseLoan(id, body) {
-        return this.losService.disburseLoan(id, body?.method);
+        return this.losService.disburseLoan(id, body?.method, body?.accountId);
     }
     activateLoan(id, req) {
         return this.losService.activateLoan(id, req.user.sub);

@@ -7,12 +7,7 @@ import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { LedgerService } from '../ledger/ledger.service';
 import { randomUUID } from 'crypto';
 
-export class CreateLoanDto {
-  customerId: string;
-  productId: string;
-  principalAmount: number;
-  durationMonths: number;
-}
+import { CreateLoanDto } from './dto/create-loan.dto';
 
 @Injectable()
 export class LoansService {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, User, Shield, Building, Globe, 
   Camera, CheckCircle, AlertCircle, Save, Loader2, Edit, List,
-  Users, ShieldCheck, Trash2
+  Users, ShieldCheck, Trash2, XCircle
 } from 'lucide-react';
 import { api } from '@/services/api';
 import { useLanguage } from '@/context/LanguageContext';
@@ -45,7 +45,8 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
     address: '',
     phone: '',
     email: '',
-    sidebarConfig: {} as Record<string, boolean>
+    sidebarConfig: {} as Record<string, boolean>,
+    approvalLineConfig: {} as Record<string, { maxLimit: number; tier: number }>
   });
   const [isEditingCompany, setIsEditingCompany] = useState(false);
   const [companyForm, setCompanyForm] = useState({...company});
@@ -98,7 +99,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
     if (isOpen) {
       if (activeTab === 'Users') {
         fetchUsersAndRoles();
-      } else if (activeTab === 'Roles') {
+      } else if (activeTab === 'Roles' || activeTab === 'Approval Line') {
         fetchRolesAndPermissions();
       }
     }
@@ -151,6 +152,22 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
       setError('Failed to approve user');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRejectUser = async (userId: string) => {
+    if (confirm('Are you sure you want to reject this user registration?')) {
+      setLoading(true);
+      try {
+        await api.delete(`/users/${userId}`);
+        fetchUsersAndRoles();
+        setSuccess('User rejected successfully');
+        setTimeout(() => setSuccess(null), 3000);
+      } catch (err) {
+        setError('Failed to reject user');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -280,10 +297,10 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
       { id: 'Company', icon: Building, label: t('tabCompany') },
       { id: 'Navigation', icon: List, label: t('tabNavigation') },
       { id: 'Users', icon: Users, label: t('tabUsers') },
-      { id: 'Roles', icon: ShieldCheck, label: t('tabRoles') }
+      { id: 'Roles', icon: ShieldCheck, label: t('tabRoles') },
+      { id: 'Approval Line', icon: CheckCircle, label: 'Approval Line' }
     ] : []),
-    { id: 'Security', icon: Shield, label: t('tabSecurity') },
-    { id: 'Language', icon: Globe, label: t('tabLanguage') },
+    { id: 'Security', icon: Shield, label: t('tabSecurity') }
   ];
 
   return (
@@ -336,9 +353,9 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                 {activeTab === 'Security' && 'Manage your account security settings.'}
                 {activeTab === 'Company' && 'View and manage company-wide information.'}
                 {activeTab === 'Navigation' && 'Configure which sidebar menu items are visible across the system.'}
-                {activeTab === 'Language' && 'Select your preferred language and region.'}
                 {activeTab === 'Users' && 'Manage system users and their assigned security roles.'}
                 {activeTab === 'Roles' && 'Manage access roles and granular permissions.'}
+                {activeTab === 'Approval Line' && 'Configure approval limits and tiers for different roles.'}
               </p>
             </div>
 
@@ -678,54 +695,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
               </div>
             )}
 
-            {activeTab === 'Language' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div style={{ padding: '1.5rem', backgroundColor: 'var(--background)', borderRadius: '16px', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                   <div style={{ backgroundColor: 'var(--card-bg)', padding: '0.75rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', color: 'var(--primary)' }}>
-                      <Globe size={24} />
-                   </div>
-                   <div>
-                      <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '700', color: 'var(--foreground)' }}>{t('displayLanguage')}</h4>
-                      <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: 'var(--text-muted)' }}>{t('displayLanguageDesc')}</p>
-                   </div>
-                </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {[
-                    { id: 'en', name: 'English', flag: '🇬🇧' },
-                    { id: 'km', name: 'Khmer (ខ្មែរ)', flag: '🇰🇭' },
-                    { id: 'ko', name: 'Korean (한국어)', flag: '🇰🇷' }
-                  ].map(lang => (
-                    <label 
-                      key={lang.id} 
-                      style={{ 
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                        padding: '1.25rem 1.5rem', border: selectedLanguage === lang.id ? '2px solid var(--primary)' : '1px solid var(--border-color)', 
-                        borderRadius: '12px', cursor: 'pointer', backgroundColor: selectedLanguage === lang.id ? 'var(--primary-light)' : 'var(--card-bg)',
-                        transition: 'all 0.2s'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        <span style={{ fontSize: '1.5rem' }}>{lang.flag}</span>
-                        <span style={{ fontSize: '1rem', fontWeight: '600', color: 'var(--foreground)' }}>{lang.name}</span>
-                      </div>
-                      <input 
-                        type="radio" 
-                        name="language" 
-                        value={lang.id} 
-                        checked={selectedLanguage === lang.id}
-                        onChange={(e) => {
-                          setLanguage(e.target.value as any);
-                          setSuccess(t('languageSuccess'));
-                          setTimeout(() => setSuccess(null), 3000);
-                        }}
-                        style={{ width: '1.25rem', height: '1.25rem', accentColor: 'var(--primary)', cursor: 'pointer' }}
-                      />
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {activeTab === 'Users' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -740,7 +710,7 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     users.map((user) => {
                       const isAdmin = user.roles.some((ur: any) => ur.role.name === 'SUPER_ADMIN');
                       return (
-                        <div key={user.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)' }}>
+                        <div key={user.id} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)', backgroundColor: 'var(--card-bg)' }}>
                           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
                             <div style={{ width: '52px', height: '52px', borderRadius: '50%', backgroundColor: isAdmin ? 'var(--warning-bg)' : 'var(--bg-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', fontWeight: '700', color: isAdmin ? 'var(--warning-text)' : 'inherit' }}>
                               {user.firstName[0]}{user.lastName[0]}
@@ -755,17 +725,26 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                               <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{user.email}</div>
                             </div>
                           </div>
-                          <div style={{ display: 'flex', gap: '0.75rem' }}>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
                             {!isAdmin && (
                               <>
                                 {!user.isApproved && (
-                                  <button 
-                                    className="btn btn-primary" 
-                                    onClick={() => handleApproveUser(user.id, user.requestedRole)}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer', padding: '0.375rem 0.75rem' }}
-                                  >
-                                    <ShieldCheck size={16} /> Approve
-                                  </button>
+                                  <>
+                                    <button 
+                                      className="btn btn-primary" 
+                                      onClick={() => handleApproveUser(user.id, user.requestedRole)}
+                                      style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', cursor: 'pointer', padding: '0.375rem 0.75rem' }}
+                                    >
+                                      <ShieldCheck size={16} /> Approve
+                                    </button>
+                                    <button 
+                                      className="btn btn-secondary" 
+                                      onClick={() => handleRejectUser(user.id)}
+                                      style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: 'var(--error-text)', borderColor: 'var(--error-border)', cursor: 'pointer', padding: '0.375rem 0.75rem' }}
+                                    >
+                                      <XCircle size={16} /> Reject
+                                    </button>
+                                  </>
                                 )}
                                 <button 
                                   className="btn btn-secondary" 
@@ -837,6 +816,61 @@ export default function SettingsModal({ isOpen, onClose, initialTab = 'Profile' 
                     )}
                  </div>
               </div>
+            )}
+            {activeTab === 'Approval Line' && (
+              <form onSubmit={handleUpdateCompany} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  {roles.map(role => (
+                    <div key={role.id} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', gap: '1rem' }}>
+                      <div style={{ flex: '1 1 200px', minWidth: '0' }}>
+                        <h4 style={{ margin: 0, fontSize: '0.9375rem', fontWeight: '700', color: 'var(--foreground)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{role.name}</h4>
+                        <p style={{ margin: '0.125rem 0 0', fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{role.description}</p>
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <label style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted-dark)', margin: 0, whiteSpace: 'nowrap' }}>Max Limit ($)</label>
+                          <input 
+                            type="number" 
+                            value={companyForm.approvalLineConfig?.[role.name]?.maxLimit || 0}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value) || 0;
+                              setCompanyForm((prev: any) => ({
+                                ...prev,
+                                approvalLineConfig: {
+                                  ...(prev.approvalLineConfig || {}),
+                                  [role.name]: { ...(prev.approvalLineConfig?.[role.name] || { tier: 1 }), maxLimit: value }
+                                }
+                              }));
+                            }}
+                            style={{ width: '80px', padding: '0.375rem 0.5rem', borderRadius: '6px', border: '1px solid var(--border-color)', outline: 'none', backgroundColor: 'transparent', color: 'var(--foreground)', fontSize: '0.8125rem' }} 
+                          />
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <label style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-muted-dark)', margin: 0, whiteSpace: 'nowrap' }}>Tier Sequence</label>
+                          <input 
+                            type="number" 
+                            value={companyForm.approvalLineConfig?.[role.name]?.tier || 1}
+                            onChange={(e) => {
+                              const value = parseInt(e.target.value) || 1;
+                              setCompanyForm((prev: any) => ({
+                                ...prev,
+                                approvalLineConfig: {
+                                  ...(prev.approvalLineConfig || {}),
+                                  [role.name]: { ...(prev.approvalLineConfig?.[role.name] || { maxLimit: 0 }), tier: value }
+                                }
+                              }));
+                            }}
+                            style={{ width: '60px', padding: '0.375rem 0.5rem', borderRadius: '6px', border: '1px solid var(--border-color)', outline: 'none', backgroundColor: 'transparent', color: 'var(--foreground)', fontSize: '0.8125rem' }} 
+                          />
+                        </div>
+                        <button type="submit" disabled={loading} style={{ padding: '0.375rem 0.75rem', borderRadius: '6px', border: 'none', backgroundColor: 'var(--primary)', color: 'white', fontWeight: '600', fontSize: '0.75rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.375rem', transition: 'all 0.2s', whiteSpace: 'nowrap' }}>
+                          {loading ? <Loader2 className="animate-spin" size={14} /> : <Save size={14} />} Save
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </form>
             )}
           </div>
         </div>

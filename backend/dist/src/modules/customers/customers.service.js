@@ -24,6 +24,9 @@ let CustomersService = class CustomersService {
                 cleanedData[key] = null;
             }
         }
+        if (cleanedData.dob && typeof cleanedData.dob === 'string') {
+            cleanedData.dob = new Date(cleanedData.dob);
+        }
         const { phone, email, nationalId } = cleanedData;
         const existingPhone = await this.prisma.customer.findUnique({
             where: { phone },
@@ -47,15 +50,17 @@ let CustomersService = class CustomersService {
                 throw new common_1.ConflictException(`National ID ${nationalId} is already registered`);
             }
         }
-        let newAccountNumber = '';
-        let isUnique = false;
-        while (!isUnique) {
-            newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-            const existing = await this.prisma.customer.findUnique({
-                where: { accountNumber: newAccountNumber },
-            });
-            if (!existing) {
-                isUnique = true;
+        let newAccountNumber = cleanedData.cid;
+        if (!newAccountNumber) {
+            let isUnique = false;
+            while (!isUnique) {
+                newAccountNumber = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+                const existing = await this.prisma.customer.findUnique({
+                    where: { accountNumber: newAccountNumber },
+                });
+                if (!existing) {
+                    isUnique = true;
+                }
             }
         }
         return this.prisma.customer.create({
@@ -161,6 +166,9 @@ let CustomersService = class CustomersService {
             if (cleanedData[key] === '') {
                 cleanedData[key] = null;
             }
+        }
+        if (cleanedData.dob && typeof cleanedData.dob === 'string') {
+            cleanedData.dob = new Date(cleanedData.dob);
         }
         const { phone, email, nationalId } = cleanedData;
         if (phone) {
