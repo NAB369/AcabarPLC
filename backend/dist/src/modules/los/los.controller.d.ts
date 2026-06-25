@@ -7,34 +7,25 @@ export declare class LosController {
         lid: string;
     }>;
     createDraft(dto: CreateDraftDto): Promise<{
-        product: {
-            id: string;
-            createdAt: Date;
-            name: string;
-            description: string | null;
-            minAmount: number;
-            maxAmount: number;
-            baseInterestRate: number;
-            interestType: string;
-        };
         customer: {
             id: string;
-            currency: string;
-            createdAt: Date;
-            updatedAt: Date;
-            branchId: string;
             email: string | null;
             firstName: string;
             lastName: string;
-            cid: string | null;
-            khmerFirstName: string | null;
-            khmerLastName: string | null;
+            branchId: string;
+            createdAt: Date;
+            updatedAt: Date;
+            address: string | null;
+            currency: string;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
+            accountNumber: string | null;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
             familyBook: string | null;
             dob: Date | null;
-            address: string | null;
             kycStatus: string;
             employmentStatus: string | null;
             occupation: string | null;
@@ -58,7 +49,16 @@ export declare class LosController {
             guarantorPhone: string | null;
             guarantorNationalId: string | null;
             guarantorRelationship: string | null;
-            accountNumber: string | null;
+        };
+        product: {
+            id: string;
+            createdAt: Date;
+            name: string;
+            description: string | null;
+            minAmount: number;
+            maxAmount: number;
+            baseInterestRate: number;
+            interestType: string;
         };
         loanOfficer: {
             id: string;
@@ -67,8 +67,11 @@ export declare class LosController {
         } | null;
     } & {
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -96,8 +99,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -106,12 +107,14 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     submitApplication(id: string, req: any): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -139,8 +142,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -149,12 +150,14 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     startKycReview(id: string, req: any): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -182,8 +185,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -192,15 +193,17 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     completeKycReview(id: string, body: {
         approved: boolean;
         reason?: string;
     }, req: any): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -228,8 +231,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -238,7 +239,6 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     runCreditCheck(id: string, req: any): Promise<{
         underwritingResult: {
@@ -247,8 +247,11 @@ export declare class LosController {
             cbcScore: number | null;
         };
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -276,8 +279,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -286,12 +287,14 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     reviewApplication(id: string, dto: ReviewDecisionDto, req: any): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -319,8 +322,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -329,12 +330,14 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     prepareDisbursement(id: string, req: any): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -362,8 +365,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -372,7 +373,6 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     disburseLoan(id: string, body: {
         method?: 'BAKONG' | 'CASH' | 'BANK_TRANSFER';
@@ -381,8 +381,11 @@ export declare class LosController {
         success: boolean;
         loan: {
             id: string;
-            lid: string | null;
+            branchId: string | null;
+            createdAt: Date;
+            updatedAt: Date;
             status: string;
+            lid: string | null;
             previousStatus: string | null;
             principalAmount: number;
             interestRate: number;
@@ -410,8 +413,6 @@ export declare class LosController {
             rejectionReason: string | null;
             disbursedAt: Date | null;
             exchangeRate: number;
-            createdAt: Date;
-            updatedAt: Date;
             loanCycle: string | null;
             recommenderType: string | null;
             reasonOfCredit: string | null;
@@ -420,16 +421,18 @@ export declare class LosController {
             customerId: string;
             productId: string;
             loanOfficerId: string | null;
-            branchId: string | null;
         };
         disbursementRef: string;
         transactionReference: string;
-        method: "BAKONG" | "CASH" | "BANK_TRANSFER";
+        method: "CASH" | "BAKONG" | "BANK_TRANSFER";
     }>;
     activateLoan(id: string, req: any): Promise<{
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -457,8 +460,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -467,7 +468,6 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     getQueue(status?: string, branchId?: string, loanOfficerId?: string): Promise<({
         approvalSteps: {
@@ -475,39 +475,42 @@ export declare class LosController {
             createdAt: Date;
             loanId: string;
             tier: number;
-            assignedTo: string | null;
             decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
+            assignedTo: string | null;
         }[];
+        customer: {
+            firstName: string;
+            lastName: string;
+            branchId: string;
+            phone: string;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
+        };
         product: {
             name: string;
             interestType: string;
-        };
-        customer: {
-            branchId: string;
-            firstName: string;
-            lastName: string;
-            khmerFirstName: string | null;
-            khmerLastName: string | null;
-            phone: string;
         };
         repaymentSchedules: {
             id: string;
             status: string;
             loanId: string;
+            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
-            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
         }[];
     } & {
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -535,8 +538,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -545,14 +546,13 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     })[]>;
     getApplicationDetail(id: string): Promise<{
         documents: {
             id: string;
+            createdAt: Date;
             status: string;
             rejectionReason: string | null;
-            createdAt: Date;
             customerId: string;
             type: string;
             fileName: string;
@@ -567,70 +567,41 @@ export declare class LosController {
             createdAt: Date;
             loanId: string;
             tier: number;
-            assignedTo: string | null;
             decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
-        }[];
-        collaterals: {
-            id: string;
-            currency: string;
-            createdAt: Date;
-            description: string;
-            type: string;
-            estimatedValue: number;
-            documentIds: string;
-            loanId: string;
+            assignedTo: string | null;
         }[];
         creditReports: {
             id: string;
             cbcScore: number | null;
             customerId: string;
             loanId: string | null;
-            queriedAt: Date;
             totalExposure: number | null;
             activeLoans: number | null;
             delinquencyFlag: boolean;
             reportData: import("@prisma/client/runtime/library").JsonValue | null;
+            queriedAt: Date;
         }[];
-        guarantors: {
-            id: string;
-            createdAt: Date;
-            firstName: string;
-            lastName: string;
-            phone: string;
-            nationalId: string | null;
-            loanId: string;
-            relationship: string;
-        }[];
-        product: {
-            id: string;
-            createdAt: Date;
-            name: string;
-            description: string | null;
-            minAmount: number;
-            maxAmount: number;
-            baseInterestRate: number;
-            interestType: string;
-        };
         customer: {
             id: string;
-            currency: string;
-            createdAt: Date;
-            updatedAt: Date;
-            branchId: string;
             email: string | null;
             firstName: string;
             lastName: string;
-            cid: string | null;
-            khmerFirstName: string | null;
-            khmerLastName: string | null;
+            branchId: string;
+            createdAt: Date;
+            updatedAt: Date;
+            address: string | null;
+            currency: string;
             phone: string;
+            cid: string | null;
             nationalId: string | null;
             passport: string | null;
+            accountNumber: string | null;
+            khmerFirstName: string | null;
+            khmerLastName: string | null;
             familyBook: string | null;
             dob: Date | null;
-            address: string | null;
             kycStatus: string;
             employmentStatus: string | null;
             occupation: string | null;
@@ -654,7 +625,36 @@ export declare class LosController {
             guarantorPhone: string | null;
             guarantorNationalId: string | null;
             guarantorRelationship: string | null;
-            accountNumber: string | null;
+        };
+        collaterals: {
+            id: string;
+            createdAt: Date;
+            description: string;
+            currency: string;
+            type: string;
+            loanId: string;
+            estimatedValue: number;
+            documentIds: string;
+        }[];
+        guarantors: {
+            id: string;
+            firstName: string;
+            lastName: string;
+            createdAt: Date;
+            phone: string;
+            nationalId: string | null;
+            loanId: string;
+            relationship: string;
+        }[];
+        product: {
+            id: string;
+            createdAt: Date;
+            name: string;
+            description: string | null;
+            minAmount: number;
+            maxAmount: number;
+            baseInterestRate: number;
+            interestType: string;
         };
         loanOfficer: {
             id: string;
@@ -665,17 +665,20 @@ export declare class LosController {
             id: string;
             status: string;
             loanId: string;
+            dueDate: Date;
             installmentNumber: number;
             amountDue: number;
             principalComponent: number;
             interestComponent: number;
-            dueDate: Date;
             penaltyAmount: number;
             lateDays: number;
         }[];
         id: string;
-        lid: string | null;
+        branchId: string | null;
+        createdAt: Date;
+        updatedAt: Date;
         status: string;
+        lid: string | null;
         previousStatus: string | null;
         principalAmount: number;
         interestRate: number;
@@ -703,8 +706,6 @@ export declare class LosController {
         rejectionReason: string | null;
         disbursedAt: Date | null;
         exchangeRate: number;
-        createdAt: Date;
-        updatedAt: Date;
         loanCycle: string | null;
         recommenderType: string | null;
         reasonOfCredit: string | null;
@@ -713,7 +714,6 @@ export declare class LosController {
         customerId: string;
         productId: string;
         loanOfficerId: string | null;
-        branchId: string | null;
     }>;
     getTimeline(id: string): Promise<{
         approvalSteps: {
@@ -721,17 +721,14 @@ export declare class LosController {
             createdAt: Date;
             loanId: string;
             tier: number;
-            assignedTo: string | null;
             decision: string | null;
             comments: string | null;
             decidedAt: Date | null;
+            assignedTo: string | null;
         }[];
         auditLogs: ({
             user: {
                 id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                branchId: string | null;
                 email: string;
                 passwordHash: string;
                 firstName: string;
@@ -739,6 +736,7 @@ export declare class LosController {
                 isActive: boolean;
                 isApproved: boolean;
                 requestedRole: string | null;
+                branchId: string | null;
                 passwordChangedAt: Date;
                 failedLoginAttempts: number;
                 lockoutUntil: Date | null;
@@ -747,6 +745,8 @@ export declare class LosController {
                 lastLoginIp: string | null;
                 lastLoginAt: Date | null;
                 refreshToken: string | null;
+                createdAt: Date;
+                updatedAt: Date;
             } | null;
         } & {
             id: string;
@@ -760,19 +760,19 @@ export declare class LosController {
     }>;
     addCollateral(id: string, dto: AddCollateralDto): Promise<{
         id: string;
-        currency: string;
         createdAt: Date;
         description: string;
+        currency: string;
         type: string;
+        loanId: string;
         estimatedValue: number;
         documentIds: string;
-        loanId: string;
     }>;
     addGuarantor(id: string, dto: AddGuarantorDto): Promise<{
         id: string;
-        createdAt: Date;
         firstName: string;
         lastName: string;
+        createdAt: Date;
         phone: string;
         nationalId: string | null;
         loanId: string;
