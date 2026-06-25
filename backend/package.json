@@ -11,7 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "clear:data": "ts-node clear-data.ts",
     "db:push": "npx prisma db push",
     "db:migrate": "npx prisma migrate dev",
